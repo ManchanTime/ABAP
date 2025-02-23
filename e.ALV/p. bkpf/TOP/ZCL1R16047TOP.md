@@ -1,0 +1,62 @@
+``` abap
+*&---------------------------------------------------------------------*
+*& Include ZCL1R16047TOP                            - Report ZCL1R16047
+*&---------------------------------------------------------------------*
+REPORT zcl1r16047 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : zcl116_01, bseg.
+
+**********************************************************************
+* Class instance
+**********************************************************************
+DATA : go_container TYPE REF TO cl_gui_docking_container,
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : BEGIN OF gs_body,
+         bukrs    TYPE bseg-bukrs,
+         belnr    TYPE bseg-belnr,
+         gjahr    TYPE bseg-gjahr,
+         buzei    TYPE bseg-buzei,
+         hkont    TYPE bseg-hkont,
+         txt50    TYPE skat-txt50,
+         bschl    TYPE bseg-bschl,
+         koart    TYPE bseg-koart,
+         sgtxt    TYPE bseg-sgtxt,
+         dmbtr    TYPE bseg-dmbtr,
+         pswsl    TYPE bseg-pswsl,
+         cell_tab TYPE lvc_t_styl,
+         modi_yn,
+       END OF gs_body,
+       gt_body   LIKE TABLE OF gs_body,
+       gt_body_d LIKE TABLE OF gs_body,
+       gs_body_d LIKE gs_body.
+
+DATA : BEGIN OF gs_text,
+         saknr TYPE bseg-hkont,
+         txt50 TYPE skat-txt50,
+       END OF gs_text,
+       gt_text LIKE TABLE OF gs_text.
+
+DATA : gt_data TYPE TABLE OF zcl116_01,
+       gs_data TYPE zcl116_01.
+DATA : gt_data_d TYPE TABLE OF zcl116_01.
+
+DATA : gs_layout  TYPE lvc_s_layo,
+       gs_fcat    TYPE lvc_s_fcat,
+       gt_fcat    TYPE lvc_t_fcat,
+       gs_variant TYPE disvariant.
+
+DATA : gs_button       TYPE stb_button,
+       gt_ui_functions TYPE ui_functions.
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_okcode TYPE sy-ucomm,
+       gv_mode   TYPE i VALUE 0.
