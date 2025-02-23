@@ -1,0 +1,110 @@
+``` abap
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16006
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16006.
+
+**********************************************************************
+* Internal Table and Work Area
+**********************************************************************
+DATA : BEGIN OF gs_spfli,
+         air_cd    TYPE spfli-carrid,
+         countryfr TYPE spfli-countryfr,
+         countryto TYPE spfli-countryto,
+       END OF gs_spfli,
+       gt_spfli LIKE TABLE OF gs_spfli.
+
+DATA : BEGIN OF gs_info,
+         air_cd   TYPE sflight-carrid,
+         con_no   TYPE sflight-connid,
+         minseats TYPE sflight-seatsocc,
+         maxseats TYPE sflight-seatsocc,
+         sumseats TYPE sflight-seatsocc,
+       END OF gs_info,
+       gt_info LIKE TABLE OF gs_info.
+
+DATA : gs_scarr    TYPE scarr,
+       gv_cityfrom TYPE spfli-cityfrom,
+       gv_cityto   TYPE spfli-cityto.
+
+**********************************************************************
+* Get Data
+**********************************************************************
+*-- 단일 테이블내에서 출발국가와 도착국가 정보가 동일한 데이터를 발췌
+CLEAR : gt_spfli, gs_spfli.
+SELECT carrid AS air_cd
+       countryfr
+       countryto
+  INTO CORRESPONDING FIELDS OF TABLE gt_spfli
+  FROM spfli AS a
+  WHERE countryfr EQ a~countryto.
+
+*cl_demo_output=>display( gt_spfli ).
+
+*-- GROUP BY SQL
+CLEAR : gt_info, gs_info.
+SELECT carrid AS air_cd
+       connid AS con_no
+       MIN( seatsocc ) AS minseats
+       MAX( seatsocc ) AS maxseats
+       SUM( seatsocc ) AS sumseats
+  INTO CORRESPONDING FIELDS OF TABLE gt_info
+  FROM sflight
+  WHERE seatsocc GE 200
+  GROUP BY carrid connid
+  HAVING SUM( seatsocc ) LE 2000
+    AND carrid EQ 'DL'.
+
+*cl_demo_output=>display( gt_info ).
+
+*-- Get Single Record
+CLEAR : gs_spfli, gs_scarr, gv_cityfrom, gv_cityto.
+SELECT SINGLE carrid carrname currcode url
+  INTO CORRESPONDING FIELDS OF gs_scarr
+  FROM scarr
+  WHERE carrid EQ 'LH'.
+
+*-- Assign Value To Variable
+SELECT SINGLE countryfr countryto cityto
+  INTO (gs_spfli-countryfr, gs_spfli-countryto, gv_cityto)
+  FROM spfli
+  WHERE carrid EQ 'LH'.
+
+
+*-- Practice
+CLEAR : gt_info, gs_info.
+SELECT carrid AS air_cd
+     connid AS con_no
+     MIN( seatsocc ) AS minseats
+     MAX( seatsocc ) AS maxseats
+     SUM( seatsocc ) AS sumseats
+INTO CORRESPONDING FIELDS OF TABLE gt_info
+FROM sflight
+GROUP BY carrid connid
+HAVING SUM( seatsocc ) LE 2000.
+
+SELECT carrid AS air_cd
+     connid AS con_no
+     MIN( seatsocc ) AS minseats
+     MAX( seatsocc ) AS maxseats
+     SUM( seatsocc ) AS sumseats
+APPENDING CORRESPONDING FIELDS OF TABLE gt_info
+*INTO CORRESPONDING FIELDS OF TABLE gt_info
+FROM sflight
+GROUP BY carrid connid
+HAVING SUM( seatsocc ) LE 1000.
+
+CLEAR : gt_info, gs_info.
+SELECT SINGLE carrid
+     connid
+     MIN( seatsocc ) AS minseats
+     MAX( seatsocc ) AS maxseats
+     SUM( seatsocc ) AS sumseats
+INTO (gs_info-air_cd, gs_info-con_no, gs_info-minseats, gs_info-maxseats, gs_info-sumseats)
+FROM sflight
+GROUP BY carrid connid
+HAVING SUM( seatsocc ) LE 1000.
+
+cl_demo_output=>display( gs_info ).
