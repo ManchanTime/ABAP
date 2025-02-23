@@ -1,0 +1,44 @@
+``` abap
+*&---------------------------------------------------------------------*
+*& Include ZCL1R16036TOP                            - Report ZCL1R16036
+*&---------------------------------------------------------------------*
+REPORT zcl1r16036 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : mara, marc.
+
+**********************************************************************
+* Object instance
+**********************************************************************
+DATA : go_container TYPE REF TO cl_gui_docking_container,
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : BEGIN OF gs_body,
+         matnr TYPE mara-matnr,
+         werks TYPE marc-werks,
+         ersda TYPE mara-ersda,
+         mtart TYPE mara-mtart,
+         mtbez TYPE t134t-mtbez,
+         pstat TYPE marc-pstat,
+       END OF gs_body,
+       gt_body LIKE TABLE OF gs_body.
+
+DATA : BEGIN OF gs_text,
+         mtart TYPE mara-mtart,
+         mtbez TYPE t134t-mtbez,
+       END OF gs_text,
+       gt_text LIKE TABLE OF gs_text.
+
+DATA : gs_layout TYPE lvc_s_layo,
+       gs_fcat   TYPE lvc_s_fcat,
+       gt_fcat   TYPE lvc_t_fcat.
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_okcode TYPE sy-ucomm.
