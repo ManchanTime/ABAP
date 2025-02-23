@@ -1,0 +1,58 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16029
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zcl1r16029top                           .  " Global Data
+
+INCLUDE zcl1r16029s01                           .  " PBO-Modules
+INCLUDE zcl1r16029f01                           .  " FORM-Routines
+
+**********************************************************************
+* INITIALIZATION
+**********************************************************************
+INITIALIZATION.
+  PERFORM set_init_data.
+
+**********************************************************************
+* AT SELECTION-SCREEN OUTPUT
+**********************************************************************
+AT SELECTION-SCREEN OUTPUT.
+  PERFORM set_screen_data.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+
+*-- Call function - Air flight data
+  PERFORM get_flight_data.
+  PERFORM get_schedule_data.
+  PERFORM get_document_data.
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+* T02 Sub condition
+* T03 Edit condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_BELNR D       .
+* PA_BUKRS D       .
+* PA_CARR D       .
+* PA_EDIT         Edit
+* PA_GJAHR D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*000   &
+*008   &## ## #####.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

@@ -1,0 +1,80 @@
+*&---------------------------------------------------------------------*
+*& Include ZCL1R16041TOP                            - Report ZCL1R16041
+*&---------------------------------------------------------------------*
+REPORT zcl1r16041 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : bkpf, bseg.
+
+**********************************************************************
+* Class instance
+**********************************************************************
+DATA : go_container TYPE REF TO cl_gui_docking_container,
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid.
+
+DATA : go_pop_cnt  TYPE REF TO cl_gui_custom_container,
+       go_pop_grid TYPE REF TO cl_gui_alv_grid.
+
+**********************************************************************
+* Internal tabel and Work area
+**********************************************************************
+DATA : BEGIN OF gs_docu,
+         bukrs TYPE bkpf-bukrs,
+         belnr TYPE bkpf-belnr,
+         gjahr TYPE bkpf-gjahr,
+         buzei TYPE bseg-buzei,
+         bktxt TYPE bkpf-bktxt,
+         mwskz TYPE bseg-mwskz,
+         text1 TYPE t007s-text1,
+         kostl TYPE bseg-kostl,
+         ktext TYPE cskt-ktext,
+         sgtxt TYPE bseg-sgtxt,
+         shkzg TYPE bseg-shkzg,
+         wrbtr TYPE bseg-wrbtr,
+         waers TYPE bkpf-waers,
+       END OF gs_docu,
+       gt_docu LIKE TABLE OF gs_docu.
+
+DATA : BEGIN OF gs_item,
+         bukrs TYPE bkpf-bukrs,
+         belnr TYPE bkpf-belnr,
+         gjahr TYPE bkpf-gjahr,
+         buzei TYPE bseg-buzei,
+         shkzg TYPE bseg-shkzg,
+         wrbtr TYPE bseg-wrbtr, " ######
+         pswsl TYPE bseg-pswsl, " #### ###
+       END OF gs_item,
+       gt_item LIKE TABLE OF gs_item.
+
+DATA : BEGIN OF gs_mwskz,
+         mwskz TYPE bseg-mwskz,
+         text1 TYPE t007s-text1,
+       END OF gs_mwskz,
+       gt_mwskz LIKE TABLE OF gs_mwskz.
+
+DATA : BEGIN OF gs_kostl,
+         kostl TYPE bseg-kostl,
+         ktext TYPE cskt-ktext,
+       END OF gs_kostl,
+       gt_kostl LIKE TABLE OF gs_kostl.
+
+DATA : gs_layout  TYPE lvc_s_layo,
+       gs_fcat    TYPE lvc_s_fcat,
+       gt_fcat    TYPE lvc_t_fcat,
+       gs_sort    TYPE lvc_s_sort,
+       gt_sort    TYPE lvc_t_sort,
+       gs_variant TYPE disvariant.
+
+*-- For popup ALV
+DATA : gs_pfcat TYPE lvc_s_fcat,
+       gt_pfcat TYPE lvc_t_fcat.
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_okcode TYPE sy-ucomm.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

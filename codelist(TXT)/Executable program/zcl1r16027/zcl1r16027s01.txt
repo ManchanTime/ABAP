@@ -1,0 +1,18 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16027S01
+*&---------------------------------------------------------------------*
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.
+  PARAMETERS : pa_bukrs TYPE bkpf-bukrs,
+               pa_gjahr TYPE bkpf-gjahr.
+
+  SELECT-OPTIONS : so_budat FOR bkpf-budat,
+                   so_hkont FOR bseg-hkont MODIF ID hko.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+SELECTION-SCREEN BEGIN OF BLOCK pa2 WITH FRAME TITLE TEXT-t02.
+  PARAMETERS : pa_mode1 RADIOBUTTON GROUP rg1 MODIF ID rg1 USER-COMMAND evt,
+               pa_mode2 RADIOBUTTON GROUP rg1 MODIF ID rg1.
+SELECTION-SCREEN END OF BLOCK pa2.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

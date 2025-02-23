@@ -1,0 +1,39 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16039C01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Class LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS lcl_event_handler DEFINITION FINAL.
+
+  PUBLIC SECTION.
+    METHODS : get_schedule IMPORTING iv_carrid TYPE s_carr_id
+                           EXPORTING ev_subrc  TYPE char1.
+
+    CLASS-METHODS : get_single_line IMPORTING iv_carrid TYPE s_carr_id
+                                    EXPORTING ev_subrc  TYPE char1.
+
+ENDCLASS.
+*&---------------------------------------------------------------------*
+*& Class (Implementation) LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS lcl_event_handler IMPLEMENTATION.
+
+  METHOD get_schedule.
+    PERFORM get_flight_schedule USING iv_carrid
+                                CHANGING ev_subrc.
+  ENDMETHOD.
+
+  METHOD get_single_line.
+    PERFORM get_single_recode USING iv_carrid
+                              CHANGING ev_subrc.
+  ENDMETHOD.
+
+ENDCLASS.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

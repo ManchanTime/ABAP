@@ -1,0 +1,156 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16037F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_base_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_base_data .
+
+  CLEAR : gt_body, gs_body.
+  SELECT a~bukrs a~belnr a~gjahr waers wrbtr menge meins
+    INTO CORRESPONDING FIELDS OF TABLE gt_body
+    FROM bkpf AS a INNER JOIN bseg AS b
+      ON a~bukrs = b~bukrs
+     AND a~belnr = b~belnr
+     AND a~gjahr = b~gjahr
+    WHERE a~bukrs = pa_bukrs
+      AND b~gjahr = pa_gjahr.
+
+  IF gt_body IS INITIAL.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  pa_bukrs = '0001'.
+  pa_gjahr = sy-datum(4).
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_screen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_screen .
+
+  DATA : ls_variant TYPE disvariant.
+
+  IF go_container IS NOT BOUND.
+    PERFORM create_object.
+    CLEAR : gt_fcat, gs_fcat.
+    PERFORM set_field_catalog USING : 'X' 'BUKRS' 'BKPF' 'C' ' ',
+                                      'X' 'BELNR' 'BKPF' 'C' ' ',
+                                      'X' 'GJAHR' 'BKPF' 'C' ' ',
+                                      ' ' 'WRBTR' 'BSEG' ' ' ' ',
+                                      ' ' 'WAERS' 'BKPF' 'C' 'X',
+                                      ' ' 'MENGE' 'BSEG' ' ' ' ',
+                                      ' ' 'MEINS' 'BSEG' 'C' 'X'.
+
+    PERFORM set_layout.
+
+
+    ls_variant-report = sy-repid.
+    ls_variant-handle = 'ALV1'.
+
+    CALL METHOD go_alv_grid->set_table_for_first_display
+      EXPORTING
+        is_variant      = ls_variant
+        i_save          = 'A'
+        i_default       = 'X'
+        is_layout       = gs_layout
+      CHANGING
+        it_outtab       = gt_body
+        it_fieldcatalog = gt_fcat.
+
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_field_dialog
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM set_field_catalog USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_fcat-key       = pv_key.
+  gs_fcat-fieldname = pv_field.
+  gs_fcat-ref_table = pv_table.
+  gs_fcat-just      = pv_just.
+  gs_fcat-emphasize = pv_emph.
+
+**********************************************************************
+* ## ### ## ### ### ### ## #### ##
+* ## ### ## ## ### ### ## #### ##
+**********************************************************************
+  CASE pv_field.
+    WHEN 'WRBTR'.
+      gs_fcat-cfieldname = 'WAERS'.
+    WHEN 'MENGE'.
+      gs_fcat-qfieldname = 'MEINS'.
+  ENDCASE.
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_layout
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_layout .
+
+  gs_layout-zebra      = abap_true.
+  gs_layout-cwidth_opt = 'A'.
+  gs_layout-sel_mode   = 'D'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_object .
+
+  CREATE OBJECT go_container
+    EXPORTING
+      side      = go_container->dock_at_left
+      extension = 5000.
+
+  CREATE OBJECT go_alv_grid
+    EXPORTING
+      i_parent = go_container.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

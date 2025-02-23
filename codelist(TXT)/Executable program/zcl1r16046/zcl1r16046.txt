@@ -1,0 +1,63 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16046
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zcl1r16046top                           .  " Global Data
+
+INCLUDE zcl1r16046s01                           .  " Selection screen
+INCLUDE zcl1r16046c01                           .  " Class
+INCLUDE zcl1r16046o01                           .  " PBO-Modules
+INCLUDE zcl1r16046i01                           .  " PAI-Modules
+INCLUDE zcl1r16046f01                           .  " FORM-Routines
+
+**********************************************************************
+* INITIALIZATION
+**********************************************************************
+INITIALIZATION.
+  PERFORM set_init_value.
+
+**********************************************************************
+* AT SELECTION-SCREEN OUTPUT
+**********************************************************************
+AT SELECTION-SCREEN OUTPUT.
+  PERFORM set_init_condition.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  PERFORM get_base_data.
+  PERFORM set_screen.
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* TITLE100 --> [C1] ALV Homework
+
+*Text elements
+*----------------------------------------------------------
+* I01 No data changed
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_WERKS D       .
+* SO_EKGRP D       .
+* SO_MATNR D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*000   &
+*004   Data save successfully!!
+*008   &## ## #####.
+*009   ### #### ####.
+*010   ### ## #####.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

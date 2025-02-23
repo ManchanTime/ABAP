@@ -1,0 +1,104 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16025F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_main_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_main_data .
+
+  CLEAR : gs_data, gt_data.
+  SELECT mtart mtref mbref pstat vmtpo kzgrp kkref
+    INTO CORRESPONDING FIELDS OF TABLE gt_data
+    FROM t134
+    WHERE mtart IN so_mtart
+      AND mtref = 'HAWA'
+      AND mbref = 'ROH'
+      AND flref <> 'WERT'
+      AND ardel >= 0.
+
+  IF sy-subrc <> 0.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_text_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_text_data .
+
+  CLEAR : gs_text, gt_text.
+  SELECT kkref krftx
+    INTO CORRESPONDING FIELDS OF TABLE gt_text
+    FROM t025l
+    WHERE spras = sy-langu.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_text_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_text_data .
+
+  DATA : lt_backup LIKE gt_text,
+         lv_tabix  TYPE sy-tabix.
+
+  CLEAR : lt_backup, lv_tabix.
+  MOVE-CORRESPONDING gt_text TO lt_backup.
+  SORT lt_backup BY kkref ASCENDING.
+  DELETE ADJACENT DUPLICATES FROM lt_backup COMPARING kkref.
+
+  LOOP AT gt_data INTO gs_data.
+
+    lv_tabix = sy-tabix.
+
+    CLEAR gs_text.
+    READ TABLE lt_backup INTO gs_text WITH KEY kkref = gs_data-kkref
+                                                       BINARY SEARCH.
+
+    IF ( sy-subrc = 0 ).
+      gs_data-krftx = gs_text-krftx.
+      MODIFY gt_data FROM gs_data INDEX lv_tabix TRANSPORTING krftx.
+    ENDIF.
+
+  ENDLOOP.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_data .
+
+  DATA : lv_dbcnt TYPE sy-dbcnt.
+  CLEAR lv_dbcnt.
+
+  lv_dbcnt = lines( gt_data ).
+  IF ( lv_dbcnt > 0 ).
+    MESSAGE s001 WITH lv_dbcnt TEXT-i01.
+    cl_demo_output=>display( gt_data ).
+  ENDIF.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

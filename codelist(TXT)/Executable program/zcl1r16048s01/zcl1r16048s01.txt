@@ -1,0 +1,11 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16048S01
+*&---------------------------------------------------------------------*
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.
+  PARAMETERS : pa_bukrs TYPE ztcl116_01-bukrs OBLIGATORY MODIF ID loc,
+               pa_gjahr TYPE ztcl116_01-gjahr OBLIGATORY MODIF ID loc.
+  SELECT-OPTIONS : so_budat FOR bkpf-budat MODIF ID col.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

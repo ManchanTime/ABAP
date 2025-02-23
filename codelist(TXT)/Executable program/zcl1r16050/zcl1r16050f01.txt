@@ -1,0 +1,177 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16050F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  pa_carr = 'LH'.
+
+  _ranges so_conn 'I' 'BT' '0100' '0400'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_flight_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_flight_data .
+
+*-- Get airline master
+  SELECT SINGLE *
+    FROM scarr
+    WHERE carrid = pa_carr.
+
+*-- Get flight schedule
+  SELECT SINGLE *
+    FROM spfli
+    WHERE carrid = pa_carr
+      AND connid IN so_conn.
+
+  IF spfli IS INITIAL.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+
+*-- Get flight data
+  CLEAR gt_sflight.
+  SELECT carrid connid fldate price currency seatsmax seatsocc
+    INTO CORRESPONDING FIELDS OF TABLE gt_sflight
+    FROM sflight
+    WHERE carrid = pa_carr
+      AND connid IN so_conn.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_screen_0100
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_screen_0100 .
+
+  IF go_container IS NOT BOUND.
+    " carrid connid fldate price currency seatsmax seatsocc
+    CLEAR : gt_fcat, gs_fact.
+    PERFORM set_fcat USING : 'X' 'CARRID'   'SFLIGHT' 'C' ' ',
+                             'X' 'CONNID'   'SFLIGHT' 'C' ' ',
+                             'X' 'FLDATE'   'SFLIGHT' 'C' ' ',
+                             ' ' 'PRICE'    'SFLIGHT' ' ' 'X',
+                             ' ' 'CURRENCY' 'SFLIGHT' 'C' ' ',
+                             ' ' 'SEATSMAX' 'SFLIGHT' 'C' ' ',
+                             ' ' 'SEATSOCC' 'SFLIGHT' 'C' ' '.
+    PERFORM set_layout.
+    PERFORM create_object.
+
+    CALL METHOD go_alv_grid->set_table_for_first_display
+      EXPORTING
+        is_variant      = gs_variant
+        i_save          = 'A'
+        i_default       = 'X'
+        is_layout       = gs_layout
+      CHANGING
+        it_outtab       = gt_sflight
+        it_fieldcatalog = gt_fcat.
+
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_fcat
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM set_fcat USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_fact-key       = pv_key.
+  gs_fact-fieldname = pv_field.
+  gs_fact-ref_table = pv_table.
+  gs_fact-just      = pv_just.
+  gs_fact-emphasize = pv_emph.
+
+  CASE pv_field.
+    WHEN 'PRICE'.
+      gs_fact-cfieldname = 'CURRENCY'.
+  ENDCASE.
+  APPEND gs_fact TO gt_fcat.
+  CLEAR gs_fact.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_layout
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_layout .
+
+  gs_layout-zebra      = abap_true.
+  gs_layout-cwidth_opt = 'A'.
+  gs_layout-sel_mode   = 'D'.
+
+  gs_variant-report = sy-repid.
+  gs_variant-handle = 'ALV1'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_object .
+
+  CREATE OBJECT go_container
+    EXPORTING
+      container_name = 'MAIN_CONT'.
+
+  CREATE OBJECT go_alv_grid
+    EXPORTING
+      i_parent = go_container.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_subscreen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_subscreen .
+*-- #### ## #### ##### ### ####.
+  CASE gc_tab-activetab.
+    WHEN 'TAB1'.
+      gv_subscreen = '0101'.
+    WHEN 'TAB2'.
+      gv_subscreen = '0102'.
+    WHEN OTHERS.
+      gc_tab-activetab = 'TAB1'.
+      gv_subscreen     = '0101'.
+  ENDCASE.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

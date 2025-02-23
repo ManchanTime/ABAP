@@ -1,0 +1,215 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16040F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  pa_bukrs = '0001'.
+  pa_gjahr = sy-datum(4).
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_document_header
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_document_header .
+
+  CLEAR gt_header.
+  SELECT bukrs belnr gjahr budat bktxt waers
+    INTO CORRESPONDING FIELDS OF TABLE gt_header
+    FROM bkpf
+    WHERE bukrs = pa_bukrs
+      AND gjahr = pa_gjahr.
+
+  IF gt_header IS INITIAL.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_object .
+
+  CREATE OBJECT go_container
+    EXPORTING
+      side      = go_container->dock_at_left
+      extension = 5000.
+
+  CREATE OBJECT go_alv_grid
+    EXPORTING
+      i_parent = go_container.
+
+  CREATE OBJECT go_event.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_layout
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_layout .
+
+  gs_layout-zebra      = abap_true.
+  gs_layout-cwidth_opt = 'A'.
+  gs_layout-sel_mode   = 'D'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_variant
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_variant .
+
+  gs_variant-report = sy-repid.
+  gs_variant-handle = 'ALV1'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_fcat
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM set_fcat USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_fcat-key       = pv_key.
+  gs_fcat-fieldname = pv_field.
+  gs_fcat-ref_table = pv_table.
+  gs_fcat-just      = pv_just.
+  gs_fcat-emphasize = pv_emph.
+
+  CASE pv_field.
+    WHEN 'BELNR'.
+      gs_fcat-hotspot = abap_true.
+  ENDCASE.
+
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+ENDFORM.
+
+*&---------------------------------------------------------------------*
+*& Form create_screen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_screen .
+
+  IF go_container IS NOT BOUND.
+
+    PERFORM create_object.
+    PERFORM set_layout.
+    PERFORM set_variant.
+    PERFORM set_fcat USING : 'X' 'BUKRS' 'BKPF' 'C' ' ',
+                             'X' 'BELNR' 'BKPF' 'C' ' ',  " #### ### ##
+                             'X' 'GJAHR' 'BKPF' 'C' ' ',
+                             ' ' 'BUDAT' 'BKPF' 'C' ' ',  " ### ### #### no_out ### ####
+                             ' ' 'BKTXT' 'BKPF' ' ' 'X',
+                             ' ' 'WAERS' 'BKPF' 'C' ' '.
+
+*-- Apply ALV Event
+    SET HANDLER : lcl_event_handler=>double_click FOR go_alv_grid,    " ### ##
+                  go_event->hotspot_click         FOR go_alv_grid.
+
+    CALL METHOD go_alv_grid->set_table_for_first_display
+      EXPORTING
+        is_variant      = gs_variant
+        i_save          = 'A'
+        i_default       = 'X'
+        is_layout       = gs_layout
+      CHANGING
+        it_outtab       = gt_header
+        it_fieldcatalog = gt_fcat.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_double_click
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> E_ROW
+*&      --> E_COLUMN
+*&      --> ES_ROW_NO
+*&---------------------------------------------------------------------*
+FORM handle_double_click USING pv_row
+                               pv_column.
+
+  CLEAR gs_header.
+  READ TABLE gt_header INTO gs_header INDEX pv_row.
+
+  IF sy-subrc = 0.
+
+    CASE pv_column.
+      WHEN 'BUKRS'.
+
+      WHEN 'BELNR'.
+
+    ENDCASE.
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_hotspot_click
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> E_ROW_ID
+*&      --> E_COLUMN_ID
+*&---------------------------------------------------------------------*
+FORM handle_hotspot_click USING pv_row pv_column.
+
+  CLEAR gs_header.
+  READ TABLE gt_header INTO gs_header INDEX pv_row.
+
+  IF sy-subrc = 0.
+**********************************************************************
+* 1. #### ### ##### ## #### #### ##
+* 2. SAP Memory ID# ### ## ####.
+**********************************************************************
+    SET PARAMETER ID : 'BUK' FIELD gs_header-bukrs, " ## ### ##!
+                       'BLN' FIELD gs_header-belnr,
+                       'GJR' FIELD gs_header-gjahr.
+
+    CALL TRANSACTION 'FB03' AND SKIP FIRST SCREEN.  " # ## ##
+
+  ENDIF.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

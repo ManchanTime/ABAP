@@ -1,0 +1,168 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16002
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16002.
+
+**********************************************************************
+* TYPES : Local type
+**********************************************************************
+TYPES : BEGIN OF ts_airline,
+          carrid    TYPE scarr-carrid,    " ### ID
+          carrname  TYPE scarr-carrname,  " ####
+          countryfr TYPE spfli-countryfr, " ####
+          countryto TYPE spfli-countryto, " ####
+        END OF ts_airline.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+*-- Using local type structure
+DATA : gt_airline TYPE TABLE OF ts_airline,
+       gs_airline TYPE ts_airline.
+
+DATA : gt_air1 LIKE gt_airline, " Internal table
+       gt_air2 LIKE TABLE OF gs_airline. " Work area
+
+*-- Using global type
+DATA : gt_scar  TYPE TABLE OF scarr,
+       gt_bkpf  TYPE TABLE OF bkpf,
+       gs_scarr TYPE scarr,
+       gs_bkpf  TYPE bkpf.
+
+*-- Declaration of Internal table and Work area
+DATA : BEGIN OF gs_flight,
+         carrid    TYPE scarr-carrid,
+         connid    TYPE spfli-connid,
+         countryfr TYPE spfli-countryfr,
+         cityfrom  TYPE spfli-cityfrom,
+         countryto TYPE spfli-countryto,
+         cityto    TYPE spfli-cityto,
+         carrname  TYPE scarr-carrname,
+       END OF gs_flight.
+
+DATA : gt_flight LIKE TABLE OF gs_flight.
+
+*-- Practice
+DATA : BEGIN OF gs_board_tax,
+         seqno  TYPE ztcl1board16-seqno,
+         author TYPE ztcl1board16-author,
+         comp   TYPE ztcl1board16-comp,
+         bukrs  TYPE ztc1_tax_16-bukrs,
+         gjahr  TYPE ztc1_tax_16-gjahr,
+         mwskz  TYPE ztc1_tax_16-mwskz,
+       END OF gs_board_tax.
+
+DATA : gt_board_tax LIKE TABLE OF gs_board_tax.
+
+DATA : BEGIN OF gs_bkpf_bseg,
+         bukrs TYPE bkpf-bukrs,
+         belnr TYPE bkpf-belnr,
+         gjahr TYPE bkpf-gjahr,
+         gsber TYPE bseg-gsber,
+         gtext TYPE tgsbt-gtext,
+         mwskz TYPE bseg-mwskz,
+         dmbtr TYPE bseg-dmbtr,
+         pswsl TYPE bseg-pswsl,
+       END OF gs_bkpf_bseg.
+
+DATA : gt_bkpf_bseg LIKE TABLE OF gs_bkpf_bseg.
+
+DATA : BEGIN OF gs_scarr2,
+         carrid   TYPE scarr-carrid,
+         carrname TYPE scarr-carrname,
+         currcode TYPE scarr-currcode,
+         url      TYPE scarr-url,
+         val1(5)  TYPE p DECIMALS 3,
+       END OF gs_scarr2.
+
+DATA : gt_scarr LIKE TABLE OF gs_scarr2.
+
+**********************************************************************
+* ## #### ## Field# #### ## field# ### Internal table
+**********************************************************************
+DATA : BEGIN OF gs_air3.
+         INCLUDE STRUCTURE scarr. " INCLUDE TYPE# ##, Transparent table# Include ## ## -> mandt ## ## ##
+         INCLUDE STRUCTURE zscl1_comp_16.
+DATA :   val1(5) TYPE p DECIMALS 3,
+         val2(3),
+       END OF gs_air3.
+
+DATA gt_air3 LIKE TABLE OF gs_air3.
+
+*-- Practice
+TYPES : BEGIN OF ts_makt.
+          INCLUDE STRUCTURE makt.
+TYPES :   matkl TYPE mara-matkl,
+          mtart TYPE mara-mtart,
+          mblnr TYPE mseg-mblnr,
+          bwart TYPE mseg-bwart,
+        END OF ts_makt.
+
+DATA : gs_mara TYPE ts_makt,
+       gt_mara LIKE TABLE OF gs_mara.
+
+*-- 4.
+DATA : gs_bsis TYPE bsis,
+       gt_bsis TYPE TABLE OF bsis.
+
+*-- 5.
+DATA : gs_bsid TYPE bsid,
+       gt_bsid TYPE TABLE OF bsid.
+
+*-- 6.
+DATA : gs_bsik TYPE bsik,
+       gt_bsik TYPE TABLE OF bsik.
+
+*-- 7.
+DATA : BEGIN OF gs_cskt.
+         INCLUDE STRUCTURE cskt.
+DATA :   pkzkp TYPE csks-pkzkp,
+         kosar TYPE csks-kosar,
+         txjcd TYPE csks-txjcd,
+       END OF gs_cskt.
+
+DATA : gt_cskt LIKE TABLE OF gs_cskt.
+
+*-- 9.
+DATA : BEGIN OF gs_9,
+         level(10),
+         stlan     TYPE mast-stlan,
+         stlal     TYPE mast-stlal,
+         mantnr    TYPE mast-matnr,
+         maktx     TYPE makt-maktx,
+         mnglg     TYPE stpol-mnglg,
+         meins     TYPE stpol-meins,
+       END OF gs_9,
+
+       gt_9 LIKE TABLE OF gs_9.
+
+* -- 10.
+DATA : BEGIN OF gs_10,
+         mtart TYPE t134-mtart,
+         mtref TYPE t134-mtref,
+         mbref TYPE t134-mbref,
+         pstat TYPE t134-pstat,
+         vmtpo TYPE t134-vmtpo,
+         kzgrp TYPE t134-kzgrp,
+         kkref TYPE t134-kkref,
+         krftx TYPE t025l-krftx,
+       END OF gs_10,
+
+       gt_10 LIKE TABLE OF gs_10.
+
+DATA : BEGIN OF gs_scarr_sflight.
+         INCLUDE STRUCTURE scarr.
+DATA :   connid    TYPE sflight-connid,
+         fldate    TYPE sflight-fldate,
+         price     TYPE sflight-price,
+         currency  TYPE sflight-currency,
+         planetype TYPE sflight-planetype.
+         INCLUDE STRUCTURE zscl1_comp_16.
+DATA : END OF gs_scarr_sflight.
+
+DATA : gt_scarr_sfligth LIKE TABLE OF gs_scarr_sflight.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

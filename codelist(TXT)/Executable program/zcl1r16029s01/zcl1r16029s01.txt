@@ -1,0 +1,19 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16029S01
+*&---------------------------------------------------------------------*
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.
+  PARAMETERS : pa_carr TYPE scarr-carrid.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+SELECTION-SCREEN BEGIN OF BLOCK pa2 WITH FRAME TITLE TEXT-t02.
+  PARAMETERS : pa_bukrs TYPE bkpf-bukrs,
+               pa_gjahr TYPE bkpf-gjahr,
+               pa_belnr TYPE bkpf-belnr.
+SELECTION-SCREEN END OF BLOCK pa2.
+
+SELECTION-SCREEN BEGIN OF BLOCK pa3 WITH FRAME TITLE TEXT-t03.
+  PARAMETERS : pa_edit AS CHECKBOX MODIF ID chk USER-COMMAND evt.
+SELECTION-SCREEN END OF BLOCK pa3.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

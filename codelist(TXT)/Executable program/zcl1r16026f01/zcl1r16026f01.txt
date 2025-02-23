@@ -1,0 +1,125 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16026F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_data .
+
+  pa_bukrs = '0001'.
+  pa_gjahr = sy-datum(4).
+
+  so_budat-sign   = 'I'.
+  so_budat-option = 'BT'.
+  so_budat-low    = '20250101'.
+  so_budat-high   = '20250131'.
+  APPEND so_budat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_main_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_main_data .
+
+  CLEAR : gs_data, gt_data.
+  SELECT a~bukrs a~belnr a~gjahr buzei bktxt koart kostl
+         sgtxt dmbtr waers
+    INTO CORRESPONDING FIELDS OF TABLE gt_data
+    FROM bkpf AS a
+      INNER JOIN bseg AS b
+        ON a~bukrs = b~bukrs
+       AND a~belnr = b~belnr
+       AND a~gjahr = b~gjahr
+    WHERE a~bukrs = pa_bukrs
+      AND a~gjahr = pa_gjahr
+      AND budat IN so_budat.
+
+  IF sy-subrc <> 0.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_text_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_text_data .
+
+  CLEAR : gs_text, gt_text.
+  SELECT kostl ktext
+    INTO CORRESPONDING FIELDS OF TABLE gt_text
+    FROM cskt
+    WHERE spras = sy-langu
+      AND kokrs = '0001'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_text_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_text_data .
+
+  DATA : lv_tabix  TYPE sy-tabix,
+         lt_backup LIKE gt_text.
+
+  CLEAR : lv_tabix, lt_backup, gs_text.
+
+  MOVE-CORRESPONDING gt_text TO lt_backup.
+  SORT lt_backup BY kostl ASCENDING.
+  DELETE ADJACENT DUPLICATES FROM lt_backup COMPARING kostl.
+
+  LOOP AT gt_data INTO gs_data.
+
+    lv_tabix = sy-tabix.
+    CLEAR gs_text.
+    READ TABLE lt_backup INTO gs_text WITH KEY kostl = gs_data-kostl.
+
+    IF sy-subrc = 0.
+      gs_data-ktext = gs_text-ktext.
+      MODIFY gt_data FROM gs_data INDEX lv_tabix TRANSPORTING ktext.
+    ENDIF.
+
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_data .
+
+  DATA : lv_dbcnt TYPE sy-dbcnt.
+
+  lv_dbcnt = lines( gt_data ).
+
+  IF lv_dbcnt > 0.
+    MESSAGE s008 WITH lv_dbcnt.
+    cl_demo_output=>display( gt_data ).
+  ENDIF.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

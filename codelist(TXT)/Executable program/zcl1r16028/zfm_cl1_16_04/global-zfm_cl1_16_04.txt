@@ -1,0 +1,15 @@
+FUNCTION-POOL zcl1com16 MESSAGE-ID zcl1msg16.                    "MESSAGE-ID ..
+
+* INCLUDE LZCL1COM16D...                     " Local class definition
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : BEGIN OF gs_item_text,
+         kostl TYPE cskt-kostl,
+         ktext TYPE cskt-ktext,
+       END OF gs_item_text,
+       gt_item_text LIKE TABLE OF gs_item_text.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

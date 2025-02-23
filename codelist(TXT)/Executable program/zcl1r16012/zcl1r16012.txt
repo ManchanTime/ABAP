@@ -1,0 +1,252 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16012
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16012 MESSAGE-ID ZCL1MSG16.
+
+**********************************************************************
+* Internal Table And Work Area
+**********************************************************************
+DATA : gt_mara TYPE TABLE OF mara,
+       gs_mara TYPE mara.
+
+DATA : gt_backup TYPE TABLE OF mara.
+
+*-- Backup DAta
+MOVE-CORRESPONDING gt_mara TO gt_backup.
+
+*-- Binary Search
+*--------------------------------------------------------------------*
+SORT gt_backup BY matnr mtart ASCENDING.
+DELETE ADJACENT DUPLICATES FROM gt_backup COMPARING matnr mtart. " ALL FIELDS.
+
+CLEAR gs_mara.
+READ TABLE gt_backup INTO gs_mara WITH KEY matnr = 'P001'
+                                           mtart = 'FERT'
+                                           BINARY SEARCH.
+*--------------------------------------------------------------------*
+
+**********************************************************************
+*Internal Table
+**********************************************************************
+DATA: gt_sflight TYPE TABLE OF sflight, " ## ### ##
+      gs_sflight TYPE sflight,
+      gt_scarr   TYPE TABLE OF scarr,
+      gs_scarr   TYPE scarr.
+
+DATA : gv_cnt    TYPE i,
+       gv_num1   TYPE i,
+       gv_num2   TYPE i,
+       gv_result TYPE i.
+
+**********************************************************************
+* Main Routine
+**********************************************************************
+
+*-- DO ENDDO
+DO.
+*  WRITE sy-index.
+  IF ( sy-index >= 10 ).
+    EXIT.
+  ENDIF.
+ENDDO.
+
+DATA : gv_msg(100),
+       gv_cnt2(3) TYPE n.
+
+*-- Get Base Data
+CLEAR gt_scarr.
+SELECT carrid carrname currcode url
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr
+  FROM scarr.
+
+CLEAR gs_scarr.
+
+*-- Case 1 : &&
+gv_msg = gv_cnt2 && 'Displayed'.
+
+CLEAR gv_msg.
+
+*--Case 2 : Concat
+gv_cnt2 = sy-dbcnt.
+CONCATENATE gv_cnt2 'Displayed' INTO gv_msg SEPARATED BY '/'.
+
+MESSAGE i000 WITH gv_msg DISPLAY LIKE 'W'.
+MESSAGE i037(k5) DISPLAY LIKE 'E'.
+
+*-- DO ~ ENDDO
+DO.
+  READ TABLE gt_scarr INTO gs_scarr INDEX sy-index.
+*  WRITE : / gs_scarr-carrid, gs_scarr-carrname,
+*            gs_scarr-currcode, gs_scarr-url.
+*  SKIP 1.
+  IF lines( gt_scarr ) = sy-index.
+    EXIT.
+  ENDIF.
+ENDDO.
+
+*WRITE sy-uline.
+
+DO.
+  gv_num1 = 1.
+  gv_num2 = 1.
+  gv_result += ( gv_num1 + gv_num2 ).
+
+  IF ( gv_result >= 10 ).
+    EXIT.
+  ENDIF.
+ENDDO.
+
+*WRITE sy-uline.
+
+*-- DO n ~ ENDDO
+DO lines( gt_scarr ) TIMES.
+  READ TABLE gt_scarr INTO gs_scarr INDEX sy-index.
+*  WRITE : / gs_scarr-carrid, gs_scarr-carrname,
+*            gs_scarr-currcode, gs_scarr-url.
+*  SKIP 1.
+ENDDO.
+
+DO 7 TIMES.
+*  WRITE : / sy-index.
+
+  IF sy-index = 3.
+    EXIT.
+  ENDIF.
+ENDDO.
+
+*-- Nested Loops
+DO 3 TIMES.
+*  WRITE : / 'Outter loop : ', sy-index.
+
+  DO 2 TIMES.
+*    WRITE : / 'Inner loop : ', sy-index.
+  ENDDO.
+ENDDO.
+
+*-- While
+CLEAR gv_result.
+WHILE gv_result < 10.  " ### ### ###### ##
+  gv_result += 1.
+*  WRITE : / 'WHILE Loops : ', gv_result.
+
+*-- This abort condition is optional
+  IF ( gv_result > 5 ).
+    EXIT.
+  ENDIF.
+ENDWHILE.
+
+CLEAR gs_scarr.
+gs_scarr-carrid = 'AA'.
+SORT gt_scarr BY carrid ASCENDING.
+WHILE gs_scarr-carrid BETWEEN 'AA' AND 'LH'.
+  READ TABLE gt_scarr INTO gs_scarr INDEX sy-index.
+*  WRITE : / gs_scarr-carrid, gs_scarr-carrname,
+*          gs_scarr-currcode, gs_scarr-url.
+*  SKIP 1.
+ENDWHILE.
+
+**********************************************************************
+*### ## ##### #### #### ####.
+**********************************************************************
+*-- 1. DO
+*WRITE : / 'Do'.
+gv_num1 = 1.
+gv_num2 = 1.
+CLEAR gv_result.
+DO.
+*  WRITE : / sy-index, '#'.
+  gv_num1 = sy-index.
+  DO.
+    gv_result = gv_num1 * sy-index.
+*    WRITE : / gv_num1, 'x', sy-index, '=', gv_result.
+    sy-index += 1.
+    IF ( sy-index > 9 ).
+      EXIT.
+    ENDIF.
+  ENDDO.
+*  WRITE sy-uline.
+  IF ( gv_num1 > 9 ).
+    EXIT.
+  ENDIF.
+ENDDO.
+
+*-- 2. Do n Times
+*WRITE : / 'Do n Times'.
+gv_num1 = 1.
+CLEAR gv_result.
+DO 9 TIMES.
+*  WRITE : / gv_num1, '#'.
+  DO 9 TIMES.
+    gv_result = gv_num1 * sy-index.
+*    WRITE : / gv_num1, 'x', sy-index, '=', gv_result.
+  ENDDO.
+*  WRITE sy-uline.
+  gv_num1 += 1.
+ENDDO.
+
+*-- 3. While
+*WRITE : / 'While'.
+gv_num1 = 1.
+CLEAR gv_result.
+WHILE gv_num1 < 10.
+*  WRITE : / gv_num1, '#'.
+  WHILE sy-index < 9.
+    gv_result = gv_num1 * sy-index.
+*    WRITE : / gv_num1, 'x', sy-index, '=', gv_result.
+  ENDWHILE.
+*  WRITE sy-uline.
+  gv_num1 = sy-index.
+
+ENDWHILE.
+
+*-- 4. Loop At
+DATA : BEGIN OF gs_index,
+         n1 TYPE i,
+         op,
+         n2 TYPE i,
+         eq,
+         re TYPE i,
+       END OF gs_index,
+       gt_index LIKE TABLE OF gs_index.
+
+CLEAR : gs_index, gt_index.
+gs_index-n1 = 1.
+gs_index-n2 = 1.
+gs_index-op = 'x'.
+gs_index-eq = '='.
+DO 9 TIMES.
+  gs_index-n1 = sy-index.
+  DO 9 TIMES.
+    gs_index-n2 = sy-index.
+    gs_index-re = gs_index-n1 * sy-index.
+    APPEND gs_index TO gt_index.
+  ENDDO.
+ENDDO.
+
+CLEAR gs_index.
+gv_num1 = 0.
+LOOP AT gt_index INTO gs_index.
+  IF ( sy-tabix MOD 9 = 1 ).
+    gv_num1 += 1.
+*    WRITE : sy-uline.
+*    WRITE : / gv_num1, '#'.
+  ENDIF.
+*  WRITE : / gs_index-n1, gs_index-op, gs_index-n2, gs_index-eq, gs_index-re.
+ENDLOOP.
+
+*MESSAGE e003(k5) WITH 1000.
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: K5
+*037   No data found
+*
+* Message class: ZCL1MSG16
+*000   &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

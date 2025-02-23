@@ -1,0 +1,36 @@
+*&---------------------------------------------------------------------*
+*& Include ZCL1R16024TOP                            - Report ZCL1R16024
+*&---------------------------------------------------------------------*
+REPORT zcl1r16024 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : scustom, sbuspart.
+
+**********************************************************************
+* Internal table Work area
+**********************************************************************
+DATA : BEGIN OF gs_data,
+         id                TYPE scustom-id,
+         name              TYPE scustom-name,
+         contact           TYPE sbuspart-contact,
+         contphono         TYPE sbuspart-contphono,
+         buspatyp          TYPE sbuspart-buspatyp,
+         form              TYPE scustom-form,
+         street            TYPE scustom-street,
+         custtype          TYPE scustom-custtype,
+         custtype_desc(20),
+       END OF gs_data,
+       gt_data LIKE TABLE OF gs_data.
+
+  DATA : BEGIN OF gs_sbuspart,
+           buspartnum TYPE sbuspart-buspartnum,
+           contact    TYPE sbuspart-contact,
+           contphono  TYPE sbuspart-contphono,
+           buspatyp   TYPE sbuspart-buspatyp,
+         END OF gs_sbuspart,
+         gt_sbuspart LIKE TABLE OF gs_sbuspart.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

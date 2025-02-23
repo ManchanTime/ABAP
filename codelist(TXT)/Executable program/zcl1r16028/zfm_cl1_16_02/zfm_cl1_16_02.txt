@@ -1,0 +1,35 @@
+FUNCTION zfm_cl1_16_02.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IV_HKONT) TYPE  HKONT
+*"     REFERENCE(IV_KTOPL) TYPE  KTOPL
+*"     REFERENCE(IV_LANGU) TYPE  SY-LANGU DEFAULT 'E'
+*"  EXPORTING
+*"     REFERENCE(EV_TXT50) TYPE  TXT50
+*"     REFERENCE(EV_MESSAGE) TYPE  CHAR50
+*"     REFERENCE(EV_SUBRC) TYPE  SY-SUBRC
+*"  EXCEPTIONS
+*"      INVALID_ACCOUNT_CODE
+*"----------------------------------------------------------------------
+
+  SELECT SINGLE txt50
+    INTO ( ev_txt50 )
+    FROM skat
+    WHERE saknr = iv_hkont
+      AND spras = iv_langu
+      AND ktopl = iv_ktopl.
+
+  ev_subrc = sy-subrc.
+  IF ev_subrc = 0.
+    ev_message = TEXT-m01.
+  ELSE.
+    ev_message = TEXT-e01.
+    RAISE invalid_account_code.
+  ENDIF.
+
+
+ENDFUNCTION.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

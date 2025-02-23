@@ -1,0 +1,71 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16014
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16014 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* Internal table and work area
+**********************************************************************
+DATA : gt_sflight TYPE TABLE OF sflight,
+       gs_sflight TYPE sflight.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : scarr, spfli, sflight. " TABLES -> ## #### Work Area## #####.
+
+**********************************************************************
+* Selection screen
+**********************************************************************
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.
+  SELECT-OPTIONS : so_carr FOR scarr-carrid DEFAULT 'LH'
+                               SIGN I OPTION EQ,
+                   so_con  FOR spfli-connid DEFAULT '0400' TO '0800'
+                               SIGN I OPTION BT,
+                   so_fldt FOR sflight-fldate OBLIGATORY.
+
+  SELECTION-SCREEN ULINE.
+
+  SELECT-OPTIONS : so_name  FOR scarr-carrname NO-EXTENSION,
+                   so_name2 FOR scarr-carrname NO INTERVALS,
+                   so_name3 FOR scarr-carrname NO-EXTENSION
+                                               NO INTERVALS.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+**********************************************************************
+* Start of main routine
+**********************************************************************
+*-- Options# Sign# ####.
+*-- Selection Options## ## ### Internal Table### #### ### In## ## ##
+*-- IN #
+
+CLEAR : gs_sflight, gt_sflight.
+SELECT carrid connid fldate seatsmax seatsocc
+  INTO CORRESPONDING FIELDS OF TABLE gt_sflight
+  FROM sflight
+  WHERE carrid IN so_carr
+    AND connid IN so_con
+    AND fldate IN so_fldt.
+
+cl_demo_output=>display( gt_sflight ).
+
+BREAK-POINT.
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* SO_CARR D       .
+* SO_CON D       .
+* SO_FLDT D       .
+* SO_NAME         Airline name
+* SO_NAME2         Airline name
+* SO_NAME3         Airline name
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

@@ -1,0 +1,53 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16028
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16028 MESSAGE-ID zcl1msg16.
+
+INCLUDE zcl1r16028top                           .  " Global Data
+INCLUDE zcl1r16028s01                           .  " Selection screen
+INCLUDE zcl1r16028f01                           .  " FORM-Routines
+
+**********************************************************************
+* INITIALIZATION
+**********************************************************************
+INITIALIZATION.
+  pa_ktopl = 'INT'.
+  pa_hkont = '100000'.
+  pa_langu = sy-langu.
+
+  pa_matnr = 'C7HSA'.
+  pa_stlan = '1'.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  PERFORM set_hkont_text.
+  PERFORM set_maktx.
+  PERFORM set_antxt.
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+* T02 Sub condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_HKONT D       .
+* PA_KTOPL D       .
+* PA_LANGU D       .
+* PA_MATNR D       .
+* PA_STLAN D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*000   &
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

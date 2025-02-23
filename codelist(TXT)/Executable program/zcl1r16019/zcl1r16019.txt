@@ -1,0 +1,107 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16019
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16019 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* Internal table & Work area
+**********************************************************************
+TABLES : stravelag.
+
+DATA : BEGIN OF gs_data,
+         agencynum TYPE stravelag-agencynum,
+         name      TYPE stravelag-name,
+         street    TYPE stravelag-street,
+         postcode  TYPE stravelag-postcode,
+         contact   TYPE sbuspart-contact,
+         contphono TYPE sbuspart-contphono,
+         buspatyp  TYPE sbuspart-buspatyp,
+       END OF gs_data,
+       gt_data LIKE TABLE OF gs_data.
+
+**********************************************************************
+* Common variables
+**********************************************************************
+DATA : gv_tabix TYPE sy-tabix.
+
+**********************************************************************
+* Selection screen
+**********************************************************************
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.
+  SELECT-OPTIONS : so_agenc FOR stravelag-agencynum.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+**********************************************************************
+* INITIALIZATION
+**********************************************************************
+INITIALIZATION.
+  CLEAR so_agenc.
+  REFRESH so_agenc.
+
+  so_agenc-sign = 'I'.
+  so_agenc-option = 'BT'.
+  so_agenc-low = '100'.
+  so_agenc-high = '1500'.
+  APPEND so_agenc.
+
+  CLEAR so_agenc.
+
+  so_agenc-sign = 'I'.
+  so_agenc-option = 'EQ'.
+  so_agenc-low = '1'.
+  APPEND so_agenc.
+
+  CLEAR so_agenc.
+
+  so_agenc-sign = 'I'.
+  so_agenc-option = 'EQ'.
+  so_agenc-low = '5'.
+  APPEND so_agenc.
+
+  CLEAR so_agenc.
+
+  so_agenc-sign = 'I'.
+  so_agenc-option = 'EQ'.
+  so_agenc-low = '7'.
+  APPEND so_agenc.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  SELECT agencynum name street postcode contact contphono
+    INTO CORRESPONDING FIELDS OF TABLE gt_data
+    FROM stravelag AS a
+      INNER JOIN sbuspart AS b
+              ON a~agencynum = b~buspartnum
+    WHERE agencynum IN so_agenc.
+*      AND langu = sy-langu.
+
+  CLEAR : gs_data, gv_tabix.
+  LOOP AT gt_data INTO gs_data.
+    gv_tabix = sy-tabix.
+
+    IF ( gs_data-contphono IS NOT INITIAL ).
+      gs_data-buspatyp = 'FC'.
+    ELSE.
+      gs_data-buspatyp = 'TA'.
+    ENDIF.
+
+    MODIFY gt_data FROM gs_data INDEX gv_tabix TRANSPORTING buspatyp.
+  ENDLOOP.
+
+  cl_demo_output=>display( gt_data ).
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* SO_AGENC D       .
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

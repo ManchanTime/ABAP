@@ -1,0 +1,62 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16048C01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Class LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS lcl_event_handler DEFINITION FINAL.
+
+  PUBLIC SECTION.
+    CLASS-METHODS : modify_value FOR EVENT data_changed_finished
+                                 OF cl_gui_alv_grid
+                                 IMPORTING e_modified et_good_cells,
+
+                    edit_toolbar FOR EVENT toolbar
+                                 OF cl_gui_alv_grid
+                                 IMPORTING e_interactive e_object,
+
+                    user_command FOR EVENT user_command
+                                 OF cl_gui_alv_grid
+                                 IMPORTING e_ucomm,
+
+                    double_click FOR EVENT double_click
+                                 OF cl_gui_alv_grid
+                                 IMPORTING e_column e_row es_row_no,
+
+                    hotspot_click FOR EVENT hotspot_click
+                                  OF cl_gui_alv_grid
+                                  IMPORTING e_row_id e_column_id.
+
+ENDCLASS.
+*&---------------------------------------------------------------------*
+*& Class (Implementation) LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS lcl_event_handler IMPLEMENTATION.
+
+  METHOD modify_value.
+    PERFORM handle_modify_value USING e_modified et_good_cells.
+  ENDMETHOD.
+
+  METHOD edit_Toolbar.
+    PERFORM handle_edit_toolbar USING e_interactive e_object.
+  ENDMETHOD.
+
+  METHOD user_command.
+    PERFORM handle_user_command USING e_ucomm.
+  ENDMETHOD.
+
+  METHOD double_click.
+    PERFORM handle_double_click USING e_row e_column.
+  ENDMETHOD.
+
+  METHOD hotspot_click.
+    PERFORM handle_hotspot_click USING e_row_id e_column_id.
+  ENDMETHOD.
+ENDCLASS.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

@@ -1,0 +1,214 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16005
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16005.
+
+**********************************************************************
+* Internal table and work area
+**********************************************************************
+DATA : BEGIN OF gs_flight,
+         connid   TYPE sflight-connid,
+         fldate   TYPE sflight-fldate,
+         seatsocc TYPE sflight-seatsocc,
+       END OF gs_flight,
+       gt_flight LIKE TABLE OF gs_flight.
+
+DATA : BEGIN OF gs_unique,
+         carrid TYPE sflight-carrid,
+         connid TYPE sflight-connid,
+       END OF gs_unique,
+       gt_unique LIKE TABLE OF gs_unique.
+
+DATA : BEGIN OF gs_airline,
+         carrid   TYPE scarr-carrid,
+         carrname TYPE scarr-carrname,
+         currcode TYPE scarr-currcode,
+       END OF gs_airline,
+       gt_airline LIKE TABLE OF gs_airline.
+
+DATA : gt_scarr TYPE TABLE OF scarr,
+       gs_scarr TYPE scarr.
+
+**********************************************************************
+* Get data
+**********************************************************************
+CLEAR : gt_flight, gs_flight.
+SELECT connid fldate seatsocc
+  INTO TABLE gt_flight
+  FROM sflight
+  WHERE seatsocc > 200
+  ORDER BY connid DESCENDING seatsocc ASCENDING.
+
+*cl_demo_output=>display( gt_flight ).
+
+**********************************************************************
+* SCARR Table### CARRID, CARRNAME, CURRCODE #### ####.
+* ## : currcode# 'EUR'# #### #### ####.
+CLEAR : gt_airline, gs_airline.
+SELECT carrid carrname currcode
+  INTO TABLE gt_airline
+  FROM scarr
+  WHERE currcode = 'EUR'.
+
+*cl_demo_output=>display( gt_airline ).
+
+**********************************************************************
+* SFLIGHT Table### CARRID, CONNID# Unique## ####.
+* ## : SEATSOCC# 200## # #### #### ##.
+**********************************************************************
+CLEAR : gt_unique, gs_unique.
+SELECT DISTINCT carrid connid
+  INTO TABLE gt_unique
+  FROM sflight
+  WHERE seatsocc = 200.
+
+*cl_demo_output=>display( gt_unique ).
+
+**********************************************************************
+* ORM ### ### ## ##
+**********************************************************************
+SELECT carrid carrname currcode
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr
+  FROM scarr.
+
+SELECT SINGLE carrid carrname currcode
+  INTO CORRESPONDING FIELDS OF gs_scarr
+  FROM scarr.
+
+SELECT carrid carrname currcode
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr
+  FROM scarr
+  WHERE carrid LIKE '%A%'.
+
+*cl_demo_output=>display( gt_scarr ).
+
+**********************************************************************
+* Practice
+**********************************************************************
+*-- 1. ####(MWSKZ)# Text table### #### ##(TEXT1)# ### Internal Table# ####.
+*         TOO7S ## ## : SPRAS EQ sy-langu, KALSM EQ 'TAXKR'
+*DATA : BEGIN OF gs_t007s,
+*         spras TYPE t007s-spras,
+*         kalsm TYPE t007s-kalsm,
+*         mwskz TYPE t007s-mwskz,
+*         text1 TYPE t007s-text1,
+*       END OF gs_t007s,
+*       gt_t007s LIKE TABLE OF gs_t007s.
+
+DATA : gt_t007s TYPE TABLE OF t007s.
+
+CLEAR : gt_t007s.
+
+SELECT spras kalsm mwskz text1
+  INTO CORRESPONDING FIELDS OF TABLE gt_t007s
+  FROM t007s
+  WHERE spras EQ sy-langu AND kalsm EQ 'TAXKR'.
+
+*cl_demo_output=>display( gt_t007s ).
+
+*-- 2. #####(KOSTL)# Text table### ## #### ### Internal Table# ####.
+*        CSKT #### : SPRAS EQ sy-langu KOKRS EQ '0001'
+DATA : gt_cskt TYPE TABLE OF cskt.
+
+CLEAR gt_cskt.
+
+SELECT spras kokrs kostl datbi ktext ltext mctxt
+  INTO CORRESPONDING FIELDS OF TABLE gt_cskt
+  FROM cskt
+  WHERE spras EQ sy-langu AND kokrs EQ '0001'.
+
+*cl_demo_output=>display( gt_cskt ).
+
+*-- 3.SCARR# ### Layout# Internal Table# #### Table# SELECT ## Internal Table# #### ####.
+*      SELECT ## : CARRID 'AA'# 'DL' #### ## ###
+DATA : gt_scarr2 TYPE TABLE OF scarr.
+
+CLEAR gt_scarr2.
+
+SELECT carrid carrname currcode url
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr2
+  FROM scarr
+  WHERE carrid BETWEEN 'AA' AND 'DL'.
+
+*cl_demo_output=>display( gt_scarr2 ).
+
+*-- 3-1. CARRID# 'AA', 'AB', 'CA', 'LH' #### ####.
+CLEAR gt_scarr2.
+
+SELECT carrid carrname currcode url
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr2
+  FROM scarr
+  WHERE carrid IN ('AA', 'AB', 'CA', 'LH').
+
+*cl_demo_output=>display( gt_scarr2 ).
+
+DATA : BEGIN OF gs_sflight2,
+         carrid TYPE sflight-carrid,
+         connid TYPE sflight-connid,
+         sum    TYPE i,
+       END OF gs_sflight2,
+       gt_sflight2 LIKE TABLE OF gs_sflight2.
+CLEAR gt_sflight2.
+SELECT carrid connid SUM( seatsocc ) AS sum
+  FROM sflight
+  INTO CORRESPONDING FIELDS OF TABLE gt_sflight2
+  GROUP BY carrid connid
+  ORDER BY carrid ASCENDING connid ASCENDING.
+
+*cl_demo_output=>display( gt_sflight2 ).
+
+*-- 4.SFLIGHT Table## ### ### Select ## Internal Table# ####.
+*     CARRID, CONNID, FLDATE, PRICE, CURRENY, PLANETYPE, SEATSMAX, SEATSOCC, PAYMENTSUM
+*     SELECT ## : CARRID# 'AZ', 'QF' AND PLANETYPE# 'A%'# ###
+DATA : BEGIN OF gs_sflight3,
+         carrid     TYPE sflight-carrid,
+         connid     TYPE sflight-connid,
+         fldate     TYPE sflight-fldate,
+         price      TYPE sflight-price,
+         currency   TYPE sflight-currency,
+         planetype  TYPE sflight-planetype,
+         seatsmax   TYPE sflight-seatsmax,
+         seatsocc   TYPE sflight-seatsocc,
+         paymentsum TYPE sflight-paymentsum,
+       END OF gs_sflight3,
+       gt_sflight3 LIKE TABLE OF gs_sflight3.
+
+CLEAR : gt_sflight3, gs_sflight3.
+
+SELECT carrid connid fldate price currency planetype seatsmax seatsocc paymentsum
+  INTO CORRESPONDING FIELDS OF TABLE gt_sflight3
+  FROM sflight
+  WHERE carrid IN ('AZ', 'QF') AND planetype LIKE 'A%'.
+
+*cl_demo_output=>display( gt_sflight3 ).
+
+*-- 5. SBOOK Table## ### ### SELECT ## Internal Table# ####.
+*       CARRID, CONNID, FLDATE, BOOKID, CUSTOMID, CUSTTYPE, SMOKER, INVOICE, FORCURAM
+*       SELECT ## : FLDATE# '2020.10.01' ~ '2020.12.31' ### ### AND FORCURAM >= 800
+DATA : BEGIN OF gs_sbook,
+         carrid   TYPE sbook-carrid,
+         connid   TYPE sbook-connid,
+         fldate   TYPE sbook-fldate,
+         customid TYPE sbook-customid,
+         custtype TYPE sbook-custtype,
+         smoker   TYPE sbook-smoker,
+         invoice  TYPE sbook-invoice,
+         forcuram TYPE sbook-forcuram,
+       END OF gs_sbook,
+       gt_sbook LIKE TABLE OF gs_sbook.
+
+CLEAR : gt_sbook, gs_sbook.
+
+SELECT carrid connid fldate customid custtype smoker invoice forcuram
+  INTO CORRESPONDING FIELDS OF TABLE gt_sbook
+  FROM sbook
+  WHERE fldate BETWEEN '20241001' AND '20241231' AND forcuram GT 800.
+
+*cl_demo_output=>display( gt_sbook ).
+
+*-- 6. Self Join
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

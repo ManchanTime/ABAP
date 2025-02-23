@@ -1,0 +1,12 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16034S01
+*&---------------------------------------------------------------------*
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.
+  PARAMETERS : pa_carr TYPE spfli-carrid OBLIGATORY.
+
+  SELECT-OPTIONS : so_conn FOR spfli-connid,
+                   so_fldat FOR sflight-fldate.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

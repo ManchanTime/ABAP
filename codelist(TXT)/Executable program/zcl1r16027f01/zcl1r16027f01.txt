@@ -1,0 +1,172 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16027F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_data .
+
+*-- Set Parameters
+  pa_bukrs = '0001'.
+  pa_gjahr = '2025'.
+  pa_mode2 = 'X'.
+
+*-- Set Select-Options
+  so_budat-sign   = 'I'.
+  so_budat-option = 'BT'.
+  so_budat-low    = '20250101'.
+  so_budat-high   = '20250131'.
+  APPEND so_budat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_screen_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_screen_data .
+  LOOP AT SCREEN.
+    IF screen-name = 'PA_BUKRS'.
+      screen-input = 0.
+
+    ELSEIF screen-name = 'PA_GJAHR'.
+      screen-input = 0.
+
+    ELSEIF screen-group1 = 'HKO'.
+      CASE 'X'.
+        WHEN pa_mode1.
+          screen-input = 0.
+        WHEN pa_mode2.
+          screen-input = 1.
+      ENDCASE.
+    ENDIF.
+
+    MODIFY SCREEN.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_main_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_main_data .
+
+  SELECT a~bukrs a~belnr a~gjahr buzei bktxt
+         hkont gsber shkzg sgtxt
+    INTO CORRESPONDING FIELDS OF TABLE gt_data
+    FROM bkpf AS a INNER JOIN bseg AS b
+       ON a~bukrs = b~bukrs
+      AND a~belnr = b~belnr
+      AND a~gjahr = b~gjahr
+    WHERE a~bukrs = pa_bukrs
+      AND a~gjahr = pa_gjahr
+      AND budat IN so_budat
+      AND hkont IN so_hkont.
+
+  IF gt_data IS INITIAL.
+    MESSAGE s005 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_text_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_text_data.
+
+  SELECT saknr txt50
+    INTO CORRESPONDING FIELDS OF TABLE gt_hkont
+    FROM skat
+    WHERE ktopl = 'INT'
+      AND spras = sy-langu.
+
+  SELECT gsber gtext
+    INTO CORRESPONDING FIELDS OF TABLE gt_gsber
+    FROM tgsbt
+    WHERE spras = sy-langu.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_text_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_text_data.
+
+  DATA : lv_tabix  TYPE sy-tabix.
+
+**********************************************************************
+* Text table ## Master table# ## ### ### ## ##!!
+* Sort# ##
+**********************************************************************
+  SORT : gt_gsber BY gsber ASCENDING,
+         gt_hkont BY saknr ASCENDING.
+
+  LOOP AT gt_data INTO gs_data.
+
+    lv_tabix = sy-tabix.
+
+    CLEAR : gs_hkont.
+    READ TABLE gt_hkont INTO gs_hkont
+                        WITH KEY saknr = gs_data-hkont BINARY SEARCH.
+    IF sy-subrc = 0.
+      gs_data-txt50 = gs_hkont-txt50.
+    ENDIF.
+
+    CLEAR : gs_gsber.
+    READ TABLE gt_gsber INTO gs_gsber
+                        WITH KEY gsber = gs_data-gsber BINARY SEARCH.
+    IF sy-subrc = 0.
+      gs_data-gtext = gs_gsber-gtext.
+    ENDIF.
+
+    MODIFY gt_data FROM gs_data INDEX lv_tabix
+                                TRANSPORTING txt50 gtext.
+
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_data .
+
+  DATA : lv_dbcnt TYPE sy-dbcnt.
+
+  lv_dbcnt = lines( gt_data ).
+  IF lv_dbcnt > 0.
+    MESSAGE s008 WITH lv_dbcnt.
+    cl_demo_output=>display( gt_data ).
+  ELSE.
+    MESSAGE s005 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

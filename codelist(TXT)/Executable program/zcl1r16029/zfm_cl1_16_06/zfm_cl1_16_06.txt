@@ -1,0 +1,48 @@
+FUNCTION zfm_cl1_16_06.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IV_CARRID) TYPE  S_CARR_ID
+*"  EXPORTING
+*"     REFERENCE(ES_SPFLI) TYPE  SPFLI
+*"     REFERENCE(EV_MESSAGE) TYPE  CHAR50
+*"  TABLES
+*"      ET_SFLIGHT STRUCTURE  SFLIGHT
+*"      ET_AIRLINE STRUCTURE  ZSCL1_AIR_16
+*"----------------------------------------------------------------------
+
+  DATA : lv_dbcnt TYPE sy-dbcnt.
+
+*-- Get flight schedule
+  SELECT SINGLE carrid connid countryfr cityfrom countryto cityto
+    INTO CORRESPONDING FIELDS OF es_spfli
+    FROM spfli
+    WHERE carrid = iv_carrid.
+
+  IF es_spfli IS INITIAL.
+    ev_message = TEXT-e05.
+    EXIT.
+  ENDIF.
+
+*-- Get flight data
+  SELECT carrid connid fldate seatsmax seatsocc
+    INTO CORRESPONDING FIELDS OF TABLE et_sflight
+    FROM sflight
+    WHERE carrid = iv_carrid.
+
+  IF lv_dbcnt = 0.
+    ev_message = TEXT-e05.
+  ELSE.
+    ev_message = lv_dbcnt.
+  ENDIF.
+  ev_message = lines( et_sflight ).
+
+*-- Call subroutine at function module
+*  REFRESH et_airline.
+  PERFORM get_airline_name TABLES et_airline
+                            USING iv_carrid.
+
+ENDFUNCTION.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

@@ -1,0 +1,125 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16039F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_flight_schedule
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> IV_CARRID
+*&      <-- EV_SUBRC
+*&---------------------------------------------------------------------*
+FORM get_flight_schedule  USING    pv_carrid
+                          CHANGING pv_subrc.
+
+  CLEAR gt_spfli.
+  SELECT carrid connid cityfrom cityto
+    INTO CORRESPONDING FIELDS OF TABLE gt_spfli
+    FROM spfli
+    WHERE carrid = pv_carrid.
+
+  IF gt_spfli IS INITIAL.
+    pv_subrc = 'F'.
+  ELSE.
+    pv_subrc = 'S'.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  pa_bukrs = '0001'.
+  pa_gjahr = sy-datum(4).
+
+  pa_carr = 'LH'.
+
+  so_conn-sign   = 'I'.
+  so_conn-option = 'BT'.
+  so_conn-low    = '0400'.
+  so_conn-high   = '1000'.
+  APPEND so_conn.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_local_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_schedule_data .
+
+  DATA : lv_subrc(1).
+
+  IF go_event IS NOT BOUND.
+    CREATE OBJECT go_event.
+  ENDIF.
+
+*-- Call local method : CASE 1
+*  CALL METHOD go_event->get_schedule
+*    EXPORTING
+*      iv_carrid = pa_carr
+*    IMPORTING
+*      ev_subrc  = lv_subrc.
+
+*-- Call local method : CASE 2
+  go_event->get_schedule( EXPORTING iv_carrid = pa_carr
+                          IMPORTING ev_subrc = lv_subrc ).
+
+  FREE go_event.
+
+  cl_demo_output=>display( gt_spfli ).
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_single_recode
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> IV_CARRID
+*&      <-- EV_SUBRC
+*&---------------------------------------------------------------------*
+FORM get_single_recode  USING    pv_carrid
+                        CHANGING pv_subrc.
+
+  CLEAR gs_spfli.
+  SELECT SINGLE carrid connid countryfr cityfrom countryto cityto
+    INTO CORRESPONDING FIELDS OF gs_spfli
+    FROM spfli
+    WHERE carrid = pv_carrid.
+
+  IF gs_spfli IS INITIAL.
+    pv_subrc = 'F'.
+  ELSE.
+    pv_subrc = 'S'.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_single_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_single_data .
+
+  DATA lv_subrc(1).
+
+  lcl_event_handler=>get_single_line( EXPORTING
+                                        iv_carrid = pa_carr
+                                      IMPORTING
+                                        ev_subrc  = lv_subrc ).
+  cl_demo_output=>display( gs_spfli ).
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

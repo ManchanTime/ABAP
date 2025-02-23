@@ -1,0 +1,110 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16013
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16013 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : gt_scarr TYPE TABLE OF scarr,
+       gs_scarr TYPE scarr.
+
+**********************************************************************
+* Selection screen
+**********************************************************************
+
+*-- ## Text Symbole -> static String ##
+
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.          " title
+  PARAMETERS : pa_carr      TYPE scarr-carrid DEFAULT 'LH' OBLIGATORY,  " ## 8## ### ##
+               pa_name      TYPE scarr-carrname,
+               pa_email(50) LOWER CASE,
+               pa_part      TYPE ztc1part_16_01-part_code AS LISTBOX
+                                                          VISIBLE LENGTH 10.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+SELECTION-SCREEN BEGIN OF BLOCK pa2 WITH FRAME TITLE TEXT-t02.
+  PARAMETERS : pa_chk1 AS CHECKBOX,
+               pa_chk2 AS CHECKBOX DEFAULT 'X'.
+  SELECTION-SCREEN ULINE. " SKIP -> ###, ULINE -> ###
+  PARAMETERS : pa_rb1 RADIOBUTTON GROUP rb1,
+               pa_rb2 RADIOBUTTON GROUP rb1 DEFAULT 'X',
+               pa_rb3 RADIOBUTTON GROUP rb1.
+  SELECTION-SCREEN SKIP.
+  SELECTION-SCREEN BEGIN OF BLOCK pa3 WITH FRAME TITLE TEXT-t03.
+    PARAMETERS : pa_btn1 RADIOBUTTON GROUP rb2,
+                 pa_btn2 RADIOBUTTON GROUP rb2.
+  SELECTION-SCREEN END OF BLOCK pa3.
+SELECTION-SCREEN END OF BLOCK pa2.
+
+*-- Practice
+SELECTION-SCREEN BEGIN OF BLOCK pa4 WITH FRAME TITLE TEXT-t01.
+  PARAMETERS : pa_fy TYPE bkpf-gjahr DEFAULT '2025' OBLIGATORY,     " Fiscal Year
+               pa_pp TYPE bkpf-monat DEFAULT 1.                     " Posting Period
+  SELECTION-SCREEN ULINE.
+  SELECTION-SCREEN BEGIN OF BLOCK pa5 WITH FRAME TITLE TEXT-t02.
+    PARAMETERS : pa_cb1 AS CHECKBOX DEFAULT 'X',
+                 pa_ch2 AS CHECKBOX,
+                 pa_ch3 AS CHECKBOX.
+    SELECTION-SCREEN SKIP.
+    SELECTION-SCREEN BEGIN OF BLOCK pa6 WITH FRAME TITLE TEXT-t03.
+      PARAMETERS : pa_rbt1 RADIOBUTTON GROUP rb3,
+                   pa_rbt2 RADIOBUTTON GROUP rb3,
+                   pa_rbt3 RADIOBUTTON GROUP rb3 DEFAULT 'X',
+                   pa_rbt4 RADIOBUTTON GROUP rb3,
+                   pa_rbt5 RADIOBUTTON GROUP rb3.
+    SELECTION-SCREEN END OF BLOCK pa6.
+  SELECTION-SCREEN END OF BLOCK pa5.
+SELECTION-SCREEN END OF BLOCK pa4.
+
+**********************************************************************
+* Start of main routine
+**********************************************************************
+DATA : gv_cond(30) . " LIKE ## #### ## ## ### '%####%'## ### Concat ##
+CLEAR gv_cond.       " ### ###
+
+CONCATENATE '%' pa_name '%' INTO gv_cond.
+SELECT carrid carrname currcode url
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr
+  FROM scarr
+  WHERE carrid = pa_carr
+    AND carrname LIKE gv_cond.
+
+cl_demo_output=>write( gv_cond ).
+cl_demo_output=>display( gt_scarr ).
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+* T02 Multi choice
+* T03 Sub choice
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_BTN1         Korean cousine
+* PA_BTN2         American cousine
+* PA_CARR D       .
+* PA_CB1         Checkbox practice 1
+* PA_CH2         Checkbox practice 2
+* PA_CH3         Checkbox practice 3
+* PA_CHK1         Checkbox 1
+* PA_CHK2         Checkbox 2
+* PA_EMAIL         Email
+* PA_FY D       .
+* PA_NAME         Airline name
+* PA_PART D       .
+* PA_PP D       .
+* PA_RB1         Food 1
+* PA_RB2         Food 2
+* PA_RB3         Food 3
+* PA_RBT1         Radio practice 1
+* PA_RBT2         Radio practice 2
+* PA_RBT3         Radio practice 3
+* PA_RBT4         Radio practice 4
+* PA_RBT5         Radio practice 5
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

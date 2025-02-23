@@ -1,0 +1,846 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16048F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+  pa_bukrs = '0001'.
+  pa_gjahr = '2025'.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_value_condition
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_value_condition .
+
+  LOOP AT SCREEN.
+    IF screen-group1 = 'LOC'.
+      screen-input = 0.
+    ENDIF.
+
+    MODIFY SCREEN.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_base_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_base_data .
+
+  CLEAR gt_body.
+  SELECT bukrs belnr gjahr bktxt blart process zcheck dmbtr waers
+         erdat ernam erzet aedat aenam aezet
+    INTO CORRESPONDING FIELDS OF TABLE gt_body
+    FROM ztcl116_01
+    WHERE bukrs = pa_bukrs
+      AND gjahr = pa_gjahr.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_text_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_text_data .
+
+  CLEAR gt_text.
+  SELECT saknr txt50
+    INTO CORRESPONDING FIELDS OF TABLE gt_text
+    FROM skat
+    WHERE spras = sy-langu
+      AND ktopl = 'INT'.
+
+  SORT gt_text BY saknr ASCENDING.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_screen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_screen_input .
+
+  DATA : lv_tabix TYPE sy-tabix,
+         ls_styl  TYPE lvc_s_styl.
+
+  CLEAR : ls_styl.
+  LOOP AT gt_body INTO gs_body.
+
+    lv_tabix = sy-tabix.
+
+    CLEAR gs_body-cell_tab.
+    PERFORM set_input_setting.
+
+    MODIFY gt_body FROM gs_body INDEX lv_tabix TRANSPORTING cell_tab.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_input_enabled
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> CL_GUI_ALV_GRID=>MC_STYLE_ENAB
+*&      <-- LS_STYL
+*&---------------------------------------------------------------------*
+FORM set_input_enabled USING pv_field pv_mode
+                       CHANGING ps_styl TYPE lvc_s_styl.
+
+  ps_styl-fieldname = pv_field.
+  ps_styl-style     = pv_mode.
+  INSERT ps_styl INTO TABLE gs_body-cell_tab.
+  CLEAR ps_styl.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_screen_0100
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_screen_0100 .
+
+  IF go_container IS NOT BOUND.
+
+    CLEAR : gt_fcat, gs_fcat.
+    PERFORM set_fcat USING : 'X' 'BUKRS'   'ZTCL116_01' 'C' ' ',
+                             'X' 'BELNR'   'ZTCL116_01' 'C' ' ',
+                             'X' 'GJAHR'   'ZTCL116_01' 'C' ' ',
+                             ' ' 'BKTXT'   'ZTCL116_01' ' ' 'X',
+                             ' ' 'BLART'   'ZTCL116_01' 'C' ' ',
+                             ' ' 'PROCESS' 'ZTCL116_01' 'C' ' ',
+                             ' ' 'ZCHECK'  'ZTCL116_01' 'C' ' ',
+                             ' ' 'DMBTR'   'ZTCL116_01' ' ' ' ',
+                             ' ' 'WAERS'   'ZTCL116_01' 'C' ' '.
+    PERFORM set_layout.
+    PERFORM exclude_toolbar.
+    PERFORM create_object.
+
+    SET HANDLER : lcl_event_handler=>modify_value FOR go_alv_grid,
+                  lcl_event_handler=>edit_toolbar FOR go_alv_grid,
+                  lcl_event_handler=>user_command FOR go_alv_grid,
+                  lcl_event_handler=>double_click FOR go_alv_grid,
+                  lcl_event_handler=>hotspot_click FOR go_alv_grid.
+
+    CALL METHOD go_alv_grid->set_table_for_first_display
+      EXPORTING
+        is_variant           = gs_variant
+        i_save               = 'A'
+        i_default            = 'X'
+        is_layout            = gs_layout
+        it_toolbar_excluding = gt_ui_functions
+      CHANGING
+        it_outtab            = gt_body
+        it_fieldcatalog      = gt_fcat.
+
+    PERFORM register_event.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_fcat
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM set_fcat USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_fcat-key       = pv_key.
+  gs_fcat-fieldname = pv_field.
+  gs_fcat-ref_table = pv_table.
+  gs_fcat-just      = pv_just.
+  gs_fcat-emphasize = pv_emph.
+
+  CASE pv_field.
+    WHEN 'DMBTR'.
+      gs_fcat-cfieldname = 'WAERS'.
+    WHEN 'BELNR'.
+      gs_fcat-hotspot = abap_true.
+  ENDCASE.
+
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_layout
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_layout .
+
+  gs_layout-zebra      = abap_true.
+  gs_layout-cwidth_opt = 'A'.
+  gs_layout-sel_mode   = 'D'.
+  gs_layout-stylefname = 'CELL_TAB'.
+
+  gs_variant-report = sy-repid.
+  gs_variant-handle = 'ALV1'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_object .
+  CREATE OBJECT go_container
+    EXPORTING
+      side      = go_container->dock_at_left
+      extension = 5000.
+
+  CREATE OBJECT go_alv_grid
+    EXPORTING
+      i_parent = go_container.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form exclude_toolbar
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM exclude_toolbar .
+  DATA : ls_ui_functions TYPE ui_func.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_loc_undo.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_loc_copy.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_loc_copy_row.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_loc_cut.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_loc_delete_row.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_loc_insert_row.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_loc_append_row.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_loc_paste.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_loc_paste_new_row.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_refresh.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_auf.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_average.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_print.
+  APPEND ls_ui_functions TO gt_ui_functions.
+  ls_ui_functions = cl_gui_alv_grid=>mc_fc_graph.
+  APPEND ls_ui_functions TO gt_ui_functions.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form register_event
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM register_event .
+
+  go_alv_grid->register_edit_event( go_alv_grid->mc_evt_modified ).
+  go_alv_grid->register_edit_event( go_alv_grid->mc_evt_enter ).
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_modify_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> E_MODIFIED
+*&      --> ET_GOOD_CELLS
+*&---------------------------------------------------------------------*
+FORM handle_modify_value USING pv_modified
+                               pt_good_cells TYPE lvc_t_modi.
+
+  DATA : ls_good_cells TYPE lvc_s_modi,
+         lv_tabix      TYPE sy-tabix.
+
+  CHECK pv_modified IS NOT INITIAL.
+
+  LOOP AT pt_good_cells INTO ls_good_cells.
+
+    lv_tabix = sy-tabix.
+
+    READ TABLE gt_body INTO gs_body INDEX ls_good_cells-row_id.
+
+*-- ## ### ##
+    gs_body-modi_yn = abap_true.
+
+    MODIFY gt_body FROM gs_body INDEX lv_tabix TRANSPORTING modi_yn.
+    PERFORM refresh_table.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_edit_toolbar
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> E_INTERACTIVE
+*&      --> E_OBJECT
+*&---------------------------------------------------------------------*
+FORM handle_edit_toolbar USING pv_interactive
+                               po_object TYPE
+                                         REF TO cl_alv_event_toolbar_set.
+  DATA : lv_mode.
+  IF gv_mode = 0.
+    lv_mode = abap_true.
+  ENDIF.
+
+  CLEAR gs_button.
+  PERFORM make_divide_line CHANGING po_object.
+  PERFORM make_btn USING 'TOGL' icon_toggle_display_change
+                         'DISPLAY <-> CHANGE' ' '
+                   CHANGING po_object.
+
+  PERFORM make_divide_line CHANGING po_object.
+
+  PERFORM make_btn USING 'IROW' icon_insert_row
+                       'DISPLAY <-> CHANGE' lv_mode
+                 CHANGING po_object.
+
+  PERFORM make_btn USING 'DROW' icon_delete_row
+                       'DISPLAY <-> CHANGE' lv_mode
+                 CHANGING po_object.
+
+  PERFORM make_btn USING 'SAVE' icon_system_save
+                       'DISPLAY <-> CHANGE' ' '
+                 CHANGING po_object.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form make_divide_line
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      <-- PO_OBJECT
+*&---------------------------------------------------------------------*
+FORM make_divide_line CHANGING po_object TYPE
+                                         REF TO cl_alv_event_toolbar_set.
+
+  gs_button-butn_type = '3'.
+  APPEND gs_button TO po_object->mt_toolbar.
+  CLEAR gs_button.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form make_btn
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> ICON_SYSTEM_SAVE
+*&      --> P_
+*&      <-- PO_OBJECT
+*&---------------------------------------------------------------------*
+FORM make_btn USING pv_func pv_icon pv_info pv_mode
+              CHANGING po_object TYPE
+                                 REF TO cl_alv_event_toolbar_set.
+
+  gs_button-function  = pv_func.
+  gs_button-icon      = pv_icon.
+  gs_button-quickinfo = pv_info.
+  gs_button-disabled  = pv_mode.
+  APPEND gs_button TO po_object->mt_toolbar.
+  CLEAR gs_button.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_user_command
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> E_UCOMM
+*&---------------------------------------------------------------------*
+FORM handle_user_command USING pv_ucomm.
+
+  CASE pv_ucomm.
+    WHEN 'TOGL'.
+      PERFORM handle_toggle.
+    WHEN 'IROW'.
+      PERFORM insert_row.
+    WHEN 'DROW'.
+      PERFORM delete_row.
+    WHEN 'SAVE'.
+      PERFORM save_data.
+  ENDCASE.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_toggle
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM handle_toggle .
+
+  gv_mode = ( gv_mode + 1 ) MOD 2.
+  go_alv_grid->set_ready_for_input( gv_mode ).
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form insert_row
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM insert_row .
+
+  DATA : ls_style TYPE lvc_s_styl.
+
+  CLEAR : ls_style, gs_body.
+
+  gs_body-bukrs = pa_bukrs.
+  gs_body-gjahr = pa_gjahr.
+
+  PERFORM set_input_enabled USING 'BUKRS' cl_gui_alv_grid=>mc_style_disabled
+                            CHANGING ls_style.
+
+  PERFORM set_input_enabled USING 'GJAHR' cl_gui_alv_grid=>mc_style_disabled
+                            CHANGING ls_style.
+
+  PERFORM set_input_enabled USING ' ' cl_gui_alv_grid=>mc_style_enabled
+                            CHANGING ls_style.
+
+  PERFORM set_input_enabled USING 'BELNR' cl_gui_alv_grid=>mc_style_hotspot_no
+                            CHANGING ls_style.
+
+  APPEND gs_body TO gt_body.
+
+  PERFORM refresh_table.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_input_setting
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_input_setting .
+
+  DATA : ls_styl TYPE lvc_s_styl.
+
+  CLEAR ls_styl.
+
+  PERFORM set_input_enabled USING 'PROCESS'
+                                  cl_gui_alv_grid=>mc_style_enabled
+                            CHANGING ls_styl.
+  PERFORM set_input_enabled USING 'DMBTR'
+                                  cl_gui_alv_grid=>mc_style_enabled
+                            CHANGING ls_styl.
+  PERFORM set_input_enabled USING 'WAERS'
+                                cl_gui_alv_grid=>mc_style_enabled
+                            CHANGING ls_styl.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form refresh_table
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM refresh_table .
+
+  DATA : ls_stable TYPE lvc_s_stbl.
+
+  ls_stable-col = abap_true.
+  ls_stable-row = abap_true.
+
+  CALL METHOD go_alv_grid->refresh_table_display
+    EXPORTING
+      is_stable = ls_stable.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form delete_row
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM delete_row .
+
+  DATA : lv_tabix  TYPE sy-tabix,
+         lt_row_id TYPE lvc_t_roid,
+         ls_row_id TYPE lvc_s_roid.
+
+  CLEAR : gt_body_d, gs_body_d.
+
+  CALL METHOD go_alv_grid->get_selected_rows
+    IMPORTING
+      et_row_no = lt_row_id.
+
+  IF lt_row_id IS INITIAL.
+    MESSAGE s010 DISPLAY LIKE 'E'.
+    EXIT.
+  ENDIF.
+
+  SORT lt_row_id BY row_id DESCENDING.
+  CLEAR : ls_row_id.
+  LOOP AT lt_row_id INTO ls_row_id.
+
+    CLEAR gs_body_d.
+    READ TABLE gt_body INTO gs_body INDEX ls_row_id-row_id.
+    MOVE-CORRESPONDING gs_body TO gs_body_d.
+    APPEND gs_body_d TO gt_body_d.
+    DELETE gt_body INDEX ls_row_id-row_id.
+
+  ENDLOOP.
+
+  PERFORM refresh_table.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form save_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM save_data .
+
+  DATA : lt_save   TYPE TABLE OF ztcl116_01,
+         lv_answer.
+
+*-- ### # ##
+  CALL METHOD go_alv_grid->check_changed_data.
+
+*-- ### # ### ##
+  CLEAR gs_body.
+  READ TABLE gt_body INTO gs_body WITH KEY modi_yn = abap_true.
+  IF ( gt_body_d IS INITIAL ) AND
+     ( sy-subrc <> 0 ).
+    MESSAGE s011 DISPLAY LIKE 'E'.
+    EXIT.
+  ENDIF.
+
+*-- Pop up
+  PERFORM popup_to_confirm CHANGING lv_answer.
+
+*-- ##
+  DELETE ztcl116_01 FROM TABLE gt_body_d.
+
+*-- ## ### ##
+  PERFORM set_date.
+
+*-- ##
+  CLEAR lt_save.
+  MOVE-CORRESPONDING gt_body TO lt_save.
+  MODIFY ztcl116_01 FROM TABLE lt_save.
+
+  IF sy-subrc = 0.
+    MESSAGE s004.
+    COMMIT WORK.
+    PERFORM set_screen_input.
+    PERFORM refresh_table.
+  ELSE.
+    MESSAGE s000 WITH 'ERROR' DISPLAY LIKE 'E'.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_date
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_date .
+
+  DATA : lv_tabix TYPE sy-tabix.
+
+  CLEAR gs_body.
+  LOOP AT gt_body INTO gs_body WHERE modi_yn = abap_true.
+
+    lv_tabix = sy-tabix.
+
+    IF gs_body-erdat IS INITIAL.
+      gs_body-erdat = sy-datum.
+      gs_body-ernam = sy-uname.
+      gs_body-erzet = sy-uzeit.
+    ELSE.
+      gs_body-aedat = sy-datum.
+      gs_body-aenam = sy-uname.
+      gs_body-aezet = sy-uzeit.
+    ENDIF.
+
+    CLEAR gs_body-modi_yn.
+    MODIFY gt_body FROM gs_body INDEX lv_tabix
+                                TRANSPORTING erdat ernam erzet
+                                             aedat aenam aezet modi_yn.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form popup_to_confirm
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      <-- LV_ANSWER
+*&---------------------------------------------------------------------*
+FORM popup_to_confirm CHANGING pv_answer.
+
+  CALL FUNCTION 'POPUP_TO_CONFIRM'
+    EXPORTING
+      text_question         = 'Save Ok?'
+      text_button_1         = 'Yes'
+      icon_button_1         = 'ICON_OKAY'
+      text_button_2         = 'No'
+      icon_button_2         = 'ICON_CANCEL'
+      default_button        = '1'
+      display_cancel_button = 'X'
+    IMPORTING
+      answer                = pv_answer.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_double_click
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> E_ROW
+*&      --> E_COLUMN
+*&---------------------------------------------------------------------*
+FORM handle_double_click USING pv_row
+                               pv_column.
+
+  CLEAR gs_body.
+  READ TABLE gt_body INTO gs_body INDEX pv_row.
+  IF sy-subrc = 0.
+    PERFORM get_bseg_data.
+    PERFORM set_text_data.
+
+    CALL SCREEN 110 STARTING AT 05 05.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_bseg_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> PV_COLUMN
+*&---------------------------------------------------------------------*
+FORM get_bseg_data.
+
+  CLEAR gt_bseg.
+  SELECT bukrs belnr gjahr buzei hkont bschl koart sgtxt dmbtr pswsl
+    INTO CORRESPONDING FIELDS OF TABLE gt_bseg
+    FROM bseg
+    WHERE bukrs = gs_body-bukrs
+      AND belnr = gs_body-belnr
+      AND gjahr = gs_body-gjahr.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_text_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_text_data .
+
+  DATA : lv_tabix TYPE sy-tabix.
+
+  LOOP AT gt_bseg INTO gs_bseg.
+
+    lv_tabix = sy-tabix.
+
+    CLEAR gs_text.
+    READ TABLE gt_text INTO gs_text WITH KEY saknr = gs_bseg-hkont
+                                    BINARY SEARCH.
+    IF sy-subrc = 0.
+      gs_bseg-txt50 = gs_text-txt50.
+      MODIFY gt_bseg FROM gs_bseg INDEX lv_tabix TRANSPORTING txt50.
+    ENDIF.
+
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_screen_0110
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_screen_0110 .
+
+  IF go_pop_cont IS NOT BOUND.
+
+    CLEAR : gt_pfcat, gs_pfcat.
+    PERFORM set_pfcat USING : 'X' 'BUKRS' 'BSEG' 'C' ' ',
+                              'X' 'BELNR' 'BSEG' 'C' ' ',
+                              'X' 'GJAHR' 'BSEG' 'C' ' ',
+                              'X' 'BUZEI' 'BSEG' 'C' ' ',
+                              ' ' 'HKONT' 'BSEG' 'C' ' ',
+                              ' ' 'TXT50' 'BSEG' ' ' 'X',
+                              ' ' 'BSCHL' 'BSEG' 'C' ' ',
+                              ' ' 'KOART' 'BSEG' 'C' ' ',
+                              ' ' 'SGTXT' 'BSEG' ' ' ' ',
+                              ' ' 'DMBTR' 'BSEG' 'C' ' ',
+                              ' ' 'PSWSL' 'BSEG' 'C' ' '.
+    PERFORM set_playout.
+    PERFORM create_pop_object.
+
+    CALL METHOD go_pop_grid->set_table_for_first_display
+      EXPORTING
+        is_variant      = gs_variant
+        i_save          = 'A'
+        i_default       = 'X'
+        is_layout       = gs_layout
+      CHANGING
+        it_outtab       = gt_bseg
+        it_fieldcatalog = gt_pfcat.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_pfcat
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM set_pfcat USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_pfcat-key       = pv_key.
+  gs_pfcat-fieldname = pv_field.
+  gs_pfcat-ref_table = pv_table.
+  gs_pfcat-just      = pv_just.
+  gs_pfcat-emphasize = pv_emph.
+  APPEND gs_pfcat TO gt_pfcat.
+  CLEAR gs_pfcat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_playout
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_playout .
+
+  gs_playout-zebra      = abap_true.
+  gs_playout-cwidth_opt = 'A'.
+  gs_playout-sel_mode   = 'D'.
+
+  gs_variant-report = sy-repid.
+  gs_variant-handle = 'ALV2'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_pop_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_pop_object .
+  CREATE OBJECT go_pop_cont
+    EXPORTING
+      container_name = 'POP_CONT'.
+
+  CREATE OBJECT go_pop_grid
+    EXPORTING
+      i_parent = go_pop_cont.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_hotspot_click
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> E_ROW_ID
+*&      --> E_COLUMN_ID
+*&---------------------------------------------------------------------*
+FORM handle_hotspot_click USING pv_row_id
+                                pv_column_id.
+
+  CLEAR gs_body.
+  READ TABLE gt_body INTO gs_body INDEX pv_row_id.
+
+  CASE pv_column_id.
+    WHEN 'BELNR'.
+
+      SET PARAMETER ID : 'BUK' FIELD gs_body-bukrs,
+                         'BLN' FIELD gs_body-belnr,
+                         'GJR' FIELD gs_body-gjahr.
+      CALL TRANSACTION 'FB03' AND SKIP FIRST SCREEN.
+  ENDCASE.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0100 INPUT.
+
+  CASE gv_okcode.
+    WHEN 'SAVE'.
+      PERFORM save_data.
+  ENDCASE.
+
+ENDMODULE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

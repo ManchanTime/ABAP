@@ -1,0 +1,38 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16034I01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  EXIT  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE exit INPUT.
+
+  CALL METHOD : go_alv_grid->free,
+                go_container->free.
+
+  FREE : go_alv_grid, go_container.
+
+  LEAVE TO SCREEN 0.
+
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0100 INPUT.
+
+  CASE gv_okcode.
+    WHEN 'SAVE'.
+      MESSAGE i000 WITH 'SAVE button'.
+    WHEN 'SHOW'.
+      MESSAGE i000 WITH 'SHOW button'.
+    WHEN 'HOME'.
+      MESSAGE i000 WITH 'Go Home~~~~~~' DISPLAY LIKE 'E'.
+  ENDCASE.
+
+ENDMODULE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

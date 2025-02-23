@@ -1,0 +1,118 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16034F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  pa_carr = 'LH'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_main_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_main_data .
+
+  CLEAR gt_sflight.
+
+  SELECT carrid connid fldate price currency seatsmax seatsocc
+    INTO CORRESPONDING FIELDS OF TABLE gt_sflight
+    FROM sflight
+    WHERE carrid = pa_carr
+      AND connid IN so_conn
+      AND fldate IN so_fldat.
+
+  IF gt_sflight IS INITIAL.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_screen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_screen .
+
+  DATA : ls_variant TYPE disvariant.
+
+  IF go_container IS INITIAL.
+
+    PERFORM create_object.
+    PERFORM set_layout.
+
+    ls_variant-report = sy-repid.
+    ls_variant-handle = 'ALV1'.
+
+    CALL METHOD go_alv_grid->set_table_for_first_display
+      EXPORTING
+        i_structure_name = 'SFLIGHT'
+        is_variant       = ls_variant
+        i_save           = 'A'
+        i_default        = 'X'
+        is_layout        = gs_layout
+      CHANGING
+        it_outtab        = gt_sflight.
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_object .
+
+*-- Custom container
+*  CREATE OBJECT go_container
+*    EXPORTING
+*      container_name = 'MAIN_CONT'.
+
+*-- Docking container
+  CREATE OBJECT go_container
+    EXPORTING
+      side      = go_container->dock_at_left
+      extension = 5000.
+
+  CREATE OBJECT go_alv_grid
+    EXPORTING
+      i_parent = go_container.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_layout
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_layout .
+
+  gs_layout-zebra      = abap_true.
+  gs_layout-cwidth_opt = 'A'.
+  gs_layout-sel_mode   = 'D'.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

@@ -1,0 +1,140 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16029F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_flight_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_flight_data .
+  CALL FUNCTION 'ZFM_CL1_16_05'
+    EXPORTING
+      iv_carrid  = pa_carr
+    IMPORTING
+      es_scarr   = gs_scarr
+      ev_message = gv_message
+    TABLES
+      et_spfli   = gt_spfli.
+
+  IF gt_spfli IS INITIAL.
+    MESSAGE s000 WITH gv_message DISPLAY LIKE 'E'.
+  ELSE.
+    MESSAGE s008 WITH gv_message.
+    cl_demo_output=>display( gt_spfli ).
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_schedule_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_schedule_data .
+
+  SELECT carrid
+    INTO CORRESPONDING FIELDS OF TABLE gt_airline
+    FROM scarr.
+  cl_demo_output=>display( gt_airline ).
+
+  CALL FUNCTION 'ZFM_CL1_16_06'
+    EXPORTING
+      iv_carrid  = pa_carr
+    IMPORTING
+      es_spfli   = gs_spfli
+      ev_message = gv_message
+    TABLES
+      et_sflight = gt_sflight
+      et_airline = gt_airline.
+
+  IF gt_airline IS INITIAL.
+    MESSAGE s000 WITH gv_message DISPLAY LIKE 'E'.
+  ELSE.
+    MESSAGE s008 WITH gv_message.
+    cl_demo_output=>display( gt_sflight ).
+    cl_demo_output=>display( gt_airline ).
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_document_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_document_data .
+
+  CALL FUNCTION 'ZFM_CL1_16_07'
+    EXPORTING
+      iv_bukrs   = pa_bukrs
+      iv_gjahr   = pa_gjahr
+      iv_belnr   = pa_belnr
+    IMPORTING
+      es_bkpf    = gs_bkpf
+      ev_message = gv_message
+    TABLES
+      et_bseg    = gt_bseg.
+
+  IF gt_bseg IS INITIAL.
+    MESSAGE s000 WITH gv_message DISPLAY LIKE 'E'.
+  ELSE.
+    MESSAGE s008 WITH gv_message.
+    cl_demo_output=>display( gt_bseg ).
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_screen_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_screen_data .
+
+  LOOP AT SCREEN.
+
+    IF screen-name = 'PA_CARR'.
+      screen-input = 0.
+    ELSEIF screen-name = 'PA_BUKRS'.
+      screen-input = 0.
+    ELSEIF screen-name = 'PA_GJAHR'.
+      screen-input = 0.
+    ELSEIF screen-name = 'PA_BELNR'.
+      IF pa_edit = 'X'.
+        screen-input = 1.
+      ELSE.
+        screen-input = 0.
+      ENDIF.
+    ENDIF.
+
+    MODIFY SCREEN.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_init_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_data .
+  pa_carr  = 'LH'.
+  pa_bukrs = '0001'.
+  pa_gjahr = '2025'.
+  pa_edit  = 'X'.
+  pa_belnr = '0010000001'.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

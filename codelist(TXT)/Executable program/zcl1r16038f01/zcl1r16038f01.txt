@@ -1,0 +1,203 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16038F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_base_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_base_data .
+
+  CLEAR gt_body.
+
+  SELECT a~carrid a~connid a~fldate bookid currency planetype
+         customid custtype class agencynum
+    INTO CORRESPONDING FIELDS OF TABLE gt_body
+    FROM sflight AS a INNER JOIN sbook AS b
+      ON a~carrid = b~carrid
+     AND a~connid = b~connid
+     AND a~fldate = b~fldate
+    WHERE a~carrid = pa_carr
+      AND a~connid IN so_conn
+      AND planetype = pa_type
+      AND bookid IN so_book.
+
+  IF gt_body IS INITIAL.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_display_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_display_data .
+
+  DATA : lv_dbcnt TYPE sy-dbcnt.
+
+  CLEAR : gs_body, gs_display, gt_display.
+
+  LOOP AT gt_body INTO gs_body WHERE custtype = 'B'.
+
+*    PERFORM set_gs_display USING gs_body.    " Subroutine## ##
+    MOVE-CORRESPONDING gs_body TO gs_display. " # ### ###!!!
+
+    APPEND gs_display TO gt_display.
+    CLEAR gs_display.
+  ENDLOOP.
+
+  SORT gt_display BY carrid connid fldate ASCENDING.
+  DELETE ADJACENT DUPLICATES FROM gt_display
+                             COMPARING carrid connid fldate.
+
+  lv_dbcnt = lines( gt_display ).
+  MESSAGE s008 WITH lv_dbcnt.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_screen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_screen .
+
+  DATA : ls_variant TYPE disvariant.
+
+  IF go_container IS NOT BOUND.
+
+    CLEAR : gs_fcat, gt_fcat.
+
+    PERFORM create_object.
+    PERFORM set_layout.
+    PERFORM set_fcat USING : 'X' 'CARRID'    'SFLIGHT' 'C' ' ',
+                             'X' 'CONNID'    'SFLIGHT' 'C' ' ',
+                             'X' 'FLDATE'    'SFLIGHT' 'C' ' ',
+                             'X' 'BOOKID'    'SBOOK'   ' ' ' ',
+                             ' ' 'CUSTOMID'  'SBOOK'   ' ' ' ',
+                             ' ' 'CUSTTYPE'  'SBOOK'   'C' 'X',
+                             ' ' 'AGENCYNUM' 'SBOOK'   ' ' ' '.
+
+    ls_variant-report = sy-repid.
+    ls_variant-handle = 'ALV1'.
+
+    CALL METHOD go_alv_grid->set_table_for_first_display
+      EXPORTING
+        is_variant      = ls_variant
+        i_save          = 'A'
+        i_default       = 'X'
+        is_layout       = gs_layout
+      CHANGING
+        it_outtab       = gt_display
+        it_fieldcatalog = gt_fcat.
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_layout
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_layout .
+
+  gs_layout-zebra      = abap_true.
+  gs_layout-cwidth_opt = 'A'.
+  gs_layout-sel_mode   = 'D'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_object .
+
+  CREATE OBJECT go_container
+    EXPORTING
+      side      = go_container->dock_at_left
+      extension = 5000.
+
+  CREATE OBJECT go_alv_grid
+    EXPORTING
+      i_parent = go_container.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_fcat
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM set_fcat  USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_fcat-key       = pv_key.
+  gs_fcat-fieldname = pv_field.
+  gs_fcat-ref_table = pv_table.
+  gs_fcat-just      = pv_just.
+  gs_fcat-emphasize = pv_emph.
+  APPEND gs_fcat TO gt_fcat.
+
+  CLEAR gs_fcat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  pa_carr = 'LH'.
+  pa_type = 'A340-600'.
+
+  so_conn-sign    = 'I'.
+  so_conn-option  = 'EQ'.
+  so_conn-low     = '400'.
+  so_conn-high    = ''.
+  APPEND so_conn.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_gs_display
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> GS_BODY
+*&---------------------------------------------------------------------*
+FORM set_gs_display USING ps_body LIKE gs_body.
+  CLEAR gs_display.
+  gs_display-carrid    = ps_body-carrid.
+  gs_display-connid    = ps_body-connid.
+  gs_display-fldate    = ps_body-fldate.
+  gs_display-bookid    = ps_body-bookid.
+  gs_display-customid  = ps_body-customid.
+  gs_display-custtype  = ps_body-custtype.
+  gs_display-agencynum = ps_body-agencynum.
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

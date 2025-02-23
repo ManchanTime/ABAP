@@ -1,0 +1,42 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16017TOP
+*&---------------------------------------------------------------------*
+
+**********************************************************************
+* Internal table & Work area
+**********************************************************************
+TABLES : ztcl1pp_16.
+
+DATA : BEGIN OF gt_ztcl1pp_16 OCCURS 0,
+         bukrs      TYPE ztcl1pp_16-bukrs,
+         gstrp      TYPE ztcl1pp_16-gstrp,
+         matnr      TYPE ztcl1pp_16-matnr,
+         werks      TYPE ztcl1pp_16-werks,
+         name1      TYPE t001w-name1,
+         gamng      TYPE ztcl1pp_16-gamng,
+         gmein      TYPE ztcl1pp_16-gmein,
+         plnum      TYPE ztcl1pp_16-plnum,
+         aufnr      TYPE ztcl1pp_16-aufnr,
+         rueck      TYPE ztcl1pp_16-rueck,
+         remark(50),
+       END OF gt_ztcl1pp_16.
+
+DATA : BEGIN OF gs_t001w,
+         werks TYPE t001w-werks,
+         name1 TYPE t001w-name1,
+       END OF gs_t001w,
+       gt_t001w  LIKE TABLE OF gs_t001w,
+       gt_backup LIKE TABLE OF gs_t001w.
+
+
+**********************************************************************
+* Common variables
+**********************************************************************
+DATA : gv_tabix    TYPE sy-tabix,
+       gv_burks    TYPE t001-bukrs,
+       gv_year(2)  TYPE n,
+       gv_month(2) TYPE n,
+       gv_day(2)   TYPE n.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

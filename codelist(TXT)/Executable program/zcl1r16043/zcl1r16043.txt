@@ -1,0 +1,53 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16043
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zcl1r16043top                           .  " Global Data
+
+INCLUDE zcl1r16043s01                           .  " Seleciton-screen
+INCLUDE zcl1r16043c01                           .  " Class
+INCLUDE zcl1r16043o01                           .  " PBO-Modules
+INCLUDE zcl1r16043i01                           .  " PAI-Modules
+INCLUDE zcl1r16043f01                           .  " FORM-Routines
+
+**********************************************************************
+* INITIALIZATION
+**********************************************************************
+INITIALIZATION.
+  PERFORM set_init_value.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  PERFORM get_base_data.
+  PERFORM set_color_data.
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* TITLE100 --> [C1] ALV ALV ALV
+* TITLE110 --> [C1] Planetype Info
+* TITLE120 --> [C1] Sbook Info
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* SO_CARR D       .
+* SO_CONN D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*009   ### #### ####.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

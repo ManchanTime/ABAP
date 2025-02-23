@@ -1,0 +1,109 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16015
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16015 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* Internal table & Work area
+**********************************************************************
+DATA : BEGIN OF gs_material,
+         matnr TYPE mara-matnr,
+         ersda TYPE mara-ersda,
+         vpsta TYPE mara-vpsta,
+         pstat TYPE mara-pstat,
+         mtart TYPE mara-mtart,
+         mtbez TYPE t134t-mtbez,
+         ntgew TYPE mara-ntgew,
+         gewei TYPE mara-gewei,
+       END OF gs_material,
+       gt_material LIKE TABLE OF gs_material.
+
+DATA : gt_t134t  TYPE TABLE OF t134t,
+       gs_t134t  TYPE t134t,
+       gt_backup LIKE gt_t134t.
+
+**********************************************************************
+* Common variables
+**********************************************************************
+DATA : gv_dbcnt TYPE sy-dbcnt,
+       gv_tabix TYPE sy-tabix.
+
+**********************************************************************
+* Tables
+**********************************************************************
+TABLES : mara.
+
+**********************************************************************
+* Selection screen
+**********************************************************************
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.
+  SELECT-OPTIONS : so_matnr FOR mara-matnr
+                            DEFAULT 'C7HSA' TO 'MEGA_125'
+                            SIGN I OPTION BT NO-EXTENSION.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+**********************************************************************
+* Main Process
+**********************************************************************
+CLEAR : gv_dbcnt, gv_tabix.
+CLEAR : gt_material, gs_material, gt_t134t, gs_t134t, gt_backup.
+
+SELECT matnr ersda vpsta pstat mtart ntgew gewei
+  INTO CORRESPONDING FIELDS OF TABLE gt_material
+  FROM mara
+  WHERE matnr IN so_matnr.
+
+IF gt_material IS INITIAL.
+  MESSAGE w009 DISPLAY LIKE 'W'.
+  STOP.
+ENDIF.
+
+gv_dbcnt = sy-dbcnt.
+
+SELECT mtart mtbez
+  INTO CORRESPONDING FIELDS OF TABLE gt_t134t
+  FROM t134t
+  WHERE spras = sy-langu.
+
+MOVE-CORRESPONDING gt_t134t TO gt_backup.
+
+SORT gt_backup BY mtart ASCENDING.
+
+DELETE ADJACENT DUPLICATES FROM gt_backup COMPARING mtart.
+
+LOOP AT gt_material INTO gs_material.
+  gv_tabix = sy-tabix.
+  READ TABLE gt_backup INTO gs_t134t
+                       WITH KEY mtart = gs_material-mtart
+                                            BINARY SEARCH.
+  IF ( sy-subrc = 0 ).
+    gs_material-mtbez = gs_t134t-mtbez.
+    MODIFY gt_material FROM gs_material
+                       INDEX gv_tabix TRANSPORTING mtbez.
+  ENDIF.
+ENDLOOP.
+
+cl_demo_output=>display( gt_material ).
+MESSAGE s008 WITH gv_dbcnt.
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* SO_MATNR D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*008   &## ## #####.
+*009   ### #### ####.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

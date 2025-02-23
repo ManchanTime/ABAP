@@ -1,0 +1,48 @@
+*&---------------------------------------------------------------------*
+*& Include ZCL1R16045TOP                            - Report ZCL1R16045
+*&---------------------------------------------------------------------*
+REPORT zcl1r16045 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : bkpf.
+
+**********************************************************************
+* Class
+**********************************************************************
+DATA : go_container TYPE REF TO cl_gui_docking_container,
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : BEGIN OF gs_body.
+         INCLUDE STRUCTURE zcl1bkpf16.
+DATA :   color    TYPE lvc_t_scol,
+         " ### ##
+         cell_tab TYPE lvc_t_styl,
+       END OF gs_body.
+
+DATA : gt_delt TYPE TABLE OF zcl1bkpf16.  " ### ITAB
+
+DATA : gt_body LIKE TABLE OF gs_body.
+
+DATA : gs_layout  TYPE lvc_s_layo,
+       gs_fcat    TYPE lvc_s_fcat,
+       gt_fcat    TYPE lvc_t_fcat,
+       gs_variant TYPE disvariant,
+       gs_sort    TYPE lvc_s_sort,
+       gt_sort    TYPE lvc_t_sort.
+
+DATA : gt_ui_functions TYPE ui_functions,  " Exclude ALV Toolbar
+       gs_button       TYPE stb_button.    " ALV Toolbar button
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_okcode TYPE sy-ucomm,
+       gv_mode   TYPE i VALUE 1. " Mode value
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

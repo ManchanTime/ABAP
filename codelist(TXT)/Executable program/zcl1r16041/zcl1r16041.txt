@@ -1,0 +1,57 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16041
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zcl1r16041top                           .  " Global Data
+
+INCLUDE zcl1r16041s01                           .  " Selection screen
+INCLUDE zcl1r16041c01                           .  " Class
+INCLUDE zcl1r16041o01                           .  " PBO-Modules
+INCLUDE zcl1r16041i01                           .  " PAI-Modules
+INCLUDE zcl1r16041f01                           .  " FORM-Routines
+
+**********************************************************************
+* INITIALIZATION
+**********************************************************************
+INITIALIZATION.
+  PERFORM set_init_value.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  PERFORM get_base_data.
+  PERFORM get_text_data.
+  PERFORM set_text_data.
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* TITLE100 --> [C1] Document list
+* TITLE110 --> [FI] Line item
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_BUKRS D       .
+* PA_GJAHR D       .
+* SO_BUDAT D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*000   &
+*008   &## ## #####.
+*009   ### #### ####.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

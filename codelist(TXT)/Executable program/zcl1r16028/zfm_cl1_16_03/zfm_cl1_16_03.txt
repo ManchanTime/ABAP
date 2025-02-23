@@ -1,0 +1,29 @@
+FUNCTION zfm_cl1_16_03.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IV_MATNR) TYPE  MATNR
+*"     REFERENCE(IV_LANGU) TYPE  SPRAS
+*"  EXPORTING
+*"     REFERENCE(EV_MAKTX) TYPE  MAKTX
+*"     REFERENCE(EV_MESSAGE) TYPE  CHAR50
+*"  EXCEPTIONS
+*"      NOT_FOUND
+*"----------------------------------------------------------------------
+
+  SELECT SINGLE maktx
+    INTO ( ev_maktx )
+    FROM makt
+    WHERE matnr = iv_matnr
+      AND spras = iv_langu.
+
+  IF sy-subrc = 0.
+    ev_message = TEXT-m01.
+  ELSE.
+    ev_message = TEXT-e02.
+    RAISE not_found.
+  ENDIF.
+ENDFUNCTION.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

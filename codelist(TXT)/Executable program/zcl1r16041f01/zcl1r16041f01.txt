@@ -1,0 +1,401 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16041F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  pa_bukrs = '0001'.
+  pa_gjahr = '2025'.
+
+  so_budat-sign   = 'I'.
+  so_budat-option = 'BT'.
+  so_budat-low    = '20250101'.
+  so_budat-high   = '20250131'.
+  APPEND so_budat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_base_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_base_data .
+
+  CLEAR gt_docu.
+  SELECT a~bukrs a~belnr a~gjahr buzei bktxt b~mwskz kostl
+         sgtxt shkzg wrbtr waers
+    INTO CORRESPONDING FIELDS OF TABLE gt_docu
+    FROM bkpf AS a INNER JOIN bseg AS b
+      ON a~bukrs = b~bukrs
+     AND a~belnr = b~belnr
+     AND a~gjahr = b~gjahr
+    WHERE a~bukrs = pa_bukrs
+      AND a~gjahr = pa_gjahr
+      AND budat IN so_budat.
+
+  IF gt_docu IS INITIAL.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_text_data_
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_text_data.
+
+  CLEAR : gt_mwskz, gt_kostl.
+
+  SELECT mwskz text1
+    INTO CORRESPONDING FIELDS OF TABLE gt_mwskz
+    FROM t007s
+    WHERE spras = sy-langu
+      AND kalsm = 'TAXKR'.
+
+  SELECT kostl ktext
+    INTO CORRESPONDING FIELDS OF TABLE gt_kostl
+    FROM cskt
+    WHERE spras = sy-langu
+      AND kokrs = '0001'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_text_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_text_data .
+
+  DATA : lv_tabix TYPE sy-tabix,
+         lv_dbcnt TYPE sy-dbcnt.
+
+  CLEAR gs_docu.
+
+  SORT gt_mwskz BY mwskz ASCENDING.
+  SORT gt_kostl BY kostl ASCENDING.
+
+  LOOP AT gt_docu INTO gs_docu.
+
+    lv_tabix = sy-tabix.
+
+    " mwsk text
+    CLEAR gs_mwskz.
+    READ TABLE gt_mwskz INTO gs_mwskz WITH KEY mwskz = gs_docu-mwskz
+                                      BINARY SEARCH.
+    IF sy-subrc = 0.
+      gs_docu-text1 = gs_mwskz-text1.
+    ENDIF.
+
+    " kostl text
+    CLEAR gs_kostl.
+    READ TABLE gt_kostl INTO gs_kostl WITH KEY kostl = gs_docu-kostl
+                                      BINARY SEARCH.
+    IF sy-subrc = 0.
+      gs_docu-ktext = gs_kostl-ktext.
+    ENDIF.
+
+    MODIFY gt_docu FROM gs_docu INDEX lv_tabix TRANSPORTING text1 ktext.
+  ENDLOOP.
+
+  lv_dbcnt = lines( gt_docu ).
+  MESSAGE s008 WITH lv_dbcnt.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_screen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_screen .
+
+  IF go_container IS NOT BOUND.
+
+    CLEAR : gt_fcat, gs_fcat.
+    PERFORM set_fcat USING : 'X' 'BUKRS' 'BKPF'  'C' ' ',
+                             'X' 'BELNR' 'BKPF'  'C' ' ',
+                             'X' 'GJAHR' 'BKPF'  'C' ' ',
+                             ' ' 'BUZEI' 'BSEG'  'C' ' ',
+                             ' ' 'BKTXT' 'BKPF'  ' ' ' ',
+                             ' ' 'MWSKZ' 'BSEG'  'C' ' ',
+                             ' ' 'TEXT1' 'T007S' ' ' 'X',
+                             ' ' 'KOSTL' 'BSEG'  'C' ' ',
+                             ' ' 'KTEXT' 'CSKT'  ' ' 'X',
+                             ' ' 'SGTXT' 'BSEG'  ' ' ' ',
+                             ' ' 'SHKZG' 'BSEG'  'C' ' ',
+                             ' ' 'WRBTR' 'BSEG'  ' ' ' ',
+                             ' ' 'WAERS' 'BKPF'  'C' 'X'.
+
+    PERFORM set_layout.
+    PERFORM create_object.
+
+    SET HANDLER : lcl_event_handler=>double_click  FOR go_alv_grid,
+                  lcl_event_handler=>hotspot_click FOR go_alv_grid.
+
+    CALL METHOD go_alv_grid->set_table_for_first_display
+      EXPORTING
+        is_variant      = gs_variant
+        i_save          = 'A'
+        i_default       = 'X'
+        is_layout       = gs_layout
+      CHANGING
+        it_outtab       = gt_docu
+        it_fieldcatalog = gt_fcat
+        it_sort         = gt_sort.
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_fcat
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM set_fcat USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_fcat-key       = pv_key.
+  gs_fcat-fieldname = pv_field.
+  gs_fcat-ref_table = pv_table.
+  gs_fcat-just      = pv_just.
+  gs_fcat-emphasize = pv_emph.
+
+  CASE pv_field.
+    WHEN 'WRBTR'.
+      gs_fcat-cfieldname = 'WAERS'.
+      gs_fcat-do_sum     = abap_true.
+    WHEN 'BELNR'.
+      gs_fcat-hotspot = abap_true.
+  ENDCASE.
+
+  APPEND gs_fcat TO gt_fcat.
+  CLEAR gs_fcat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_layout
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_layout .
+
+*-- Set Layout
+  gs_layout-zebra      = abap_true.
+  gs_layout-cwidth_opt = 'A'.
+  gs_layout-sel_mode   = 'D'.
+  gs_layout-totals_bef = abap_true. " Total ## # ## ###
+  gs_layout-no_totline = abap_true.
+
+*-- Set Variant
+  gs_variant-report = sy-repid.
+  gs_variant-handle = 'ALV1'.
+
+*-- Set Sort
+  CLEAR : gt_sort, gs_sort.
+  gs_sort-spos      = 1.
+  gs_sort-fieldname = 'BELNR'.
+  gs_sort-up        = abap_true.
+  gs_sort-subtot    = abap_true.
+  APPEND gs_sort to gt_sort.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_object .
+
+  CREATE OBJECT go_container
+    EXPORTING
+      side      = go_container->dock_at_left
+      extension = 5000.
+
+
+  CREATE OBJECT go_alv_grid
+    EXPORTING
+      i_parent = go_container.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_double_click
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> E_ROW
+*&      --> E_COLUMN
+*&---------------------------------------------------------------------*
+FORM handle_double_click USING pv_row pv_column.
+
+**********************************************************************
+* ### ##(double_click)# ## ####(####)# Popup## ##
+**********************************************************************
+**- ### ## Data# ###.
+  CLEAR gs_docu.
+  READ TABLE gt_docu INTO gs_docu INDEX pv_row.
+
+*-- ### ### ####(####)# BSEG ###### ####.
+  CLEAR gt_item.
+  SELECT bukrs belnr gjahr buzei shkzg wrbtr pswsl
+    INTO CORRESPONDING FIELDS OF TABLE gt_item
+    FROM bseg
+    WHERE bukrs = gs_docu-bukrs
+      AND belnr = gs_docu-belnr
+      AND gjahr = gs_docu-gjahr.
+
+*-- ### Data# Popup screen## ####.
+  CALL SCREEN 110 STARTING AT 03 03.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form handle_hotspot_click
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> E_ROW
+*&      --> E_COLUMN
+*&---------------------------------------------------------------------*
+FORM handle_hotspot_click USING pv_row pv_column.
+
+  CLEAR gs_docu.
+  READ TABLE gt_docu INTO gs_docu INDEX pv_row.
+
+  IF sy-subrc = 0.
+    CASE pv_column.
+      WHEN 'BELNR'.
+*        GET PARAMETER ID : 'BUK' FIELD gs_docu-bukrs, " Parameter ID# GET# ## ### ## # ##
+*                           'BLN' FIELD gs_docu-belnr,
+*                           'GJR' FIELD gs_docu-gjahr.
+
+        SET PARAMETER ID : 'BUK' FIELD gs_docu-bukrs,
+                           'BLN' FIELD gs_docu-belnr,
+                           'GJR' FIELD gs_docu-gjahr.
+
+        CALL TRANSACTION 'FB03' AND SKIP FIRST SCREEN.
+    ENDCASE.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_popup_screen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_popup_screen .
+
+  DATA : ls_variant TYPE disvariant.
+
+  IF go_pop_cnt IS NOT BOUND.
+
+    CLEAR : gt_pfcat, gs_pfcat.
+    PERFORM set_popup_fcat USING : 'X' 'BUKRS' 'BSEG' 'C' ' ',  " ####
+                                   'X' 'BELNR' 'BSEG' 'C' ' ',  " ####
+                                   'X' 'GJAHR' 'BSEG' 'C' ' ',  " ####
+                                   'X' 'BUZEI' 'BSEG' 'C' ' ',  " ####
+                                   ' ' 'SHKZG' 'BSEG' 'C' ' ',  " #/# ###
+                                   ' ' 'WRBTR' 'BSEG' ' ' ' ',  " ######
+                                   ' ' 'PSWSL' 'BSEG' 'C' 'X'.  " ###
+
+
+    ls_variant-report = sy-repid.
+    ls_variant-handle = 'POPUP1'.
+
+    PERFORM create_popup_object.
+
+    CALL METHOD go_pop_grid->set_table_for_first_display
+      EXPORTING
+        is_variant      = ls_variant
+        i_save          = 'A'
+        i_default       = 'X'
+        is_layout       = gs_layout
+      CHANGING
+        it_outtab       = gt_item
+        it_fieldcatalog = gt_pfcat.
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_popup_fcat
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM set_popup_fcat USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_pfcat-key       = pv_key.
+  gs_pfcat-fieldname = pv_field.
+  gs_pfcat-ref_table = pv_table.
+  gs_pfcat-just      = pv_just.
+  gs_pfcat-emphasize = pv_emph.
+
+  CASE pv_field.
+    WHEN 'WRBTR'.
+      gs_pfcat-cfieldname = 'PSWSL'.
+  ENDCASE.
+
+  APPEND gs_pfcat TO gt_pfcat.
+  CLEAR gs_pfcat.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_popup_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_popup_object .
+
+  CREATE OBJECT go_pop_cnt
+    EXPORTING
+      container_name = 'POP_CNT'.
+
+  CREATE OBJECT go_pop_grid
+    EXPORTING
+      i_parent = go_pop_cnt.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

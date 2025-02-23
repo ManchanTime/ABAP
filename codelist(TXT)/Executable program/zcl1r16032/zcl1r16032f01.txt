@@ -1,0 +1,171 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16032F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  so_carr-sign   = 'I'.
+  so_carr-option = 'EQ'.
+  so_carr-low    = 'LH'.
+  APPEND so_carr.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_base_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_base_data .
+
+  CLEAR gt_scarr.
+  SELECT carrid carrname currcode url
+    INTO CORRESPONDING FIELDS OF TABLE gt_scarr
+    FROM scarr
+    WHERE carrid IN so_carr.
+
+  IF gt_scarr IS INITIAL.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+    STOP.
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_screen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_screen .
+
+  DATA :ls_variant TYPE disvariant.
+
+  IF go_container IS INITIAL.
+    PERFORM create_object.
+    PERFORM set_layout.
+
+*-- Display ALV
+    ls_variant-report = sy-repid. " Current Report ID
+    ls_variant-handle = 'ALV1'.   " ALV ID
+    CALL METHOD go_alv_grid->set_table_for_first_display
+      EXPORTING
+        i_structure_name = 'SCARR'    " Structure name ## #!!!!!!!
+        is_variant       = ls_variant " ALV LAyout control(Layout save, choice...)
+        i_save           = 'A'        " Save layout A : All
+        i_default        = 'X'        " ALV default layout #####!
+        is_layout        = gs_layout  " ALV# #### ##(## ###, Line #### #)
+      CHANGING
+        it_outtab        = gt_scarr   " #### ### ###
+        it_fieldcatalog  = gt_fcat.   " ALV# ##### ## ITAB# #### ##
+
+  ENDIF.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_object .
+
+*-- Create Container
+  CREATE OBJECT go_container
+    EXPORTING
+      container_name = TEXT-c01.
+
+*-- Create ALV Grid
+  CREATE OBJECT go_alv_grid
+    EXPORTING
+      i_parent = go_container.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_layout
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_layout .
+
+*-- Set layout
+  gs_layout-zebra      = abap_true. " 'X'
+  gs_layout-cwidth_opt = abap_true.
+  gs_layout-sel_mode   = 'D'.       " Multiple select
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form make_body
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM make_body .
+*-- 1. ITAB# Country(10) ## ##
+*-- 2. currcode# 'EUR'## country = 'Europe'
+*--              'USD'## country = 'America'
+*-- 3. # ###!.
+
+  DATA : lv_id    TYPE icon-id,
+         lv_tabix TYPE sy-tabix.
+
+  lv_tabix = sy-tabix.
+
+  LOOP AT gt_scarr INTO gs_scarr.
+    lv_tabix = sy-tabix.
+
+    CASE gs_scarr-currcode.
+      WHEN 'USD'.
+        gs_scarr-status = icon_ws_plane.
+        gs_scarr-country = 'America'.
+      WHEN 'EUR'.
+        gs_scarr-country = 'Europe'.
+    ENDCASE.
+
+    MODIFY gt_scarr FROM gs_scarr INDEX lv_tabix TRANSPORTING status country.
+  ENDLOOP.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_field_catalog
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_field_catalog .
+
+*-- ALV# Display# ### ####.
+  CLEAR : gt_fcat, gs_fcat.
+  gs_fcat-fieldname = 'STATUS'.
+  gs_fcat-coltext   = 'Status'.
+  gs_fcat-key       = abap_true.
+  APPEND gs_fcat TO gt_fcat.
+
+  CLEAR : gs_fcat.
+  gs_fcat-fieldname = 'COUNTRY'.
+  gs_fcat-coltext   = 'Country'.
+  gs_fcat-col_pos   = 7.
+  APPEND gs_fcat TO gt_fcat.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

@@ -1,0 +1,41 @@
+FUNCTION zfm_cl1_16_05.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IV_CARRID) TYPE  S_CARR_ID
+*"  EXPORTING
+*"     REFERENCE(ES_SCARR) TYPE  SCARR
+*"     REFERENCE(EV_MESSAGE) TYPE  CHAR50
+*"  TABLES
+*"      ET_SPFLI STRUCTURE  SPFLI
+*"----------------------------------------------------------------------
+
+  DATA : lv_dbcnt TYPE sy-dbcnt.
+
+*-- Get Airline master
+  SELECT SINGLE carrid carrname currcode url
+    INTO CORRESPONDING FIELDS OF es_scarr
+    FROM scarr
+    WHERE carrid = iv_carrid.
+
+  IF es_scarr IS INITIAL.
+    ev_message = TEXT-e04.
+    EXIT.
+  ENDIF.
+
+  SELECT carrid connid cityfrom cityto countryfr countryto
+    APPENDING CORRESPONDING FIELDS OF TABLE et_spfli
+    FROM spfli
+    WHERE carrid = iv_carrid.
+
+  lv_dbcnt = lines( et_spfli ).
+  IF lv_dbcnt = 0.
+    ev_message = TEXT-e05.
+  ELSE.
+    ev_message = lv_dbcnt.
+  ENDIF.
+
+ENDFUNCTION.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754
