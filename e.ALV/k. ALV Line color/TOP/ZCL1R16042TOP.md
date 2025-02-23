@@ -1,0 +1,39 @@
+``` abap
+*&---------------------------------------------------------------------*
+*& Include ZCL1R16042TOP                            - Report ZCL1R16042
+*&---------------------------------------------------------------------*
+REPORT zcl1r16042 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : spfli.
+
+**********************************************************************
+* Class instance
+**********************************************************************
+DATA : go_container TYPE REF TO cl_gui_docking_container,
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : BEGIN OF gs_body,
+         status   TYPE icon-id,
+         carrid   TYPE scarr-carrid,
+         carrname TYPE scarr-carrname,
+         currcode TYPE scarr-currcode,
+         url      TYPE scarr-url,
+         color    TYPE lvc_t_scol,  " Color manger
+       END OF gs_body,
+       gt_body LIKE TABLE OF gs_body.
+
+DATA : gs_layout  TYPE lvc_s_layo,
+       gs_fcat    TYPE lvc_s_fcat,
+       gt_fcat    TYPE lvc_t_fcat,
+       gs_variant TYPE disvariant.
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_okcode TYPE sy-ucomm.
