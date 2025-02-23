@@ -1,0 +1,67 @@
+``` abap
+*&---------------------------------------------------------------------*
+*& Include ZCL1R16044TOP                            - Report ZCL1R16044
+*&---------------------------------------------------------------------*
+REPORT zcl1r16044 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : mara.
+
+**********************************************************************
+* Class instance
+**********************************************************************
+DATA : go_container TYPE REF TO cl_gui_docking_container,
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid.
+
+DATA : go_pop_cont TYPE REF TO cl_gui_custom_container,
+       go_pop_grid TYPE REF TO cl_gui_alv_grid.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : BEGIN OF gs_mara,
+         matnr TYPE mara-matnr,
+         ersda TYPE mara-ersda,
+         vpsta TYPE mara-vpsta,
+         mtart TYPE mara-mtart,
+         matkl TYPE mara-matkl,
+         wgbez TYPE t023t-wgbez,
+         brgew TYPE mara-brgew,
+         ntgew TYPE mara-ntgew,
+         gewei TYPE mara-gewei,
+         spart TYPE mara-spart,
+         vtext TYPE tspat-vtext,
+         color TYPE lvc_t_scol,
+       END OF gs_mara,
+       gt_mara LIKE TABLE OF gs_mara.
+
+DATA : gt_matkl TYPE TABLE OF t023t,
+       gs_matkl TYPE t023t,
+       gt_spart TYPE TABLE OF tspat,
+       gs_spart TYPE tspat.
+
+DATA : BEGIN OF gs_marc,
+         matnr TYPE marc-matnr,
+         werks TYPE marc-werks,
+         pstat TYPE marc-pstat,
+         ekgrp TYPE marc-ekgrp,
+         dismm TYPE marc-dismm,
+       END OF gs_marc,
+       gt_marc LIKE TABLE OF gs_marc.
+
+DATA : gs_layout  TYPE lvc_s_layo,
+       gs_fcat    TYPE lvc_s_fcat,
+       gt_fcat    TYPE lvc_t_fcat,
+       gs_variant TYPE disvariant.
+
+DATA : gs_pfcat    TYPE lvc_s_fcat,
+       gt_pfcat    TYPE lvc_t_fcat,
+       gs_playout  TYPE lvc_s_layo,
+       gs_pvariant TYPE disvariant.
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_okcode TYPE sy-ucomm.
