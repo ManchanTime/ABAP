@@ -1,0 +1,70 @@
+``` abap
+*&---------------------------------------------------------------------*
+*& Include          SAPMZCL116_02I01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  EXIT  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE exit INPUT.
+
+  IF go_container IS BOUND.
+    CALL METHOD : go_alv_grid->free, go_container->free.
+
+    FREE : go_alv_grid, go_container.
+  ENDIF.
+  LEAVE TO SCREEN 0.
+
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0100 INPUT.
+
+  CASE gv_okcode.
+    WHEN 'SRCH'.
+      PERFORM get_base_data.
+      PERFORM get_text_data.
+      PERFORM set_text_data.
+      PERFORM refresh_table.
+  ENDCASE.
+
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*& Form get_base_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_base_data .
+
+  IF ( gv_bukrs IS INITIAL ) OR ( gv_gjahr IS INITIAL ).
+    MESSAGE s001 WITH TEXT-e01 DISPLAY LIKE 'E'.
+    EXIT.
+  ENDIF.
+
+  PERFORM set_date_condition.
+
+  CLEAR gt_body.
+
+  SELECT a~bukrs a~belnr a~gjahr buzei hkont bschl koart sgtxt
+    INTO CORRESPONDING FIELDS OF TABLE gt_body
+    FROM bkpf AS a INNER JOIN bseg AS b
+      ON a~bukrs = b~bukrs
+     AND a~belnr = b~belnr
+     AND a~gjahr = b~gjahr
+    WHERE a~bukrs = gv_bukrs
+      AND a~gjahr = gv_gjahr
+      AND budat IN gr_budat.
+
+  IF gt_body IS INITIAL.
+    MESSAGE s009 DISPLAY LIKE 'E'.
+*    EXIT.
+  ENDIF.
+
+ENDFORM.
