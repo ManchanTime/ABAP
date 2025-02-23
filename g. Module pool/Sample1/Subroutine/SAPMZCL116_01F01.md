@@ -1,0 +1,109 @@
+``` abap
+*&---------------------------------------------------------------------*
+*& Include          SAPMZCL116_01F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_airline_info
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_airline_info .
+
+  IF gv_carrid IS INITIAL.
+    MESSAGE s001 WITH TEXT-e01 DISPLAY LIKE 'E'.
+    EXIT.
+  ENDIF.
+
+  PERFORM set_range_value.
+
+*-- Airline info
+  CLEAR : gv_carrname, gs_scarr, gv_price, gv_currency, gv_fldate.
+  SELECT SINGLE carrname url price currency fldate
+    INTO ( gv_carrname, gs_scarr-url,
+           gv_price, gv_currency, gv_fldate )
+    FROM scarr AS a INNER JOIN sflight AS b
+      ON a~carrid = b~carrid
+    WHERE a~carrid = gv_carrid
+      AND fldate IN gr_fldate.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form modify_screen
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM modify_screen .
+  LOOP AT SCREEN.
+    IF screen-group1 = 'INT'.
+      screen-intensified = '1'.
+    ELSEIF screen-group1 = 'COL'.
+      screen-color = 3.
+    ENDIF.
+    MODIFY SCREEN.
+  ENDLOOP.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set__range_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_range_value .
+
+**********************************************************************
+* GV_DATE_FR, GV_DATE_TO 2개의 변수를 이용해서 RANGES GR_FLDATE에
+* 값을 세팅 한다.
+**********************************************************************
+  _init gr_fldate.
+
+  IF ( gv_date_fr IS NOT INITIAL ) AND
+     ( gv_date_to IS INITIAL ).
+    PERFORM set_date_value USING 'I' 'EQ' gv_date_fr gv_date_to.
+
+  ELSEIF ( gv_date_fr IS NOT INITIAL ) AND
+     ( gv_date_to IS NOT INITIAL ).
+    PERFORM set_date_value USING 'I' 'BT' gv_date_fr gv_date_to.
+
+  ENDIF.
+
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_date_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM set_date_value USING pv_sign pv_option pv_low pv_high.
+
+  gr_fldate-sign   = pv_sign.
+  gr_fldate-option = pv_option.
+  gr_fldate-low    = pv_low.
+  gr_fldate-high   = pv_high.
+  APPEND gr_fldate.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form clear_all_field
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM clear_all_field .
+
+  CLEAR : gv_carrid, gs_scarr-url, gv_price, gv_currency,
+          gv_fldate, gv_date_fr, gv_date_to, gv_carrname.
+
+ENDFORM.
