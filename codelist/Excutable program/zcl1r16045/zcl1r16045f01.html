@@ -1,0 +1,847 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16045F01</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16045F01</h2>
+<h3> Description: Include ZCL1R16045F01</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZCL1R16045F01<br />
+*&---------------------------------------------------------------------*<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;set_init_value<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_init_value .<br />
+<br />
+&nbsp;&nbsp;pa_bukrs&nbsp;=&nbsp;'1000'.<br />
+&nbsp;&nbsp;pa_gjahr&nbsp;=&nbsp;sy-datum(4).<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;get_base_data<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_base_data .<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;:&nbsp;gt_body.<br />
+&nbsp;&nbsp;SELECT&nbsp;bukrs&nbsp;belnr&nbsp;gjahr&nbsp;blart&nbsp;budat&nbsp;bktxt&nbsp;waers&nbsp;issue_no&nbsp;issue_date<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;erdat&nbsp;ernam&nbsp;erzet&nbsp;aedat&nbsp;aenam&nbsp;aezet<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_body<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;zcl1bkpf16<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;bukrs&nbsp;=&nbsp;pa_bukrs<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;gjahr&nbsp;=&nbsp;pa_gjahr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;budat&nbsp;IN&nbsp;so_budat.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gt_body&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s009&nbsp;DISPLAY&nbsp;LIKE&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;STOP.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s008&nbsp;WITH&nbsp;sy-dbcnt.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;display_screen_0100<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM display_screen_0100 .<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;go_container&nbsp;IS&nbsp;NOT&nbsp;BOUND.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;:&nbsp;gs_fcat,&nbsp;gt_fcat.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;set_fcat&nbsp;USING&nbsp;:&nbsp;'X'&nbsp;'BUKRS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZCL1BKPF16'&nbsp;'C'&nbsp;'&nbsp;',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'X'&nbsp;'BELNR'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZCL1BKPF16'&nbsp;'C'&nbsp;'&nbsp;',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'X'&nbsp;'GJAHR'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZCL1BKPF16'&nbsp;'C'&nbsp;'&nbsp;',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;'&nbsp;'BLART'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZCL1BKPF16'&nbsp;'C'&nbsp;'&nbsp;',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;'&nbsp;'BUDAT'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZCL1BKPF16'&nbsp;'C'&nbsp;'&nbsp;',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;'&nbsp;'BKTXT'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZCL1BKPF16'&nbsp;'&nbsp;'&nbsp;'&nbsp;',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;'&nbsp;'WAERS'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'ZCL1BKPF16'&nbsp;'C'&nbsp;'&nbsp;',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;'&nbsp;'ISSUE_NO'&nbsp;&nbsp;&nbsp;'ZCL1BKPF16'&nbsp;'C'&nbsp;'&nbsp;',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'&nbsp;'&nbsp;'ISSUE_DATE'&nbsp;'ZCL1BKPF16'&nbsp;'C'&nbsp;'&nbsp;'.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;set_layout.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;exclude_toolbar.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;create_object.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SET&nbsp;HANDLER&nbsp;:&nbsp;lcl_event_handler=&gt;modify_value&nbsp;FOR&nbsp;go_alv_grid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lcl_event_handler=&gt;edit_toolbar&nbsp;FOR&nbsp;go_alv_grid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lcl_event_handler=&gt;user_command&nbsp;FOR&nbsp;go_alv_grid.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;go_alv_grid-&gt;set_table_for_first_display<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is_variant&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gs_variant<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'A'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_default&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'X'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is_layout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gs_layout<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_toolbar_excluding&nbsp;=&nbsp;gt_ui_functions<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_outtab&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gt_body<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_fieldcatalog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gt_fcat.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it_sort&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gt_sort.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;register_event.<br />
+<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;set_fcat<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_fcat USING pv_key pv_field pv_table pv_just pv_emph.<br />
+<br />
+&nbsp;&nbsp;gs_fcat-key&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;pv_key.<br />
+&nbsp;&nbsp;gs_fcat-fieldname&nbsp;=&nbsp;pv_field.<br />
+&nbsp;&nbsp;gs_fcat-ref_table&nbsp;=&nbsp;pv_table.<br />
+&nbsp;&nbsp;gs_fcat-just&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;pv_just.<br />
+&nbsp;&nbsp;gs_fcat-emphasize&nbsp;=&nbsp;pv_emph.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;##&nbsp;##&nbsp;##&nbsp;##<br />
+*&nbsp;&nbsp;CASE&nbsp;pv_field.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'ISSUE_NO'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_fcat-edit&nbsp;=&nbsp;abap_true.<br />
+*&nbsp;&nbsp;ENDCASE.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;APPEND&nbsp;gs_fcat&nbsp;TO&nbsp;gt_fcat.<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_fcat.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;set_layout<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_layout .<br />
+<br />
+&nbsp;&nbsp;gs_layout-zebra&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;abap_true.<br />
+&nbsp;&nbsp;gs_layout-cwidth_opt&nbsp;=&nbsp;'A'.<br />
+&nbsp;&nbsp;gs_layout-sel_mode&nbsp;&nbsp;&nbsp;=&nbsp;'D'.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;gs_layout-ctab_fname&nbsp;=&nbsp;'COLOR'.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;gs_layout-stylefname&nbsp;=&nbsp;'CELL_TAB'.<br />
+<br />
+&nbsp;&nbsp;gs_variant-report&nbsp;=&nbsp;sy-repid.<br />
+&nbsp;&nbsp;gs_variant-handle&nbsp;=&nbsp;'ALV1'.<br />
+<br />
+&nbsp;&nbsp;gs_sort-spos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;1.<br />
+&nbsp;&nbsp;gs_sort-fieldname&nbsp;=&nbsp;'BELNR'.<br />
+&nbsp;&nbsp;gs_sort-up&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;abap_true.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_sort&nbsp;TO&nbsp;gt_sort.<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_sort.<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;create_object<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM create_object .<br />
+<br />
+&nbsp;&nbsp;CREATE&nbsp;OBJECT&nbsp;go_container<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;side&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;go_container-&gt;dock_at_left<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;extension&nbsp;=&nbsp;5000.<br />
+<br />
+&nbsp;&nbsp;CREATE&nbsp;OBJECT&nbsp;go_alv_grid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_parent&nbsp;=&nbsp;go_container.<br />
+<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;set_color_data<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_screen .<br />
+<br />
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;lv_tabix&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sy-tabix,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_scol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;lvc_s_scol,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_styl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;lvc_s_styl,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_disabled&nbsp;TYPE&nbsp;raw4,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_enabled&nbsp;&nbsp;TYPE&nbsp;raw4.<br />
+<br />
+&nbsp;&nbsp;lv_disabled&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_style_disabled.<br />
+&nbsp;&nbsp;lv_enabled&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_style_enabled.<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;##&nbsp;:&nbsp;Header&nbsp;text,&nbsp;Issue_no&nbsp;EDIT&nbsp;Mode<br />
+*&nbsp;##&nbsp;:&nbsp;Issue_date&nbsp;EDIT&nbsp;Mode<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_body&nbsp;INTO&nbsp;gs_body.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_tabix&nbsp;=&nbsp;sy-tabix.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;:&nbsp;ls_styl,&nbsp;gs_body-cell_tab.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CASE&nbsp;:&nbsp;gs_body-waers.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'KRW'.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;##&nbsp;#####&nbsp;###&nbsp;###&nbsp;default#&nbsp;#####&nbsp;##<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;set_style&nbsp;USING&nbsp;'BKTXT'&nbsp;lv_disabled<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;ls_styl.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;set_style&nbsp;USING&nbsp;'ISSUE_NO'&nbsp;lv_disabled<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;ls_styl.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;set_style&nbsp;USING&nbsp;'BKTXT'&nbsp;lv_enabled<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;ls_styl.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDCASE.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;set_style&nbsp;USING&nbsp;'ISSUE_DATE'&nbsp;lv_enabled<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;ls_styl.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MODIFY&nbsp;gt_body&nbsp;FROM&nbsp;gs_body&nbsp;INDEX&nbsp;lv_tabix<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORTING&nbsp;cell_tab.<br />
+<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;set_color<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_6<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_1<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_1<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_1<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--&nbsp;LS_SCOL<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_color USING pv_field pv_color pv_int pv_inv pv_nokey<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;ps_scol&nbsp;TYPE&nbsp;lvc_s_scol.<br />
+<br />
+&nbsp;&nbsp;ps_scol-fname&nbsp;=&nbsp;pv_field.<br />
+&nbsp;&nbsp;ps_scol-color-col&nbsp;=&nbsp;pv_color.<br />
+&nbsp;&nbsp;ps_scol-color-int&nbsp;=&nbsp;pv_int.<br />
+&nbsp;&nbsp;ps_scol-color-inv&nbsp;=&nbsp;pv_inv.<br />
+&nbsp;&nbsp;ps_scol-nokeycol&nbsp;=&nbsp;pv_nokey.<br />
+&nbsp;&nbsp;INSERT&nbsp;ps_scol&nbsp;INTO&nbsp;TABLE&nbsp;gs_body-color.<br />
+&nbsp;&nbsp;CLEAR&nbsp;ps_scol.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;set_condition<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_condition .<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;SCREEN.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;screen-name&nbsp;=&nbsp;'PA_BUKRS'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;screen-input&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MODIFY&nbsp;SCREEN.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;set_style<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;P_<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;MC_STYLE_DISABLED<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;--&nbsp;LS_STYL<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_style USING pv_field pv_use<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;ps_styl&nbsp;TYPE&nbsp;lvc_s_styl.<br />
+<br />
+&nbsp;&nbsp;ps_styl-fieldname&nbsp;=&nbsp;pv_field.<br />
+&nbsp;&nbsp;ps_styl-style&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;pv_use.<br />
+&nbsp;&nbsp;INSERT&nbsp;ps_styl&nbsp;INTO&nbsp;TABLE&nbsp;gs_body-cell_tab.<br />
+&nbsp;&nbsp;CLEAR&nbsp;ps_styl.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;register_event<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM register_event .<br />
+<br />
+&nbsp;&nbsp;go_alv_grid-&gt;set_ready_for_input(&nbsp;1&nbsp;).<br />
+<br />
+&nbsp;&nbsp;go_alv_grid-&gt;register_edit_event(&nbsp;go_alv_grid-&gt;mc_evt_modified&nbsp;).<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;go_alv_grid-&gt;register_edit_event<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i_event_id&nbsp;=&nbsp;go_alv_grid-&gt;mc_evt_enter.<br />
+<br />
+   </div>
+   <div class="code">
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;exclude_toolbar<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM exclude_toolbar .<br />
+<br />
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;ls_ui_functions&nbsp;TYPE&nbsp;ui_func.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_loc_undo.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_loc_copy.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_loc_copy_row.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_loc_cut.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_loc_delete_row.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_loc_insert_row.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_loc_append_row.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_loc_paste.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_loc_paste_new_row.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_refresh.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_auf.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_average.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_print.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+&nbsp;&nbsp;ls_ui_functions&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_fc_graph.<br />
+&nbsp;&nbsp;APPEND&nbsp;ls_ui_functions&nbsp;TO&nbsp;gt_ui_functions.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;save_data<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM save_data .<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;DB&nbsp;Table#&nbsp;Layout#&nbsp;Internal&nbsp;table#&nbsp;Layout#&nbsp;100%&nbsp;#####<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;lt_save&nbsp;&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;zcl1bkpf16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_save&nbsp;&nbsp;&nbsp;TYPE&nbsp;zcl1bkpf16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_answer,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_tabix&nbsp;&nbsp;TYPE&nbsp;sy-tabix.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;ALV###&nbsp;###&nbsp;####&nbsp;###&nbsp;###&nbsp;Internal&nbsp;table#&nbsp;##<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;go_alv_grid-&gt;check_changed_data.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;###&nbsp;###&nbsp;#####&nbsp;##(CONFIRM)#&nbsp;##&nbsp;#&nbsp;####.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;PERFORM&nbsp;get_popup_to_confirm&nbsp;USING&nbsp;'Data&nbsp;save&nbsp;dialog'&nbsp;'1'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;lv_answer.<br />
+<br />
+&nbsp;&nbsp;CHECK&nbsp;lv_answer&nbsp;=&nbsp;'1'.<br />
+&nbsp;&nbsp;MESSAGE&nbsp;s000&nbsp;WITH&nbsp;'Success&nbsp;Save'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Move&nbsp;data&nbsp;for&nbsp;save<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;gt_body&nbsp;TO&nbsp;lt_save.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Set&nbsp;Time&nbsp;stamp<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;lt_save&nbsp;INTO&nbsp;ls_save.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_tabix&nbsp;=&nbsp;sy-tabix.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;ls_save-erdat&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_save-erdat&nbsp;&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_save-ernam&nbsp;=&nbsp;sy-uname.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_save-erzet&nbsp;&nbsp;=&nbsp;sy-uzeit.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_save-aedat&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_save-aenam&nbsp;=&nbsp;sy-uname.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_save-aezet&nbsp;=&nbsp;sy-uzeit.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MODIFY&nbsp;lt_save&nbsp;FROM&nbsp;ls_save&nbsp;INDEX&nbsp;lv_tabix<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORTING&nbsp;erdat&nbsp;ernam&nbsp;erzet<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aedat&nbsp;aenam&nbsp;&nbsp;aezet.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;MODIFY&nbsp;zcl1bkpf16&nbsp;FROM&nbsp;TABLE&nbsp;lt_save.<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s004.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;COMMIT&nbsp;WORK.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ROLLBACK&nbsp;WORK.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;set_screen.<br />
+&nbsp;&nbsp;PERFORM&nbsp;refresh_table.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;handle_modify_value<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;E_MODIFIED<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;ET_GOOD_CELLS<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM handle_modify_value USING pv_modified<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pt_good_cells&nbsp;TYPE&nbsp;lvc_t_modi.<br />
+<br />
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;ls_good_cells&nbsp;TYPE&nbsp;lvc_s_modi.<br />
+<br />
+<br />
+&nbsp;&nbsp;CHECK&nbsp;pv_modified&nbsp;IS&nbsp;NOT&nbsp;INITIAL.&nbsp;"&nbsp;#####(##X&nbsp;#)&nbsp;EXIT<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;pt_good_cells&nbsp;INTO&nbsp;ls_good_cells.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Set&nbsp;Time&nbsp;stamp<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;gs_body.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_body&nbsp;INTO&nbsp;gs_body&nbsp;INDEX&nbsp;ls_good_cells-row_id.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;gs_body-erdat&nbsp;IS&nbsp;NOT&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-erdat&nbsp;&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-ernam&nbsp;&nbsp;=&nbsp;sy-uname.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-erzet&nbsp;&nbsp;=&nbsp;sy-uzeit.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-aedat&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-aenam&nbsp;=&nbsp;sy-uname.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-aezet&nbsp;=&nbsp;sy-uzeit.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MODIFY&nbsp;gt_body&nbsp;FROM&nbsp;gs_body&nbsp;INDEX&nbsp;ls_good_cells-row_id<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORTING&nbsp;erdat&nbsp;ernam&nbsp;erzet<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aedat&nbsp;aenam&nbsp;aezet.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;get_popup_to_confirm<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_popup_to_confirm USING pv_title pv_default<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CHANGING&nbsp;pv_answer.<br />
+&nbsp;&nbsp;CALL&nbsp;FUNCTION&nbsp;'POPUP_TO_CONFIRM'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;titlebar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;pv_title<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_question&nbsp;&nbsp;=&nbsp;'Are&nbsp;you&nbsp;sure?'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_button_1&nbsp;&nbsp;=&nbsp;'Yes'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icon_button_1&nbsp;&nbsp;=&nbsp;'ICON_OKAY'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text_button_2&nbsp;&nbsp;=&nbsp;'No'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;icon_button_2&nbsp;&nbsp;=&nbsp;'ICON_CANCEL'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_button&nbsp;=&nbsp;pv_default<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;answer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;pv_answer.&nbsp;"&nbsp;Yes&nbsp;:&nbsp;1,&nbsp;No&nbsp;:&nbsp;2,&nbsp;Cancel&nbsp;:&nbsp;A<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;handle_edit_toolbar<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;E_OBJECT<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;E_INTERACTIVE<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM handle_edit_toolbar USING po_objcet TYPE<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REF&nbsp;TO&nbsp;cl_alv_event_toolbar_set<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pv_interactive.<br />
+<br />
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;lv_disabled.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;gv_mode&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_disabled&nbsp;=&nbsp;abap_true.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;make_divide_line&nbsp;USING&nbsp;po_objcet.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_button.<br />
+&nbsp;&nbsp;gs_button-function&nbsp;&nbsp;=&nbsp;'TOGL'.<br />
+&nbsp;&nbsp;gs_button-icon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;icon_toggle_display_change.<br />
+&nbsp;&nbsp;gs_button-quickinfo&nbsp;=&nbsp;'Display&nbsp;&lt;-&gt;&nbsp;Change'.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_button&nbsp;TO&nbsp;po_objcet-&gt;mt_toolbar.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;make_divide_line&nbsp;USING&nbsp;po_objcet.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_button.<br />
+&nbsp;&nbsp;gs_button-function&nbsp;&nbsp;=&nbsp;'IROW'.<br />
+&nbsp;&nbsp;gs_button-icon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;icon_insert_row.<br />
+&nbsp;&nbsp;gs_button-quickinfo&nbsp;=&nbsp;'Insert&nbsp;row'.<br />
+&nbsp;&nbsp;gs_button-disabled&nbsp;&nbsp;=&nbsp;lv_disabled.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_button&nbsp;TO&nbsp;po_objcet-&gt;mt_toolbar.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_button.<br />
+&nbsp;&nbsp;gs_button-function&nbsp;&nbsp;=&nbsp;'DROW'.<br />
+&nbsp;&nbsp;gs_button-icon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;icon_delete_row.<br />
+&nbsp;&nbsp;gs_button-quickinfo&nbsp;=&nbsp;'Delete&nbsp;row'.<br />
+&nbsp;&nbsp;gs_button-disabled&nbsp;&nbsp;=&nbsp;lv_disabled.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_button&nbsp;TO&nbsp;po_objcet-&gt;mt_toolbar.<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;make_divide_line<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM make_divide_line USING po_object TYPE<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REF&nbsp;TO&nbsp;cl_alv_event_toolbar_set&nbsp;.<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_button.<br />
+&nbsp;&nbsp;gs_button-butn_type&nbsp;=&nbsp;'3'.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_button&nbsp;TO&nbsp;po_object-&gt;mt_toolbar.<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;handle_user_command<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--&gt;&nbsp;E_UCOMM<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM handle_user_command USING pv_ucomm.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;pv_ucomm.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'TOGL'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;toggle_change.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'IROW'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;insert_row.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'DROW'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PERFORM&nbsp;delete_row.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;toggle_change<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM toggle_change .<br />
+<br />
+&nbsp;&nbsp;gv_mode&nbsp;=&nbsp;(&nbsp;gv_mode&nbsp;+&nbsp;1&nbsp;)&nbsp;MOD&nbsp;2.&nbsp;&nbsp;"&nbsp;Mode&nbsp;change&nbsp;0&nbsp;or&nbsp;1<br />
+&nbsp;&nbsp;go_alv_grid-&gt;set_ready_for_input(&nbsp;gv_mode&nbsp;).<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;insert_row<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM insert_row .<br />
+<br />
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;ls_style&nbsp;TYPE&nbsp;lvc_s_styl.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gs_body.<br />
+&nbsp;&nbsp;ls_style-style&nbsp;=&nbsp;cl_gui_alv_grid=&gt;mc_style_enabled.<br />
+&nbsp;&nbsp;INSERT&nbsp;ls_style&nbsp;INTO&nbsp;TABLE&nbsp;gs_body-cell_tab.<br />
+<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_body&nbsp;TO&nbsp;gt_body.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;refresh_table.<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;refresh_table<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM refresh_table .<br />
+<br />
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;ls_stable&nbsp;TYPE&nbsp;lvc_s_stbl.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;##&nbsp;Cursor&nbsp;##&nbsp;##<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ls_stable-row&nbsp;=&nbsp;abap_true.<br />
+&nbsp;&nbsp;ls_stable-col&nbsp;=&nbsp;abap_true.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Refresh&nbsp;ALV<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;go_alv_grid-&gt;refresh_table_display<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is_stable&nbsp;=&nbsp;ls_stable.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;go_alv_grid-&gt;refresh_table_display(&nbsp;EXPORTING&nbsp;is_stable&nbsp;=&nbsp;ls_stable&nbsp;).<br />
+<br />
+   </div>
+   <div class="code">
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;delete_row<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM delete_row .<br />
+<br />
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;lt_roid&nbsp;TYPE&nbsp;lvc_t_roid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ls_roid&nbsp;TYPE&nbsp;lvc_s_roid.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;####&nbsp;###&nbsp;#&nbsp;###&nbsp;####.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CALL&nbsp;METHOD&nbsp;go_alv_grid-&gt;get_selected_rows<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IMPORTING<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;et_row_no&nbsp;=&nbsp;lt_roid.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;###&nbsp;##&nbsp;####&nbsp;##&nbsp;Delete&nbsp;row&nbsp;##&nbsp;###&nbsp;##<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;lt_roid&nbsp;IS&nbsp;INITIAL.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s010&nbsp;DISPLAY&nbsp;LIKE&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;##&nbsp;##<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;SORT&nbsp;lt_roid&nbsp;BY&nbsp;row_id&nbsp;DESCENDING.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;lt_roid&nbsp;INTO&nbsp;ls_roid.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DELETE&nbsp;gt_body&nbsp;INDEX&nbsp;ls_roid-row_id.<br />
+<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;PERFORM&nbsp;refresh_table.<br />
+ENDFORM.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

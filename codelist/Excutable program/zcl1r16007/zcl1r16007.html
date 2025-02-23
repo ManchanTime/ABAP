@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16007</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16007</h2>
+<h3> Description: [C1] Practice</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16007<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16007.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Practice<br />
+**********************************************************************<br />
+*--&nbsp;2.1-1.<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_info,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bukrs&nbsp;TYPE&nbsp;bkpf-bukrs,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;belnr&nbsp;TYPE&nbsp;bkpf-belnr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gjahr&nbsp;TYPE&nbsp;bkpf-gjahr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buzei&nbsp;TYPE&nbsp;bseg-buzei,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;budat&nbsp;TYPE&nbsp;bkpf-budat,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bktxt&nbsp;TYPE&nbsp;bkpf-bktxt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wrbtr&nbsp;TYPE&nbsp;bseg-wrbtr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;waers&nbsp;TYPE&nbsp;bkpf-waers,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sgtxt&nbsp;TYPE&nbsp;bseg-sgtxt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_info,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_info&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_info.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.1-2.<br />
+   </div>
+   <div class="code">
+CLEAR : gt_info, gs_info.<br />
+gs_info-bukrs = '1000'.<br />
+gs_info-belnr = '0010000007'.<br />
+gs_info-gjahr = '2025'.<br />
+gs_info-buzei = '0002'.<br />
+gs_info-budat = sy-datum.<br />
+gs_info-bktxt = 'Document header'.<br />
+gs_info-wrbtr = 15000.<br />
+gs_info-waers = 'KRW'.<br />
+gs_info-sgtxt = 'Line item'.<br />
+<br />
+APPEND gs_info TO gt_info.<br />
+<br />
+WRITE : / 'APPEND'.<br />
+LOOP AT gt_info INTO gs_info.<br />
+&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;sy-tabix,&nbsp;'index',&nbsp;gs_info-bukrs,&nbsp;gs_info-belnr,&nbsp;gs_info-gjahr,&nbsp;gs_info-buzei,&nbsp;gs_info-budat,&nbsp;gs_info-bktxt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_info-wrbtr,&nbsp;gs_info-waers,&nbsp;gs_info-sgtxt.<br />
+ENDLOOP.<br />
+<br />
+WRITE : sy-uline.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.1-3.<br />
+   </div>
+   <div class="code">
+CLEAR : gs_info.<br />
+gs_info-bukrs = '1000'.<br />
+gs_info-belnr = '0010000006'.<br />
+gs_info-gjahr = '2024'.<br />
+gs_info-buzei = '0001'.<br />
+gs_info-budat = sy-datum.<br />
+gs_info-bktxt = 'Document insert header'.<br />
+gs_info-wrbtr = 7000.<br />
+gs_info-waers = 'KRW'.<br />
+gs_info-sgtxt = 'Line item insert'.<br />
+<br />
+INSERT gs_info INTO gt_info INDEX 1.<br />
+<br />
+WRITE : / 'INSERT'.<br />
+LOOP AT gt_info INTO gs_info.<br />
+&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;sy-tabix,&nbsp;'index',&nbsp;gs_info-bukrs,&nbsp;gs_info-belnr,&nbsp;gs_info-gjahr,&nbsp;gs_info-buzei,&nbsp;gs_info-budat,&nbsp;gs_info-bktxt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_info-wrbtr,&nbsp;gs_info-waers,&nbsp;gs_info-sgtxt.<br />
+ENDLOOP.<br />
+<br />
+WRITE : sy-uline.<br />
+<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.1-4.<br />
+   </div>
+   <div class="code">
+READ TABLE gt_info INTO gs_info INDEX 2.<br />
+<br />
+gs_info-bktxt = 'Document header updated'.<br />
+gs_info-wrbtr = 12000.<br />
+gs_info-waers = 'USD'.<br />
+gs_info-sgtxt = 'Line item updated'.<br />
+<br />
+MODIFY gt_info FROM gs_info INDEX 2 TRANSPORTING bktxt wrbtr waers sgtxt.<br />
+<br />
+WRITE : / 'MODIFY'.<br />
+LOOP AT gt_info INTO gs_info.<br />
+&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;sy-tabix,&nbsp;'index',&nbsp;gs_info-bukrs,&nbsp;gs_info-belnr,&nbsp;gs_info-gjahr,&nbsp;gs_info-buzei,&nbsp;gs_info-budat,&nbsp;gs_info-bktxt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_info-wrbtr,&nbsp;gs_info-waers,&nbsp;gs_info-sgtxt.<br />
+ENDLOOP.<br />
+<br />
+WRITE : sy-uline.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.2<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_scarr.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INCLUDE&nbsp;STRUCTURE&nbsp;scarr.<br />
+DATA :   connid    TYPE sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-price,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currency&nbsp;&nbsp;TYPE&nbsp;sflight-currency,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;planetype&nbsp;TYPE&nbsp;sflight-planetype.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INCLUDE&nbsp;STRUCTURE&nbsp;sapplco_customer.<br />
+   </div>
+   <div class="code">
+DATA : END OF gs_scarr.<br />
+<br />
+DATA : gt_scarr LIKE TABLE OF gs_scarr.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;3.<br />
+   </div>
+   <div class="code">
+TYPES : BEGIN OF ts_scustom,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;scustom-id,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;TYPE&nbsp;scustom-name,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;form&nbsp;&nbsp;&nbsp;TYPE&nbsp;scustom-form,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;street&nbsp;TYPE&nbsp;scustom-street,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;city&nbsp;&nbsp;&nbsp;TYPE&nbsp;scustom-city,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;email&nbsp;&nbsp;TYPE&nbsp;scustom-email,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;ts_scustom.<br />
+DATA : gs_scustom TYPE ts_scustom,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_scustom&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;ts_scustom.<br />
+<br />
+CLEAR : gs_scustom, gt_scustom.<br />
+SELECT id name form street city email<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scustom<br />
+&nbsp;&nbsp;FROM&nbsp;scustom<br />
+&nbsp;&nbsp;WHERE&nbsp;id&nbsp;GE&nbsp;24&nbsp;AND&nbsp;form&nbsp;NE&nbsp;'Firma'&nbsp;AND&nbsp;region&nbsp;EQ&nbsp;'PA'.<br />
+<br />
+cl_demo_output=&gt;display( gt_scustom ).<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16000</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16000</h2>
+<h3> Description: [C1] Practice</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16000<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16000.<br />
+<br />
+   </div>
+   <div class="codeComment">
+***********************************************************************<br />
+*##&nbsp;##<br />
+**********************************************************************<br />
+*--&nbsp;TYPE<br />
+   </div>
+   <div class="code">
+TYPES : tv_i         TYPE i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tv_c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tv_cshort(3),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tv_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;d,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tv_string&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;string.<br />
+<br />
+DATA : gv_i      TYPE tv_i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;tv_c,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_cshort&nbsp;TYPE&nbsp;tv_cshort,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date&nbsp;&nbsp;&nbsp;TYPE&nbsp;tv_date,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_string&nbsp;TYPE&nbsp;tv_string.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;DATA<br />
+   </div>
+   <div class="code">
+DATA : gv_i2 TYPE i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_i3&nbsp;LIKE&nbsp;gv_i2.<br />
+<br />
+DATA : gv_i4 TYPE i     VALUE 10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_u5&nbsp;LIKE&nbsp;gv_i4&nbsp;VALUE&nbsp;15,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_i6&nbsp;TYPE&nbsp;tv_i&nbsp;&nbsp;VALUE&nbsp;20.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;CONSTANTS<br />
+   </div>
+   <div class="code">
+CONSTANTS : gv_const TYPE i VALUE 10.<br />
+CONSTANTS : gv_const2 TYPE string VALUE 'test'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;###&nbsp;##<br />
+   </div>
+   <div class="code">
+DATA : gv_system TYPE sy-mandt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date2&nbsp;&nbsp;TYPE&nbsp;sy-datum,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_time&nbsp;&nbsp;&nbsp;TYPE&nbsp;sy-uzeit,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_name&nbsp;&nbsp;&nbsp;TYPE&nbsp;sy-uname,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_langu&nbsp;&nbsp;TYPE&nbsp;sy-langu.<br />
+gv_system = sy-mandt.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;Table&nbsp;&&nbsp;Work&nbsp;Area<br />
+**********************************************************************<br />
+*--&nbsp;Internal&nbsp;Table<br />
+*--&nbsp;1.&nbsp;Type&nbsp;##<br />
+   </div>
+   <div class="code">
+TYPES : ts_scarr   TYPE scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ts_sflight&nbsp;TYPE&nbsp;sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ts_spfli&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ts_sbook&nbsp;&nbsp;&nbsp;TYPE&nbsp;sbook.<br />
+<br />
+DATA : gt_scarr   TYPE TABLE OF ts_scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sflight&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;ts_sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_spfli&nbsp;&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;ts_spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sbook&nbsp;&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;ts_sbook.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.&nbsp;DATA&nbsp;##<br />
+   </div>
+   <div class="code">
+DATA : gt_scarr2   TYPE TABLE OF scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sflight2&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_spfli2&nbsp;&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sbook2&nbsp;&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;sbook.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;3.&nbsp;LIKE&nbsp;##<br />
+   </div>
+   <div class="code">
+DATA : gt_scarr3 LIKE gt_scarr2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Work&nbsp;Area<br />
+*--&nbsp;1.&nbsp;Type&nbsp;##<br />
+   </div>
+   <div class="code">
+DATA : gs_scarr   TYPE ts_scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_sflight&nbsp;TYPE&nbsp;ts_sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_spfli&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_sbook&nbsp;&nbsp;&nbsp;TYPE&nbsp;ts_sbook.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.&nbsp;DATA&nbsp;##<br />
+   </div>
+   <div class="code">
+DATA : gs_scarr2   TYPE scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_sflight2&nbsp;TYPE&nbsp;sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_spfli2&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_sbook2&nbsp;&nbsp;&nbsp;TYPE&nbsp;s_carr_id.<br />
+   </div>
+   <div class="codeComment">
+*--------------------------------------------------------------------*<br />
+*&nbsp;##<br />
+*--------------------------------------------------------------------*<br />
+*--&nbsp;Local&nbsp;Type&nbsp;##<br />
+*--&nbsp;TYPE&nbsp;##<br />
+   </div>
+   <div class="code">
+TYPES : BEGIN OF ts_sflight4,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;TYPE&nbsp;sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;ts_sflight4.<br />
+DATA : gs_sflight5 TYPE ts_sflight4,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sfligth5&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;ts_sflight4.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;DATA&nbsp;##<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_sflight4,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_sflight4,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sflight4&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_sflight4.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Table&nbsp;Type&nbsp;##&nbsp;ZLVC_T_CL1_INFO16&nbsp;##<br />
+   </div>
+   <div class="code">
+DATA : gt_sbook3 TYPE zlvc_t_cl1_info16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_sbook3&nbsp;TYPE&nbsp;LINE&nbsp;OF&nbsp;zlvc_t_cl1_info16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;###<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gv_int1   TYPE i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_int2&nbsp;&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;TYPE&nbsp;i.<br />
+gv_int1 = 10.<br />
+gv_int2 = 2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;####<br />
+   </div>
+   <div class="code">
+gv_result = gv_int1 + gv_int2.<br />
+gv_result = gv_int1 - gv_int2.<br />
+gv_result = gv_int1 * gv_int2.<br />
+gv_result = gv_int1 / gv_int2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;###&nbsp;##<br />
+   </div>
+   <div class="code">
+gv_result = gv_int1 MOD gv_int2.<br />
+gv_result = gv_int1 ** gv_int2.<br />
+gv_result = gv_int1 DIV gv_int2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;Table&nbsp;###&nbsp;##<br />
+**********************************************************************<br />
+*--&nbsp;DATA<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_use,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;TYPE&nbsp;sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size&nbsp;&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_use,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_use&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_use.<br />
+<br />
+DATA : gt_use2 LIKE gt_use.<br />
+<br />
+CLEAR : gs_use, gt_use.<br />
+<br />
+gs_use-carrid = 'AA'.<br />
+gs_use-connid = '0100'.<br />
+gs_use-size = 0.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;##&nbsp;###<br />
+*--&nbsp;1.&nbsp;Append<br />
+   </div>
+   <div class="code">
+APPEND gs_use TO gt_use.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.&nbsp;Insert<br />
+*--&nbsp;Table<br />
+   </div>
+   <div class="code">
+INSERT gs_use INTO TABLE gt_use.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;General<br />
+   </div>
+   <div class="code">
+INSERT gs_use INTO gt_use INDEX 1.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;3.&nbsp;Read<br />
+*--&nbsp;Index<br />
+   </div>
+   <div class="code">
+READ TABLE gt_use INTO gs_use INDEX 1.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Using&nbsp;Key<br />
+   </div>
+   <div class="code">
+READ TABLE gt_use INTO gs_use WITH KEY carrid = 'AA'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;4.&nbsp;Change<br />
+*--&nbsp;Table<br />
+   </div>
+   <div class="code">
+MODIFY TABLE gt_use FROM gs_use TRANSPORTING carrid.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;General<br />
+   </div>
+   <div class="code">
+MODIFY gt_use FROM gs_use INDEX 1 TRANSPORTING carrid.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;5.&nbsp;Delete<br />
+*DELETE&nbsp;gt_use&nbsp;WHERE&nbsp;carrid&nbsp;=&nbsp;'AA'.<br />
+<br />
+*--&nbsp;##&nbsp;###<br />
+*--&nbsp;1.&nbsp;LOOP<br />
+   </div>
+   <div class="code">
+APPEND gs_use TO gt_use.<br />
+LOOP AT gt_use INTO gs_use FROM 1 TO 100 WHERE carrid = 'AA'.<br />
+&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_use-carrid,&nbsp;gs_use-connid,&nbsp;gs_use-size.<br />
+&nbsp;&nbsp;gs_use-size&nbsp;+=&nbsp;1.<br />
+&nbsp;&nbsp;MODIFY&nbsp;gt_use&nbsp;FROM&nbsp;gs_use.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;INDEX&nbsp;sy-tabix.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_use-carrid,&nbsp;gs_use-connid,&nbsp;gs_use-size.<br />
+ENDLOOP.<br />
+<br />
+cl_demo_output=&gt;display( gt_use ).<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.&nbsp;DELETE<br />
+   </div>
+   <div class="code">
+DELETE gt_use WHERE carrid = 'AA'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;3.&nbsp;APPEND<br />
+   </div>
+   <div class="code">
+APPEND LINES OF gt_use FROM 1 TO 10 TO gt_use2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;4.&nbsp;INSERT<br />
+   </div>
+   <div class="code">
+INSERT LINES OF gt_use FROM 1 TO 10 INTO TABLE gt_use2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Open&nbsp;SQL<br />
+**********************************************************************<br />
+*--&nbsp;DATA<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_unique,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;TYPE&nbsp;sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_unique,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_unique&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_unique.<br />
+DATA : BEGIN OF gs_info,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;air_cd&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;con_no&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minseats&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxseats&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sumseats&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_info,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_info&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_info.<br />
+<br />
+DATA : gs_scarr3   TYPE scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_cityfrom&nbsp;TYPE&nbsp;spfli-cityfrom,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_cityto&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-cityto.<br />
+<br />
+DATA : gt_scarr5 TYPE TABLE OF scarr.<br />
+<br />
+DATA : gt_t007s TYPE TABLE OF t007s.<br />
+<br />
+DATA : gt_cskt TYPE TABLE OF cskt.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;1.&nbsp;SELECT<br />
+*--&nbsp;##&nbsp;###&nbsp;##<br />
+   </div>
+   <div class="code">
+CLEAR : gt_scarr5.<br />
+SELECT carrid carrname currcode<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr5<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;currcode&nbsp;=&nbsp;'EUR'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;###&nbsp;#&nbsp;##<br />
+   </div>
+   <div class="code">
+CLEAR : gt_unique, gs_unique.<br />
+SELECT DISTINCT carrid connid<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_unique<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;seatsocc&nbsp;GT&nbsp;200.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;##&nbsp;###&nbsp;##<br />
+   </div>
+   <div class="code">
+CLEAR : gs_scarr3.<br />
+SELECT SINGLE carrid carrname currcode<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;gs_scarr3<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;EQ&nbsp;'AA'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;###&nbsp;###&nbsp;##<br />
+   </div>
+   <div class="code">
+SELECT SINGLE cityfrom cityto<br />
+&nbsp;&nbsp;INTO&nbsp;(gv_cityfrom,&nbsp;gv_cityto)<br />
+&nbsp;&nbsp;FROM&nbsp;spfli.<br />
+<br />
+CLEAR gs_scarr3.<br />
+SELECT SINGLE carrid cityfrom cityto<br />
+&nbsp;&nbsp;INTO&nbsp;(gs_scarr3-carrid,&nbsp;gv_cityfrom,&nbsp;gv_cityto)<br />
+&nbsp;&nbsp;FROM&nbsp;spfli<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;=&nbsp;'AA'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;1.&nbsp;####(MWSKZ)#&nbsp;Text&nbsp;table###&nbsp;####&nbsp;##(TEXT1)#&nbsp;###&nbsp;Internal&nbsp;Table#&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TOO7S&nbsp;##&nbsp;##&nbsp;:&nbsp;SPRAS&nbsp;EQ&nbsp;sy-langu,&nbsp;KALSM&nbsp;EQ&nbsp;'TAXKR'<br />
+   </div>
+   <div class="code">
+CLEAR gt_t007s.<br />
+SELECT text1<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_t007s<br />
+&nbsp;&nbsp;FROM&nbsp;t007s<br />
+&nbsp;&nbsp;WHERE&nbsp;spras&nbsp;EQ&nbsp;sy-langu&nbsp;AND&nbsp;kalsm&nbsp;EQ&nbsp;'TAXKR'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.&nbsp;#####(KOSTL)#&nbsp;Text&nbsp;table###&nbsp;##&nbsp;####&nbsp;###&nbsp;Internal&nbsp;Table#&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CSKT&nbsp;####&nbsp;:&nbsp;SPRAS&nbsp;EQ&nbsp;sy-langu&nbsp;KOKRS&nbsp;EQ&nbsp;'0001'<br />
+   </div>
+   <div class="code">
+CLEAR gt_cskt.<br />
+SELECT spras kokrs kostl datbi ktext ltext mctxt<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_cskt<br />
+&nbsp;&nbsp;FROM&nbsp;cskt<br />
+&nbsp;&nbsp;WHERE&nbsp;spras&nbsp;EQ&nbsp;sy-langu&nbsp;AND&nbsp;kokrs&nbsp;EQ&nbsp;'0001'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;3.SCARR#&nbsp;###&nbsp;Layout#&nbsp;Internal&nbsp;Table#&nbsp;####&nbsp;Table#&nbsp;SELECT&nbsp;##&nbsp;Internal&nbsp;Table#&nbsp;####&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;##&nbsp;:&nbsp;CARRID&nbsp;'AA'#&nbsp;'DL'&nbsp;####&nbsp;##&nbsp;###<br />
+   </div>
+   <div class="code">
+CLEAR gt_scarr3.<br />
+SELECT carrid carrname currcode url<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr3<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;BETWEEN&nbsp;'AA'&nbsp;AND&nbsp;'DL'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;3-1.&nbsp;CARRID#&nbsp;'AA',&nbsp;'AB',&nbsp;'CA',&nbsp;'LH'&nbsp;####&nbsp;####.<br />
+   </div>
+   <div class="code">
+CLEAR gt_scarr3.<br />
+SELECT carrid carrname currcode url<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr3<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;IN&nbsp;('AA',&nbsp;'AB',&nbsp;'CA',&nbsp;'LH').<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;GROUP&nbsp;BY&nbsp;~&nbsp;HAVING<br />
+   </div>
+   <div class="code">
+CLEAR : gs_info, gt_info.<br />
+SELECT carrid AS air_cd connid AS con_no MIN( seatsocc ) AS minseats MAX( seatsocc ) AS maxseats SUM( seatsocc ) AS sumseats<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_info<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;IN&nbsp;('AA',&nbsp;'AB')<br />
+&nbsp;&nbsp;GROUP&nbsp;BY&nbsp;carrid&nbsp;connid<br />
+&nbsp;&nbsp;HAVING&nbsp;SUM(&nbsp;seatsocc&nbsp;)&nbsp;LE&nbsp;100.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;4.SFLIGHT&nbsp;Table##&nbsp;###&nbsp;###&nbsp;Select&nbsp;##&nbsp;Internal&nbsp;Table#&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CARRID,&nbsp;CONNID,&nbsp;FLDATE,&nbsp;PRICE,&nbsp;CURRENCY,&nbsp;PLANETYPE,&nbsp;SEATSMAX,&nbsp;SEATSOCC,&nbsp;PAYMENTSUM<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;##&nbsp;:&nbsp;CARRID#&nbsp;'AZ',&nbsp;'QF'&nbsp;AND&nbsp;PLANETYPE#&nbsp;'A%'#&nbsp;###<br />
+   </div>
+   <div class="code">
+DATA : gt_sflight5 TYPE TABLE OF sflight.<br />
+CLEAR : gt_sflight5.<br />
+SELECT carrid connid fldate price currency planetype seatsmax seatsocc paymentsum<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_sflight5<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;IN&nbsp;('AZ',&nbsp;'QF')&nbsp;AND&nbsp;planetype&nbsp;LIKE&nbsp;'A%'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;5.&nbsp;SBOOK&nbsp;Table##&nbsp;###&nbsp;###&nbsp;SELECT&nbsp;##&nbsp;Internal&nbsp;Table#&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CARRID,&nbsp;CONNID,&nbsp;FLDATE,&nbsp;BOOKID,&nbsp;CUSTOMID,&nbsp;CUSTTYPE,&nbsp;SMOKER,&nbsp;INVOICE,&nbsp;FORCURAM<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;##&nbsp;:&nbsp;FLDATE#&nbsp;'2020.10.01'&nbsp;~&nbsp;'2020.12.31'&nbsp;###&nbsp;###&nbsp;AND&nbsp;FORCURAM&nbsp;&gt;=&nbsp;800<br />
+   </div>
+   <div class="code">
+CLEAR gt_sbook.<br />
+SELECT carrid connid fldate bookid customid custtype smoker invoice forcuram<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_sbook<br />
+&nbsp;&nbsp;FROM&nbsp;sbook<br />
+&nbsp;&nbsp;WHERE&nbsp;fldate&nbsp;BETWEEN&nbsp;'20241001'&nbsp;AND&nbsp;'20241231'&nbsp;AND&nbsp;forcuram&nbsp;LE&nbsp;100.<br />
+CLEAR gs_sbook.<br />
+LOOP AT gt_sbook INTO gs_sbook.<br />
+&nbsp;&nbsp;IF&nbsp;gs_sbook-smoker&nbsp;=&nbsp;'X'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_sbook-smoker&nbsp;=&nbsp;''.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MODIFY&nbsp;gt_sbook&nbsp;FROM&nbsp;gs_sbook&nbsp;INDEX&nbsp;sy-tabix&nbsp;TRANSPORTING&nbsp;smoker.<br />
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+ENDLOOP.<br />
+cl_demo_output=&gt;display( gt_sbook ).<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Self&nbsp;Join<br />
+   </div>
+   <div class="code">
+CLEAR gt_scarr3.<br />
+SELECT carrid carrname currcode<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr3<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;EQ&nbsp;scarr~carrid.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;APPENDING<br />
+   </div>
+   <div class="code">
+SELECT carrid carrname currcode<br />
+&nbsp;&nbsp;APPENDING&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr3<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;EQ&nbsp;scarr~carrid.<br />
+<br />
+<br />
+DATA : gt_sflight_t TYPE TABLE OF sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_store&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIKE&nbsp;gt_sflight_t.<br />
+<br />
+CLEAR : gt_sflight_t, gt_store.<br />
+<br />
+SELECT carrid connid fldate price currency planetype seatsmax<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsocc&nbsp;paymentsum<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_sflight_t<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;IN&nbsp;('AZ',&nbsp;'QF')&nbsp;AND&nbsp;planetype&nbsp;LIKE&nbsp;'A%'.<br />
+<br />
+cl_demo_output=&gt;display( gt_sflight_t ).<br />
+<br />
+APPEND LINES OF gt_sflight_t FROM 1 TO 10 TO gt_store.<br />
+<br />
+cl_demo_output=&gt;display( gt_store ).<br />
+<br />
+DATA : gt_testing TYPE TABLE OF sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_testing&nbsp;TYPE&nbsp;sflight.<br />
+CLEAR : gt_testing, gs_testing.<br />
+<br />
+SELECT carrid connid fldate price currency planetype seatsmax<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsocc&nbsp;paymentsum<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_testing<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;IN&nbsp;('AZ',&nbsp;'QF').<br />
+<br />
+LOOP AT gt_testing INTO gs_testing.<br />
+&nbsp;&nbsp;IF&nbsp;gs_testing-price&nbsp;&gt;=&nbsp;1000.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_testing-price&nbsp;=&nbsp;1000.<br />
+&nbsp;&nbsp;ELSEIF&nbsp;gs_testing-price&nbsp;&gt;=&nbsp;500.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_testing-price&nbsp;=&nbsp;500.<br />
+&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_testing-price&nbsp;=&nbsp;0.<br />
+&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;MODIFY&nbsp;gt_testing&nbsp;FROM&nbsp;gs_testing&nbsp;INDEX&nbsp;sy-tabix.<br />
+ENDLOOP.<br />
+cl_demo_output=&gt;display( gt_testing ).<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

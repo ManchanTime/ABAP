@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16003</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16003</h2>
+<h3> Description: [C1] ITAB Data access</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16003<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16003.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;table&nbsp;and&nbsp;Work&nbsp;area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-carrid,&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;###&nbsp;##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-connid,&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;#####&nbsp;##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fldate&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-fldate,&nbsp;&nbsp;"&nbsp;####<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrname&nbsp;TYPE&nbsp;scarr-carrname,&nbsp;&nbsp;"&nbsp;####<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityfrom&nbsp;TYPE&nbsp;spfli-cityfrom,&nbsp;&nbsp;"&nbsp;####<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityto&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-cityto,&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;####<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;i,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;Length<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_data&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_data.<br />
+<br />
+DATA : gt_data2 LIKE TABLE OF gs_data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_data3&nbsp;LIKE&nbsp;gt_data2,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;Internal&nbsp;Table&nbsp;To&nbsp;Internal&nbsp;Table<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_data3&nbsp;LIKE&nbsp;LINE&nbsp;OF&nbsp;gt_data,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;Internal&nbsp;Table&nbsp;To&nbsp;Work&nbsp;Area<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_data4&nbsp;TYPE&nbsp;LINE&nbsp;OF&nbsp;zlvc_t_cl1_info16,&nbsp;"&nbsp;Table&nbsp;Type&nbsp;To&nbsp;Work&nbsp;Area<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_data4&nbsp;TYPE&nbsp;zlvc_t_cl1_info16.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;Internal&nbsp;Table&nbsp;With&nbsp;Table&nbsp;Type<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Data&nbsp;access<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+CLEAR : gt_data, gs_data.<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;1.&nbsp;Work&nbsp;area#&nbsp;Data#&nbsp;####.&nbsp;(CARRID&nbsp;&lt;-&nbsp;'LH',&nbsp;CONNID&nbsp;&lt;-&nbsp;'0440')<br />
+   </div>
+   <div class="code">
+gs_data-carrid    = 'LH'.<br />
+gs_data-connid    = '0440'.<br />
+gs_data-fldate    = sy-datum.<br />
+gs_data-carrname  = 'Luft Hanza'.<br />
+gs_data-cityfrom  = 'Seoul'.<br />
+gs_data-cityto    = 'Busan'.<br />
+<br />
+APPEND gs_data TO gt_data.<br />
+<br />
+CLEAR gs_data.<br />
+gs_data-carrid    = 'AA'.<br />
+gs_data-connid    = '0100'.<br />
+gs_data-fldate    = '20250105'.<br />
+gs_data-carrname  = 'American airline'.<br />
+<br />
+<br />
+INSERT gs_data INTO TABLE gt_data.<br />
+<br />
+CLEAR gs_data.<br />
+gs_data-carrid    = 'CA'.<br />
+gs_data-connid    = '0700'.<br />
+gs_data-fldate    = '20250105'.<br />
+gs_data-carrname  = 'Canada airline'.<br />
+INSERT gs_data INTO gt_data INDEX 1.<br />
+<br />
+CLEAR gs_data.<br />
+gs_data-carrid    = 'AA'.<br />
+gs_data-connid    = '0200'.<br />
+gs_data-fldate    = '20250105'.<br />
+gs_data-carrname  = 'American airline'.<br />
+<br />
+INSERT gs_data INTO gt_data INDEX 4.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;CASE&nbsp;1&nbsp;:&nbsp;WITH&nbsp;KEY<br />
+   </div>
+   <div class="code">
+CLEAR gs_data.<br />
+READ TABLE gt_data INTO gs_data WITH KEY carrid = 'AA'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;=&nbsp;'0200'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gs_data&nbsp;).<br />
+<br />
+**--&nbsp;CASE&nbsp;2&nbsp;:&nbsp;INDEX<br />
+   </div>
+   <div class="code">
+CLEAR gs_data.<br />
+READ TABLE gt_data INTO gs_data INDEX 2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gs_data&nbsp;).<br />
+<br />
+   </div>
+   <div class="code">
+CLEAR gs_data.<br />
+gs_data-carrid    = 'CA'.<br />
+gs_data-connid    = '0700'.<br />
+gs_data-fldate    = '20250101'.<br />
+gs_data-carrname  = 'Canada airline'.<br />
+gs_data-size      = 17.                 " Updated data<br />
+<br />
+MODIFY gt_data FROM gs_data INDEX 1 TRANSPORTING size. " TRANSPORTING ### PATCH# ##! ## ## ## ## ##! (## #### ## ### # #!)<br />
+<br />
+   </div>
+   <div class="codeComment">
+*DELETE&nbsp;gt_data.&nbsp;"&nbsp;CLEAR&nbsp;gt_data&nbsp;#&nbsp;##<br />
+   </div>
+   <div class="code">
+DELETE gt_data WHERE carrid EQ 'AA' AND                 " ## #####?<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;EQ&nbsp;'0100'.<br />
+<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_data&nbsp;).<br />
+   </div>
+   <div class="code">
+CLEAR gs_data.<br />
+<br />
+WRITE :/ 'ALL DATA'.<br />
+SKIP 1.<br />
+LOOP AT gt_data INTO gs_data FROM 1 TO 2.<br />
+&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;gs_data-carrid,&nbsp;gs_data-connid,&nbsp;gs_data-carrname,&nbsp;gs_data-size.<br />
+&nbsp;&nbsp;gs_data-size&nbsp;+=&nbsp;1.<br />
+&nbsp;&nbsp;MODIFY&nbsp;gt_data&nbsp;FROM&nbsp;gs_data&nbsp;INDEX&nbsp;sy-tabix&nbsp;TRANSPORTING&nbsp;size.<br />
+&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;gs_data-carrid,&nbsp;gs_data-connid,&nbsp;gs_data-carrname,&nbsp;gs_data-size.<br />
+ENDLOOP.<br />
+<br />
+WRITE sy-uline. " ###<br />
+<br />
+WRITE :/ 'carrid EQ "AA"'.<br />
+SKIP 1.<br />
+LOOP AT gt_data INTO gs_data WHERE carrid EQ 'AA'.<br />
+&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;gs_data-carrid,&nbsp;gs_data-connid,&nbsp;gs_data-carrname.<br />
+ENDLOOP.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Process&nbsp;set&nbsp;data&nbsp;gt_data&nbsp;-&gt;&nbsp;gt_dat2<br />
+   </div>
+   <div class="code">
+CLEAR gt_data2.<br />
+INSERT LINES OF gt_data FROM 2 TO 3 INTO TABLE gt_data2.<br />
+<br />
+WRITE sy-uline.<br />
+WRITE :/ 'Copy Table With INSERT TABLE (gt_data -&gt; gt_data2)'.<br />
+SKIP 1.<br />
+LOOP AT gt_data2 INTO gs_data.<br />
+&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;gs_data-carrid,&nbsp;gs_data-connid,&nbsp;gs_data-carrname.<br />
+ENDLOOP.<br />
+<br />
+CLEAR gt_data2.<br />
+INSERT LINES OF gt_data FROM 2 TO 3 INTO gt_data2 INDEX 1.<br />
+<br />
+WRITE sy-uline.<br />
+WRITE :/ 'Copy Table With INSERT (gt_data -&gt; gt_data2)'.<br />
+SKIP 1.<br />
+LOOP AT gt_data2 INTO gs_data.<br />
+&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;gs_data-carrid,&nbsp;gs_data-connid,&nbsp;gs_data-carrname.<br />
+ENDLOOP.<br />
+<br />
+CLEAR gt_data2.<br />
+APPEND LINES OF gt_data FROM 2 TO 3 TO gt_data2.<br />
+<br />
+WRITE sy-uline.<br />
+WRITE :/ 'Copy Table With APPEND (gt_data -&gt; gt_data2)'.<br />
+SKIP 1.<br />
+LOOP AT gt_data2 INTO gs_data.<br />
+&nbsp;&nbsp;WRITE&nbsp;:/&nbsp;gs_data-carrid,&nbsp;gs_data-connid,&nbsp;gs_data-carrname.<br />
+ENDLOOP.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;####&nbsp;##<br />
+*CLEAR&nbsp;gs_data.<br />
+*CLEAR&nbsp;gt_data.<br />
+   </div>
+   <div class="code">
+INSERT gs_data INTO TABLE gt_data.<br />
+INSERT gs_data INTO gt_data2 INDEX 1.<br />
+INSERT LINES OF gt_data FROM 2 TO 10 INTO gt_data2 INDEX 1.<br />
+INSERT LINES OF gt_data FROM 2 TO 10 INTO TABLE gt_data2.<br />
+APPEND gs_data TO gt_data.<br />
+APPEND LINES OF gt_data TO gt_data2.<br />
+MODIFY gt_data FROM gs_data INDEX 1 TRANSPORTING size.<br />
+READ TABLE gt_data INTO gs_data INDEX 1.<br />
+READ TABLE gt_data INTO gs_data WITH KEY carrid = 'AA'.<br />
+DELETE gt_data FROM 1 TO 10.<br />
+DELETE gt_data WHERE carrid = 'AA'.<br />
+APPEND LINES OF gt_data FROM 1 TO 10 TO gt_data2.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

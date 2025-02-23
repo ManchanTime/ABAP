@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16009</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16009</h2>
+<h3> Description: [C1] Open SQL - C.R.U.D</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16009<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16009.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*Internal&nbsp;Table&nbsp;and&nbsp;Work&nbsp;Area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gt_board TYPE TABLE OF ztcl1board16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_board&nbsp;TYPE&nbsp;ztcl1board16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Main&nbsp;Logic<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+CLEAR : gs_board, gt_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Creation&nbsp;of&nbsp;Single&nbsp;record<br />
+*gs_board-seqno&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;1.<br />
+*gs_board-author&nbsp;&nbsp;&nbsp;=&nbsp;sy-uname.<br />
+*gs_board-comp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'1000'.<br />
+*gs_board-zyear&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;sy-datum.<br />
+*gs_board-zip_code&nbsp;=&nbsp;'113870'.<br />
+*gs_board-zzone&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'A'.<br />
+*<br />
+*INSERT&nbsp;ztcl1board16&nbsp;FROM&nbsp;gs_board.<br />
+<br />
+*--&nbsp;Creation&nbsp;of&nbsp;multiple&nbsp;record<br />
+   </div>
+   <div class="code">
+gs_board-seqno    = 2.<br />
+gs_board-author   = sy-uname.<br />
+gs_board-comp     = '2000'.<br />
+gs_board-zyear    = sy-datum.<br />
+gs_board-zip_code = '113870'.<br />
+gs_board-zzone    = 'A'.<br />
+APPEND gs_board TO gt_board.<br />
+<br />
+CLEAR gs_board.<br />
+<br />
+gs_board-seqno    = 3.<br />
+gs_board-author   = sy-uname.<br />
+gs_board-comp     = '3000'.<br />
+gs_board-zyear    = sy-datum.<br />
+gs_board-zip_code = '113871'.<br />
+gs_board-zzone    = 'C'.<br />
+APPEND gs_board TO gt_board.<br />
+<br />
+INSERT ztcl1board16 FROM TABLE gt_board<br />
+&nbsp;&nbsp;ACCEPTING&nbsp;DUPLICATE&nbsp;KEYS.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Update&nbsp;of&nbsp;single&nbsp;record<br />
+   </div>
+   <div class="code">
+CLEAR gs_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**--&nbsp;Set&nbsp;PK<br />
+   </div>
+   <div class="code">
+gs_board-seqno    = 1.<br />
+gs_board-author   = sy-uname.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Set&nbsp;Normal&nbsp;field&nbsp;for&nbsp;update<br />
+   </div>
+   <div class="code">
+gs_board-comp       = '3000'.<br />
+gs_board-zyear      = '2024'.<br />
+gs_board-zip_code   = '113871'.<br />
+gs_board-zzone      = 'A'.<br />
+<br />
+UPDATE ztcl1board16 FROM gs_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Update&nbsp;after&nbsp;get&nbsp;single&nbsp;record<br />
+   </div>
+   <div class="code">
+CLEAR gs_board.<br />
+SELECT SINGLE *<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;gs_board<br />
+&nbsp;&nbsp;FROM&nbsp;ztcl1board16<br />
+&nbsp;&nbsp;WHERE&nbsp;seqno&nbsp;=&nbsp;2&nbsp;AND&nbsp;author&nbsp;=&nbsp;sy-uname.<br />
+<br />
+gs_board-comp       = '2000'.<br />
+gs_board-zyear      = '2022'.<br />
+gs_board-zip_code   = '113872'.<br />
+gs_board-zzone      = 'B'.<br />
+<br />
+UPDATE ztcl1board16 FROM gs_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Using&nbsp;SET&nbsp;Mode<br />
+   </div>
+   <div class="code">
+UPDATE ztcl1board16<br />
+&nbsp;&nbsp;SET&nbsp;comp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gs_board-comp<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zyear&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;sy-datum<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zip_code&nbsp;=&nbsp;gs_board-zip_code<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zzone&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;gs_board-zzone<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;title&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'I&nbsp;am&nbsp;not&nbsp;a&nbsp;good&nbsp;person'<br />
+&nbsp;&nbsp;WHERE&nbsp;seqno&nbsp;=&nbsp;2&nbsp;AND&nbsp;author&nbsp;=&nbsp;'LEE'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Update&nbsp;multiple&nbsp;record<br />
+   </div>
+   <div class="code">
+CLEAR : gs_board, gt_board.<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Set&nbsp;PK<br />
+   </div>
+   <div class="code">
+gs_board-seqno  = 1.<br />
+gs_board-author = 'LSW'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Set&nbsp;normal&nbsp;field&nbsp;for&nbsp;update<br />
+   </div>
+   <div class="code">
+gs_board-kind   = 'c1'.<br />
+gs_board-title  = 'MULTIPLE TITLE'.<br />
+APPEND gs_board TO gt_board.<br />
+<br />
+CLEAR gs_board.<br />
+<br />
+gs_board-seqno  = 2.<br />
+gs_board-author = 'LEE'.<br />
+gs_board-kind   = 'D1'.<br />
+gs_board-title  = 'MULTIPLE TITLE2'.<br />
+APPEND gs_board TO gt_board.<br />
+<br />
+UPDATE ztcl1board16 FROM TABLE gt_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Delete&nbsp;of&nbsp;single&nbsp;record<br />
+   </div>
+   <div class="code">
+CLEAR : gs_board, gt_board.<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Set&nbsp;PK<br />
+   </div>
+   <div class="code">
+gs_board-seqno  = 3.<br />
+gs_board-author = 'KKK'.<br />
+<br />
+DELETE ztcl1board16 FROM gs_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Delete&nbsp;of&nbsp;multiple&nbsp;record<br />
+   </div>
+   <div class="code">
+CLEAR : gs_board, gt_board.<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Set&nbsp;PK<br />
+   </div>
+   <div class="code">
+gs_board-seqno  = 1.<br />
+gs_board-author = 'LSW'.<br />
+APPEND gs_board TO gt_board.<br />
+<br />
+CLEAR gs_board.<br />
+gs_board-seqno  = 2.<br />
+gs_board-author = 'LEE'.<br />
+APPEND gs_board TO gt_board.<br />
+<br />
+DELETE ztcl1board16 FROM TABLE gt_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Using&nbsp;FROM&nbsp;Mode<br />
+   </div>
+   <div class="code">
+DELETE FROM ztcl1board16<br />
+&nbsp;&nbsp;WHERE&nbsp;seqno&nbsp;BETWEEN&nbsp;2&nbsp;AND&nbsp;3.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Using&nbsp;MODIFY&nbsp;:&nbsp;Single&nbsp;record<br />
+*--&nbsp;Insert&nbsp;Data<br />
+   </div>
+   <div class="code">
+CLEAR gs_board.<br />
+gs_board-seqno    = 1.<br />
+gs_board-author   = sy-uname.<br />
+gs_board-comp     = '1000'.<br />
+gs_board-zyear    = sy-datum.<br />
+gs_board-zip_code = '113870'.<br />
+gs_board-zzone    = 'A'.<br />
+<br />
+INSERT ztcl1board16 FROM gs_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Insert&nbsp;set<br />
+   </div>
+   <div class="code">
+CLEAR gs_board.<br />
+gs_board-seqno  = 5.<br />
+gs_board-author = sy-uname.<br />
+gs_board-title  = 'NEW INSERTED'.<br />
+<br />
+MODIFY ztcl1board16 FROM gs_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Update&nbsp;set<br />
+   </div>
+   <div class="code">
+CLEAR gs_board.<br />
+gs_board-seqno  = 1.<br />
+gs_board-author = sy-uname.<br />
+gs_board-title  = 'NEW UPDATED'.<br />
+<br />
+MODIFY ztcl1board16 FROM gs_board.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Using&nbsp;MODIFY&nbsp;:&nbsp;Multiple&nbsp;record<br />
+   </div>
+   <div class="code">
+CLEAR : gs_board, gt_board.<br />
+gs_board-seqno  = 1.<br />
+gs_board-author = sy-uname.<br />
+gs_board-title  = 'MUILTIPLE UPDATED BY MODIFY'.<br />
+APPEND gs_board TO gt_board.<br />
+<br />
+CLEAR : gs_board.<br />
+gs_board-seqno  = 5.<br />
+gs_board-author = sy-uname.<br />
+gs_board-title  = 'MUILTIPLE UPDATED BY MODIFY'.<br />
+APPEND gs_board TO gt_board.<br />
+<br />
+CLEAR : gs_board.<br />
+gs_board-seqno  = 3.<br />
+gs_board-author = sy-uname.<br />
+gs_board-title  = 'MULTIPLE INSERTED BY MODIFY'.<br />
+APPEND gs_board TO gt_board.<br />
+<br />
+MODIFY ztcl1board16 FROM TABLE gt_board.<br />
+<br />
+IF sy-subrc EQ 0.<br />
+&nbsp;&nbsp;COMMIT&nbsp;WORK.<br />
+ELSE.<br />
+&nbsp;&nbsp;ROLLBACK&nbsp;WORK.<br />
+ENDIF.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

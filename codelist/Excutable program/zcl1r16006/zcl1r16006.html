@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16006</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16006</h2>
+<h3> Description: [C1] Open SQL- 2025.01.10</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16006<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16006.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;Table&nbsp;and&nbsp;Work&nbsp;Area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;air_cd&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;countryfr&nbsp;TYPE&nbsp;spfli-countryfr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;countryto&nbsp;TYPE&nbsp;spfli-countryto,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_spfli&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_spfli.<br />
+<br />
+DATA : BEGIN OF gs_info,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;air_cd&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;con_no&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minseats&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maxseats&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sumseats&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_info,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_info&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_info.<br />
+<br />
+DATA : gs_scarr    TYPE scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_cityfrom&nbsp;TYPE&nbsp;spfli-cityfrom,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_cityto&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-cityto.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Get&nbsp;Data<br />
+**********************************************************************<br />
+*--&nbsp;##&nbsp;######&nbsp;#####&nbsp;####&nbsp;###&nbsp;###&nbsp;####&nbsp;##<br />
+   </div>
+   <div class="code">
+CLEAR : gt_spfli, gs_spfli.<br />
+SELECT carrid AS air_cd<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;countryfr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;countryto<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_spfli<br />
+&nbsp;&nbsp;FROM&nbsp;spfli&nbsp;AS&nbsp;a<br />
+&nbsp;&nbsp;WHERE&nbsp;countryfr&nbsp;EQ&nbsp;a~countryto.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_spfli&nbsp;).<br />
+<br />
+*--&nbsp;GROUP&nbsp;BY&nbsp;SQL<br />
+   </div>
+   <div class="code">
+CLEAR : gt_info, gs_info.<br />
+SELECT carrid AS air_cd<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;AS&nbsp;con_no<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MIN(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;minseats<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAX(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;maxseats<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUM(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;sumseats<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_info<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;seatsocc&nbsp;GE&nbsp;200<br />
+&nbsp;&nbsp;GROUP&nbsp;BY&nbsp;carrid&nbsp;connid<br />
+&nbsp;&nbsp;HAVING&nbsp;SUM(&nbsp;seatsocc&nbsp;)&nbsp;LE&nbsp;2000<br />
+&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;carrid&nbsp;EQ&nbsp;'DL'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_info&nbsp;).<br />
+<br />
+*--&nbsp;Get&nbsp;Single&nbsp;Record<br />
+   </div>
+   <div class="code">
+CLEAR : gs_spfli, gs_scarr, gv_cityfrom, gv_cityto.<br />
+SELECT SINGLE carrid carrname currcode url<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;gs_scarr<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;EQ&nbsp;'LH'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Assign&nbsp;Value&nbsp;To&nbsp;Variable<br />
+   </div>
+   <div class="code">
+SELECT SINGLE countryfr countryto cityto<br />
+&nbsp;&nbsp;INTO&nbsp;(gs_spfli-countryfr,&nbsp;gs_spfli-countryto,&nbsp;gv_cityto)<br />
+&nbsp;&nbsp;FROM&nbsp;spfli<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;EQ&nbsp;'LH'.<br />
+<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Practice<br />
+   </div>
+   <div class="code">
+CLEAR : gt_info, gs_info.<br />
+SELECT carrid AS air_cd<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;AS&nbsp;con_no<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MIN(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;minseats<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAX(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;maxseats<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUM(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;sumseats<br />
+INTO CORRESPONDING FIELDS OF TABLE gt_info<br />
+FROM sflight<br />
+GROUP BY carrid connid<br />
+HAVING SUM( seatsocc ) LE 2000.<br />
+<br />
+SELECT carrid AS air_cd<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;AS&nbsp;con_no<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MIN(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;minseats<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAX(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;maxseats<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUM(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;sumseats<br />
+APPENDING CORRESPONDING FIELDS OF TABLE gt_info<br />
+   </div>
+   <div class="codeComment">
+*INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_info<br />
+   </div>
+   <div class="code">
+FROM sflight<br />
+GROUP BY carrid connid<br />
+HAVING SUM( seatsocc ) LE 1000.<br />
+<br />
+CLEAR : gt_info, gs_info.<br />
+SELECT SINGLE carrid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MIN(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;minseats<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAX(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;maxseats<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUM(&nbsp;seatsocc&nbsp;)&nbsp;AS&nbsp;sumseats<br />
+INTO (gs_info-air_cd, gs_info-con_no, gs_info-minseats, gs_info-maxseats, gs_info-sumseats)<br />
+FROM sflight<br />
+GROUP BY carrid connid<br />
+HAVING SUM( seatsocc ) LE 1000.<br />
+<br />
+cl_demo_output=&gt;display( gs_info ).<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

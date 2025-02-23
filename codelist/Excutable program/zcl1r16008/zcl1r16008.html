@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16008</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16008</h2>
+<h3> Description: [C1] Join</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16008<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16008.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;Table&nbsp;and&nbsp;Work&nbsp;Area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_schedule,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityfrom&nbsp;TYPE&nbsp;spfli-cityfrom,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityto&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-cityto,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrname&nbsp;TYPE&nbsp;scarr-carrname,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_schedule,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_schedule&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_schedule.<br />
+<br />
+DATA : BEGIN OF gs_flight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fldate&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;airpfrom&nbsp;TYPE&nbsp;spfli-airpfrom,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;airpto&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-airpto,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsmax&nbsp;TYPE&nbsp;sflight-seatsmax,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsocc&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_flight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_flight&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_flight.<br />
+<br />
+DATA : BEGIN OF gs_airline,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityfrom&nbsp;TYPE&nbsp;spfli-cityfrom,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityto&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-cityto,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsmax&nbsp;TYPE&nbsp;sflight-seatsmax,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsocc&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrname&nbsp;TYPE&nbsp;scarr-carrname,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_airline,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_airline&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_airline.<br />
+<br />
+DATA : BEGIN OF gs_booking,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fldate&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bookid&nbsp;&nbsp;&nbsp;TYPE&nbsp;sbook-bookid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityfrom&nbsp;TYPE&nbsp;spfli-cityfrom,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityto&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-cityto,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsmax&nbsp;TYPE&nbsp;sflight-seatsmax,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsocc&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;custtype&nbsp;TYPE&nbsp;sbook-custtype,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;smoker&nbsp;&nbsp;&nbsp;TYPE&nbsp;sbook-smoker,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_booking,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_booking&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_booking.<br />
+<br />
+DATA : BEGIN OF gs_mara_marc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;index&nbsp;TYPE&nbsp;sy-tabix,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matnr&nbsp;TYPE&nbsp;mara-matnr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;werks&nbsp;TYPE&nbsp;marc-werks,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ersda&nbsp;TYPE&nbsp;mara-ersda,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtart&nbsp;TYPE&nbsp;mara-mtart,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pstat&nbsp;TYPE&nbsp;marc-pstat,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_mara_marc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_mara_marc&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_mara_marc.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*Get&nbsp;data&nbsp;-&nbsp;JOIN&nbsp;SQL.<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+CLEAR : gs_schedule, gt_schedule.<br />
+SELECT a~carrid b~connid b~cityfrom b~cityto a~carrname<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_schedule<br />
+&nbsp;&nbsp;FROM&nbsp;scarr&nbsp;AS&nbsp;a<br />
+&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;spfli&nbsp;AS&nbsp;b<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;a~carrid&nbsp;EQ&nbsp;b~carrid<br />
+&nbsp;&nbsp;WHERE&nbsp;b~connid&nbsp;BETWEEN&nbsp;'0400'&nbsp;AND&nbsp;'0800'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_schedule&nbsp;).<br />
+<br />
+*--&nbsp;SPFLI#&nbsp;SFLIGHT#&nbsp;INNER&nbsp;JOIN##&nbsp;##&nbsp;Internal&nbsp;table#&nbsp;DATA#&nbsp;####.<br />
+   </div>
+   <div class="code">
+CLEAR : gs_flight, gt_flight.<br />
+<br />
+SELECT a~carrid a~connid fldate airpfrom airpto seatsmax seatsocc<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_flight<br />
+&nbsp;&nbsp;FROM&nbsp;spfli&nbsp;AS&nbsp;a<br />
+&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;sflight&nbsp;AS&nbsp;b<br />
+&nbsp;&nbsp;ON&nbsp;a~carrid&nbsp;EQ&nbsp;b~carrid&nbsp;AND&nbsp;a~connid&nbsp;EQ&nbsp;b~connid<br />
+&nbsp;&nbsp;WHERE&nbsp;a~connid&nbsp;BETWEEN&nbsp;'0400'&nbsp;AND&nbsp;'0800'<br />
+&nbsp;&nbsp;ORDER&nbsp;BY&nbsp;seatsmax&nbsp;DESCENDING&nbsp;seatsocc&nbsp;ASCENDING.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_flight&nbsp;).<br />
+<br />
+   </div>
+   <div class="code">
+CLEAR : gs_schedule, gt_schedule.<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;SCARR#&nbsp;SPFLI#&nbsp;LEFT&nbsp;OUTER&nbsp;JOIN##&nbsp;Internal&nbsp;Table#&nbsp;#####.<br />
+   </div>
+   <div class="code">
+SELECT a~carrid connid cityfrom cityto carrname<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_schedule<br />
+&nbsp;&nbsp;FROM&nbsp;scarr&nbsp;AS&nbsp;a<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LEFT&nbsp;OUTER&nbsp;JOIN&nbsp;spfli&nbsp;AS&nbsp;b<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;a~carrid&nbsp;EQ&nbsp;b~carrid<br />
+&nbsp;&nbsp;WHERE&nbsp;a~carrid&nbsp;BETWEEN&nbsp;'AA'&nbsp;AND&nbsp;'ZZ'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_schedule&nbsp;).<br />
+<br />
+*--&nbsp;SCARR&nbsp;AS&nbsp;a&nbsp;INNER&nbsp;JOIN&nbsp;SPFLI&nbsp;AS&nbsp;b&nbsp;INNER&nbsp;JOIN&nbsp;SFLIGHT&nbsp;AS&nbsp;c<br />
+   </div>
+   <div class="code">
+CLEAR : gs_airline, gt_airline.<br />
+SELECT a~carrid b~connid cityfrom cityto seatsmax seatsocc carrname<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_airline<br />
+&nbsp;&nbsp;FROM&nbsp;scarr&nbsp;AS&nbsp;a<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;spfli&nbsp;&nbsp;&nbsp;AS&nbsp;b&nbsp;ON&nbsp;a~carrid&nbsp;EQ&nbsp;b~carrid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;sflight&nbsp;AS&nbsp;c&nbsp;ON&nbsp;b~carrid&nbsp;EQ&nbsp;c~carrid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;b~connid&nbsp;EQ&nbsp;c~connid&nbsp;&nbsp;&nbsp;"&nbsp;A&nbsp;-&gt;&nbsp;B&nbsp;-&gt;&nbsp;C"<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;sflight&nbsp;AS&nbsp;c&nbsp;on&nbsp;a~carrid&nbsp;EQ&nbsp;c~carrid&nbsp;&nbsp;"&nbsp;A&nbsp;-&gt;&nbsp;B&nbsp;AND&nbsp;A&nbsp;-&gt;&nbsp;C<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;WHERE&nbsp;b~connid&nbsp;BETWEEN&nbsp;'0400'&nbsp;AND&nbsp;'0800'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_airline&nbsp;).<br />
+<br />
+   </div>
+   <div class="code">
+CLEAR : gs_booking, gt_booking.<br />
+SELECT a~carrid a~connid b~fldate bookid cityfrom<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityto&nbsp;seatsmax&nbsp;seatsocc&nbsp;custtype&nbsp;smoker<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_booking&nbsp;"UP&nbsp;TO&nbsp;100&nbsp;ROWS<br />
+&nbsp;&nbsp;FROM&nbsp;spfli&nbsp;AS&nbsp;a<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;sflight&nbsp;AS&nbsp;b<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;a~carrid&nbsp;EQ&nbsp;b~carrid&nbsp;AND&nbsp;a~connid&nbsp;EQ&nbsp;b~connid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;sbook&nbsp;&nbsp;&nbsp;AS&nbsp;c<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;b~carrid&nbsp;EQ&nbsp;c~carrid&nbsp;AND&nbsp;b~connid&nbsp;EQ&nbsp;c~connid<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;b~fldate&nbsp;EQ&nbsp;c~fldate<br />
+&nbsp;&nbsp;WHERE&nbsp;a~connid&nbsp;BETWEEN&nbsp;'0400'&nbsp;AND&nbsp;'0800'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;custtype&nbsp;NE&nbsp;'P'<br />
+&nbsp;&nbsp;ORDER&nbsp;BY&nbsp;seatsmax&nbsp;DESCENDING&nbsp;seatsocc&nbsp;DESCENDING.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_booking&nbsp;).<br />
+<br />
+*--&nbsp;Practice<br />
+   </div>
+   <div class="code">
+CLEAR : gs_mara_marc, gt_mara_marc.<br />
+<br />
+SELECT a~matnr werks ersda mtart b~pstat<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_mara_marc<br />
+&nbsp;&nbsp;FROM&nbsp;mara&nbsp;AS&nbsp;a<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;marc&nbsp;AS&nbsp;b&nbsp;ON&nbsp;a~matnr&nbsp;=&nbsp;b~matnr.<br />
+<br />
+LOOP AT gt_mara_marc INTO gs_mara_marc.<br />
+&nbsp;&nbsp;gs_mara_marc-index&nbsp;=&nbsp;sy-tabix.<br />
+&nbsp;&nbsp;MODIFY&nbsp;gt_mara_marc&nbsp;FROM&nbsp;gs_mara_marc<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INDEX&nbsp;sy-tabix&nbsp;TRANSPORTING&nbsp;index.<br />
+ENDLOOP.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_mara_marc&nbsp;).<br />
+<br />
+*--&nbsp;BKPF#&nbsp;BSIS&nbsp;####&nbsp;INNER&nbsp;JOIN##&nbsp;###&nbsp;####&nbsp;SELECT&nbsp;##.<br />
+*--&nbsp;BKPF&nbsp;AS&nbsp;a,&nbsp;BSIS&nbsp;AS&nbsp;b<br />
+*--&nbsp;SELECT&nbsp;##&nbsp;:<br />
+*--&nbsp;&nbsp;&nbsp;BUKRS&nbsp;EQ&nbsp;'0001'&nbsp;AND&nbsp;GJAHR&nbsp;EQ&nbsp;'2025'&nbsp;AND&nbsp;BUDAT&nbsp;IN&nbsp;'20250101'&nbsp;~&nbsp;'20250131'<br />
+*--&nbsp;Internal&nbsp;Table&nbsp;:&nbsp;GT_DOCU<br />
+*DATA&nbsp;:&nbsp;BEGIN&nbsp;OF&nbsp;gs_docu,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bukrs&nbsp;TYPE&nbsp;bkpf-bukrs,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;##&nbsp;PK<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;belnr&nbsp;TYPE&nbsp;bkpf-belnr,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;##&nbsp;PK<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gjahr&nbsp;TYPE&nbsp;bkpf-gjahr,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;##&nbsp;PK<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buzei&nbsp;TYPE&nbsp;bsis-buzei,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bktxt&nbsp;TYPE&nbsp;bkpf-bktxt,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mwskz&nbsp;TYPE&nbsp;bsis-mwskz,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kostl&nbsp;TYPE&nbsp;bsis-kostl,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sgtxt&nbsp;TYPE&nbsp;bsis-sgtxt,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shkzg&nbsp;TYPE&nbsp;bsis-shkzg,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wrbtr&nbsp;TYPE&nbsp;bsis-wrbtr,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;waers&nbsp;TYPE&nbsp;bkpf-waers,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_docu,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_docu&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_docu.<br />
+*<br />
+*CLEAR&nbsp;:&nbsp;gs_docu,&nbsp;gt_docu.<br />
+*<br />
+*SELECT&nbsp;a~bukrs&nbsp;a~belnr&nbsp;a~gjahr&nbsp;buzei&nbsp;bktxt<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mwskz&nbsp;kostl&nbsp;sgtxt&nbsp;shkzg&nbsp;wrbtr&nbsp;a~waers<br />
+*&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_docu<br />
+*&nbsp;&nbsp;FROM&nbsp;bkpf&nbsp;AS&nbsp;a<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;bsis&nbsp;AS&nbsp;b<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;a~bukrs&nbsp;EQ&nbsp;b~bukrs&nbsp;AND&nbsp;a~belnr&nbsp;EQ&nbsp;b~belnr<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;a~gjahr&nbsp;EQ&nbsp;b~gjahr<br />
+*&nbsp;&nbsp;WHERE&nbsp;a~bukrs&nbsp;EQ&nbsp;'0001'&nbsp;AND&nbsp;a~gjahr&nbsp;EQ&nbsp;'2025'<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;a~budat&nbsp;BETWEEN&nbsp;'20250101'&nbsp;AND&nbsp;'20250131'.<br />
+*<br />
+*cl_demo_output=&gt;display(&nbsp;gt_docu&nbsp;).<br />
+<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_docu,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bukrs&nbsp;TYPE&nbsp;bkpf-bukrs,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;belnr&nbsp;TYPE&nbsp;bkpf-belnr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gjahr&nbsp;TYPE&nbsp;bkpf-gjahr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buzei&nbsp;TYPE&nbsp;bsis-buzei,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bktxt&nbsp;TYPE&nbsp;bkpf-bktxt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mwskz&nbsp;TYPE&nbsp;bsis-mwskz,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kostl&nbsp;TYPE&nbsp;bsis-kostl,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sgtxt&nbsp;TYPE&nbsp;bsis-sgtxt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shkzg&nbsp;TYPE&nbsp;bsis-shkzg,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wrbtr&nbsp;TYPE&nbsp;bsis-wrbtr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;waers&nbsp;TYPE&nbsp;bkpf-waers,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_docu.<br />
+DATA gt_docu LIKE TABLE OF gs_docu.<br />
+DATA anumbering TYPE i.<br />
+<br />
+SELECT a~bukrs a~belnr a~gjahr b~buzei a~bktxt b~mwskz b~kostl<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b~sgtxt&nbsp;b~shkzg&nbsp;b~wrbtr&nbsp;a~waers<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_docu<br />
+&nbsp;&nbsp;FROM&nbsp;bkpf&nbsp;AS&nbsp;a&nbsp;INNER&nbsp;JOIN&nbsp;bsis&nbsp;AS&nbsp;b<br />
+&nbsp;&nbsp;ON&nbsp;a~bukrs&nbsp;=&nbsp;b~bukrs&nbsp;AND&nbsp;a~belnr&nbsp;=&nbsp;b~belnr<br />
+&nbsp;&nbsp;AND&nbsp;a~gjahr&nbsp;=&nbsp;b~gjahr<br />
+&nbsp;&nbsp;WHERE&nbsp;a~bukrs&nbsp;=&nbsp;'0001'&nbsp;AND&nbsp;a~gjahr&nbsp;=&nbsp;'2025'<br />
+&nbsp;&nbsp;AND&nbsp;a~budat&nbsp;BETWEEN&nbsp;'20250101'&nbsp;AND&nbsp;'20250131'.<br />
+DESCRIBE TABLE gt_docu LINES anumbering.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;cl_demo_output=&gt;write(&nbsp;|###&nbsp;#&nbsp;#:&nbsp;{&nbsp;anumbering&nbsp;}|&nbsp;).<br />
+*&nbsp;&nbsp;cl_demo_output=&gt;write(&nbsp;sy-uline&nbsp;).<br />
+*&nbsp;&nbsp;cl_demo_output=&gt;display(&nbsp;gt_DOCU&nbsp;).<br />
+<br />
+*--&nbsp;MARA&nbsp;####&nbsp;MTART#&nbsp;Text&nbsp;Table#&nbsp;INNER&nbsp;JOIN##&nbsp;###&nbsp;DATA#&nbsp;####.<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_material,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matnr&nbsp;TYPE&nbsp;mara-matnr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ersda&nbsp;TYPE&nbsp;mara-ersda,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vpsta&nbsp;TYPE&nbsp;mara-vpsta,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pstat&nbsp;TYPE&nbsp;mara-pstat,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtart&nbsp;TYPE&nbsp;mara-mtart,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtbez&nbsp;TYPE&nbsp;t134t-mtbez,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ntgew&nbsp;TYPE&nbsp;mara-ntgew,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gewei&nbsp;TYPE&nbsp;mara-gewei,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_material,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_material&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_material.<br />
+<br />
+CLEAR : gs_material, gt_material.<br />
+<br />
+SELECT matnr ersda vpsta pstat a~mtart mtbez ntgew gewei<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_material<br />
+&nbsp;&nbsp;FROM&nbsp;mara&nbsp;AS&nbsp;a<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;t134t&nbsp;AS&nbsp;b&nbsp;ON&nbsp;a~mtart&nbsp;=&nbsp;b~mtart<br />
+&nbsp;&nbsp;WHERE&nbsp;spras&nbsp;EQ&nbsp;sy-langu.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*DATA&nbsp;:&nbsp;lang(10).<br />
+*CASE&nbsp;sy-langu.<br />
+*&nbsp;&nbsp;WHEN&nbsp;'E'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;lang&nbsp;=&nbsp;'English'.<br />
+*&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;lang&nbsp;=&nbsp;'Others'.<br />
+*ENDCASE.<br />
+*<br />
+*LOOP&nbsp;AT&nbsp;gt_material&nbsp;INTO&nbsp;gs_material.<br />
+*&nbsp;&nbsp;gs_material-langu&nbsp;=&nbsp;lang.<br />
+*&nbsp;&nbsp;MODIFY&nbsp;gt_material&nbsp;FROM&nbsp;gs_material&nbsp;INDEX&nbsp;sy-tabix&nbsp;TRANSPORTING&nbsp;langu.<br />
+*ENDLOOP.<br />
+<br />
+*cl_demo_output=&gt;write(&nbsp;lang&nbsp;).<br />
+   </div>
+   <div class="code">
+cl_demo_output=&gt;display( gt_material ).<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

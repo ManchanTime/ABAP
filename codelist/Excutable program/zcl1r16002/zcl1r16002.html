@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16002</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16002</h2>
+<h3> Description: [C1] Internal table and Work area</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16002<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16002.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;TYPES&nbsp;:&nbsp;Local&nbsp;type<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+TYPES : BEGIN OF ts_airline,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-carrid,&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;###&nbsp;ID<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrname&nbsp;&nbsp;TYPE&nbsp;scarr-carrname,&nbsp;&nbsp;"&nbsp;####<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;countryfr&nbsp;TYPE&nbsp;spfli-countryfr,&nbsp;"&nbsp;####<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;countryto&nbsp;TYPE&nbsp;spfli-countryto,&nbsp;"&nbsp;####<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;ts_airline.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;table&nbsp;and&nbsp;Work&nbsp;area<br />
+**********************************************************************<br />
+*--&nbsp;Using&nbsp;local&nbsp;type&nbsp;structure<br />
+   </div>
+   <div class="code">
+DATA : gt_airline TYPE TABLE OF ts_airline,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_airline&nbsp;TYPE&nbsp;ts_airline.<br />
+<br />
+DATA : gt_air1 LIKE gt_airline, " Internal table<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_air2&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_airline.&nbsp;"&nbsp;Work&nbsp;area<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Using&nbsp;global&nbsp;type<br />
+   </div>
+   <div class="code">
+DATA : gt_scar  TYPE TABLE OF scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_bkpf&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;bkpf,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr&nbsp;TYPE&nbsp;scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_bkpf&nbsp;&nbsp;TYPE&nbsp;bkpf.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Declaration&nbsp;of&nbsp;Internal&nbsp;table&nbsp;and&nbsp;Work&nbsp;area<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_flight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;countryfr&nbsp;TYPE&nbsp;spfli-countryfr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityfrom&nbsp;&nbsp;TYPE&nbsp;spfli-cityfrom,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;countryto&nbsp;TYPE&nbsp;spfli-countryto,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cityto&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli-cityto,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrname&nbsp;&nbsp;TYPE&nbsp;scarr-carrname,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_flight.<br />
+<br />
+DATA : gt_flight LIKE TABLE OF gs_flight.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Practice<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_board_tax,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seqno&nbsp;&nbsp;TYPE&nbsp;ztcl1board16-seqno,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;author&nbsp;TYPE&nbsp;ztcl1board16-author,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;comp&nbsp;&nbsp;&nbsp;TYPE&nbsp;ztcl1board16-comp,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bukrs&nbsp;&nbsp;TYPE&nbsp;ztc1_tax_16-bukrs,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gjahr&nbsp;&nbsp;TYPE&nbsp;ztc1_tax_16-gjahr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mwskz&nbsp;&nbsp;TYPE&nbsp;ztc1_tax_16-mwskz,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_board_tax.<br />
+<br />
+DATA : gt_board_tax LIKE TABLE OF gs_board_tax.<br />
+<br />
+DATA : BEGIN OF gs_bkpf_bseg,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bukrs&nbsp;TYPE&nbsp;bkpf-bukrs,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;belnr&nbsp;TYPE&nbsp;bkpf-belnr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gjahr&nbsp;TYPE&nbsp;bkpf-gjahr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gsber&nbsp;TYPE&nbsp;bseg-gsber,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gtext&nbsp;TYPE&nbsp;tgsbt-gtext,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mwskz&nbsp;TYPE&nbsp;bseg-mwskz,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dmbtr&nbsp;TYPE&nbsp;bseg-dmbtr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pswsl&nbsp;TYPE&nbsp;bseg-pswsl,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_bkpf_bseg.<br />
+<br />
+DATA : gt_bkpf_bseg LIKE TABLE OF gs_bkpf_bseg.<br />
+<br />
+DATA : BEGIN OF gs_scarr2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrname&nbsp;TYPE&nbsp;scarr-carrname,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currcode&nbsp;TYPE&nbsp;scarr-currcode,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-url,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;val1(5)&nbsp;&nbsp;TYPE&nbsp;p&nbsp;DECIMALS&nbsp;3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_scarr2.<br />
+<br />
+DATA : gt_scarr LIKE TABLE OF gs_scarr2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;##&nbsp;####&nbsp;##&nbsp;Field#&nbsp;####&nbsp;##&nbsp;field#&nbsp;###&nbsp;Internal&nbsp;table<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_air3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INCLUDE&nbsp;STRUCTURE&nbsp;scarr.&nbsp;"&nbsp;INCLUDE&nbsp;TYPE#&nbsp;##,&nbsp;Transparent&nbsp;table#&nbsp;Include&nbsp;##&nbsp;##&nbsp;-&gt;&nbsp;mandt&nbsp;##&nbsp;##&nbsp;##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include&nbsp;structure&nbsp;<a&nbsp;href&nbsp;="zscl1_comp_16/dictionary-zscl1_comp_16.html">zscl1_comp_16</a>.<br />
+DATA :   val1(5) TYPE p DECIMALS 3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;val2(3),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_air3.<br />
+<br />
+DATA gt_air3 LIKE TABLE OF gs_air3.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Practice<br />
+   </div>
+   <div class="code">
+TYPES : BEGIN OF ts_makt.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INCLUDE&nbsp;STRUCTURE&nbsp;makt.<br />
+TYPES :   matkl TYPE mara-matkl,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtart&nbsp;TYPE&nbsp;mara-mtart,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mblnr&nbsp;TYPE&nbsp;mseg-mblnr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bwart&nbsp;TYPE&nbsp;mseg-bwart,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;ts_makt.<br />
+<br />
+DATA : gs_mara TYPE ts_makt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_mara&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_mara.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;4.<br />
+   </div>
+   <div class="code">
+DATA : gs_bsis TYPE bsis,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_bsis&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;bsis.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;5.<br />
+   </div>
+   <div class="code">
+DATA : gs_bsid TYPE bsid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_bsid&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;bsid.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;6.<br />
+   </div>
+   <div class="code">
+DATA : gs_bsik TYPE bsik,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_bsik&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;bsik.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;7.<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_cskt.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INCLUDE&nbsp;STRUCTURE&nbsp;cskt.<br />
+DATA :   pkzkp TYPE csks-pkzkp,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kosar&nbsp;TYPE&nbsp;csks-kosar,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;txjcd&nbsp;TYPE&nbsp;csks-txjcd,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_cskt.<br />
+<br />
+DATA : gt_cskt LIKE TABLE OF gs_cskt.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;9.<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_9,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;level(10),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stlan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;mast-stlan,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stlal&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;mast-stlal,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mantnr&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;mast-matnr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maktx&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;makt-maktx,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mnglg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;stpol-mnglg,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;meins&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;stpol-meins,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_9,<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_9&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_9.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;--&nbsp;10.<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_10,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtart&nbsp;TYPE&nbsp;t134-mtart,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtref&nbsp;TYPE&nbsp;t134-mtref,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mbref&nbsp;TYPE&nbsp;t134-mbref,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pstat&nbsp;TYPE&nbsp;t134-pstat,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vmtpo&nbsp;TYPE&nbsp;t134-vmtpo,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kzgrp&nbsp;TYPE&nbsp;t134-kzgrp,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kkref&nbsp;TYPE&nbsp;t134-kkref,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;krftx&nbsp;TYPE&nbsp;t025l-krftx,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_10,<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_10&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_10.<br />
+<br />
+DATA : BEGIN OF gs_scarr_sflight.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INCLUDE&nbsp;STRUCTURE&nbsp;scarr.<br />
+DATA :   connid    TYPE sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fldate&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-price,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currency&nbsp;&nbsp;TYPE&nbsp;sflight-currency,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;planetype&nbsp;TYPE&nbsp;sflight-planetype.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include&nbsp;structure&nbsp;<a&nbsp;href&nbsp;="zscl1_comp_16/dictionary-zscl1_comp_16.html">zscl1_comp_16</a>.<br />
+DATA : END OF gs_scarr_sflight.<br />
+<br />
+DATA : gt_scarr_sfligth LIKE TABLE OF gs_scarr_sflight.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

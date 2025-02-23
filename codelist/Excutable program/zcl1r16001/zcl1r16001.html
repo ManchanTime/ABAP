@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16001</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16001</h2>
+<h3> Description: [C1] Declaration of variable</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16001<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16001.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Local&nbsp;type&nbsp;-&nbsp;ABAP&nbsp;Dictionary<br />
+*--------------------------------------------------------------------*<br />
+*&nbsp;Declaration&nbsp;command&nbsp;:&nbsp;TYPES<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+TYPES : tv_char3 TYPE c LENGTH 3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tv_dec3&nbsp;&nbsp;TYPE&nbsp;p&nbsp;LENGTH&nbsp;5&nbsp;DECIMALS&nbsp;3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tv_int4&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tv_date&nbsp;&nbsp;TYPE&nbsp;d.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Declaration&nbsp;of&nbsp;variable<br />
+*--------------------------------------------------------------------*<br />
+*&nbsp;Using&nbsp;ABAP&nbsp;Incompete&nbsp;type<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gv_char3    TYPE tv_char3,  " Reference to local data type<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_char2&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c&nbsp;LENGTH&nbsp;2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_val1(2)&nbsp;&nbsp;TYPE&nbsp;c,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_var2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;c,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;Length#&nbsp;####&nbsp;###&nbsp;##&nbsp;1###&nbsp;###<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_var3,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;TYPE#&nbsp;####&nbsp;###&nbsp;##&nbsp;Char&nbsp;##&nbsp;-&gt;&nbsp;c&nbsp;###&nbsp;##&nbsp;1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_var4(10),&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;Char&nbsp;##,&nbsp;##&nbsp;10<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_carrid&nbsp;&nbsp;&nbsp;TYPE&nbsp;s_carr_id,&nbsp;"&nbsp;Refence&nbsp;to&nbsp;global&nbsp;type<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_bukrs&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;bukrs.<br />
+<br />
+DATA : gv_pvar1    TYPE p LENGTH 5 DECIMALS 2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_pvar2(5)&nbsp;TYPE&nbsp;p&nbsp;DECIMALS&nbsp;2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_num1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;n&nbsp;LENGTH&nbsp;5,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_num2(5)&nbsp;&nbsp;TYPE&nbsp;n,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_num3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LIKE&nbsp;gv_num1.&nbsp;&nbsp;&nbsp;"&nbsp;DATA&nbsp;####&nbsp;###&nbsp;###&nbsp;####&nbsp;##<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Using&nbsp;complete&nbsp;type<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gv_date1 TYPE d,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date2&nbsp;TYPE&nbsp;tv_date,&nbsp;&nbsp;"&nbsp;Reference&nbsp;to&nbsp;local&nbsp;type<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_budat&nbsp;TYPE&nbsp;budat,&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;Reference&nbsp;to&nbsp;global&nbsp;type<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_date3&nbsp;LIKE&nbsp;gv_date1,&nbsp;"&nbsp;Data&nbsp;####&nbsp;###&nbsp;###&nbsp;####&nbsp;##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_time&nbsp;&nbsp;TYPE&nbsp;t,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_int4&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_float&nbsp;TYPE&nbsp;f,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_str&nbsp;&nbsp;&nbsp;TYPE&nbsp;string.&nbsp;&nbsp;&nbsp;"&nbsp;Dynamic&nbsp;character&nbsp;string<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Reference&nbsp;to&nbsp;ABAP&nbsp;Dictionary&nbsp;-&nbsp;Global&nbsp;type&nbsp;(&nbsp;Table&nbsp;or&nbsp;Structure&nbsp;field)<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gv_carrid2   TYPE spfli-carrid,   " ${###}-${####}<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_countryfr&nbsp;TYPE&nbsp;spfli-countryfr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_cityfrom&nbsp;&nbsp;TYPE&nbsp;spfli-cityfrom.<br />
+<br />
+DATA : gv_bukrs2 TYPE bkpf-bukrs,  " Company code<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_belnr&nbsp;&nbsp;TYPE&nbsp;bkpf-belnr,&nbsp;&nbsp;"&nbsp;Document&nbsp;number<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_gjahr&nbsp;&nbsp;TYPE&nbsp;bkpf-gjahr.&nbsp;&nbsp;"&nbsp;Fiscal&nbsp;year<br />
+<br />
+DATA : gv_augbl TYPE bseg-augbl,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_koart&nbsp;TYPE&nbsp;bseg-koart,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_zumsk&nbsp;TYPE&nbsp;bseg-zumsk.<br />
+<br />
+DATA : gv_mandt TYPE sy-mandt,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_uname&nbsp;TYPE&nbsp;sy-uname,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_langu&nbsp;TYPE&nbsp;sy-langu,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_datum&nbsp;TYPE&nbsp;sy-datum,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_uzeit&nbsp;TYPE&nbsp;sy-uzeit,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_tcode&nbsp;TYPE&nbsp;sy-tcode,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_repid&nbsp;TYPE&nbsp;sy-repid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_index&nbsp;TYPE&nbsp;sy-index.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;table&nbsp;and&nbsp;work&nbsp;area&nbsp;(Structure)<br />
+**********************************************************************<br />
+*--&nbsp;Internal&nbsp;table&nbsp;:&nbsp;Reference&nbsp;to&nbsp;Transparent&nbsp;table<br />
+   </div>
+   <div class="code">
+DATA : gt_scarr   TYPE TABLE OF scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_spfli&nbsp;&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sflight&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sbook&nbsp;&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;sbook.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Work&nbsp;area&nbsp;:&nbsp;Reference&nbsp;to&nbsp;Transparent&nbsp;table<br />
+   </div>
+   <div class="code">
+DATA : gs_scarr   TYPE scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_spfli&nbsp;&nbsp;&nbsp;TYPE&nbsp;spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_sflight&nbsp;TYPE&nbsp;sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_sbook&nbsp;&nbsp;&nbsp;TYPE&nbsp;sbook.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Internal&nbsp;table&nbsp;:&nbsp;Reference&nbsp;to&nbsp;Structure<br />
+   </div>
+   <div class="code">
+DATA : gt_comp TYPE TABLE OF zscl1_comp_16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Work&nbsp;area&nbsp;:&nbsp;Reference&nbsp;to&nbsp;Structure<br />
+   </div>
+   <div class="code">
+DATA : gs_comp TYPE zscl1_comp_16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Internal&nbsp;table&nbsp;:&nbsp;Reference&nbsp;to&nbsp;Table&nbsp;type,&nbsp;Internal&nbsp;table&nbsp;###&nbsp;##&nbsp;####&nbsp;TABLE&nbsp;OF&nbsp;##&nbsp;##<br />
+   </div>
+   <div class="code">
+DATA : gt_info TYPE zlvc_t_cl1_info16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Work&nbsp;area&nbsp;:&nbsp;Reference&nbsp;to&nbsp;line&nbsp;type&nbsp;in&nbsp;Table&nbsp;type<br />
+   </div>
+   <div class="code">
+DATA : gs_info TYPE zscl1_comp_16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Practice<br />
+   </div>
+   <div class="code">
+DATA : gt_ztcl1board16 TYPE TABLE OF ztcl1board16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_ztcl1board16&nbsp;TYPE&nbsp;ztcl1board16.<br />
+<br />
+DATA : gt_ztc1_tax_16 TYPE TABLE OF ztc1_tax_16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_ztc1_tax_16&nbsp;TYPE&nbsp;ztc1_tax_16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Calculation<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gv_string  TYPE string VALUE 'SYNC6',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_len&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_number1&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_number2&nbsp;TYPE&nbsp;i.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Assign&nbsp;data<br />
+   </div>
+   <div class="code">
+gv_number1 = 7.<br />
+gv_number2 = 5.<br />
+<br />
+CLEAR gv_result.<br />
+<br />
+gv_result = gv_number1 + gv_number2.          " Adding<br />
+gv_result = gv_number1 - gv_number2.          " Subtraction<br />
+gv_result = gv_number1 * gv_number2.          " Multiply<br />
+gv_result = gv_number1 / gv_number2.          " Divide<br />
+gv_result = gv_result + 1.                    " Summary<br />
+gv_result = 2 ** 3.                           " Exponetitation<br />
+gv_result = ( gv_number1 * gv_number2 ) ** 2.<br />
+gv_result = gv_number1 DIV gv_number2.        " DIV<br />
+gv_result = gv_number1 MOD gv_number2.        " MOD<br />
+<br />
+gv_len = strlen( gv_string ).<br />
+<br />
+WRITE : 'gv_len : ', gv_len.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16019</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16019</h2>
+<h3> Description: [C1] Event practice 2</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16019<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16019 MESSAGE-ID zcl1msg16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;table&nbsp;&&nbsp;Work&nbsp;area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+TABLES : stravelag.<br />
+<br />
+DATA : BEGIN OF gs_data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;agencynum&nbsp;TYPE&nbsp;stravelag-agencynum,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;stravelag-name,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;street&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;stravelag-street,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;postcode&nbsp;&nbsp;TYPE&nbsp;stravelag-postcode,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contact&nbsp;&nbsp;&nbsp;TYPE&nbsp;sbuspart-contact,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contphono&nbsp;TYPE&nbsp;sbuspart-contphono,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;buspatyp&nbsp;&nbsp;TYPE&nbsp;sbuspart-buspatyp,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_data,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_data&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_data.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Common&nbsp;variables<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gv_tabix TYPE sy-tabix.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Selection&nbsp;screen<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.<br />
+&nbsp;&nbsp;SELECT-OPTIONS&nbsp;:&nbsp;so_agenc&nbsp;FOR&nbsp;stravelag-agencynum.<br />
+SELECTION-SCREEN END OF BLOCK pa1.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;INITIALIZATION<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+INITIALIZATION.<br />
+&nbsp;&nbsp;CLEAR&nbsp;so_agenc.<br />
+&nbsp;&nbsp;REFRESH&nbsp;so_agenc.<br />
+<br />
+&nbsp;&nbsp;so_agenc-sign&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_agenc-option&nbsp;=&nbsp;'BT'.<br />
+&nbsp;&nbsp;so_agenc-low&nbsp;=&nbsp;'100'.<br />
+&nbsp;&nbsp;so_agenc-high&nbsp;=&nbsp;'1500'.<br />
+&nbsp;&nbsp;APPEND&nbsp;so_agenc.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;so_agenc.<br />
+<br />
+&nbsp;&nbsp;so_agenc-sign&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_agenc-option&nbsp;=&nbsp;'EQ'.<br />
+&nbsp;&nbsp;so_agenc-low&nbsp;=&nbsp;'1'.<br />
+&nbsp;&nbsp;APPEND&nbsp;so_agenc.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;so_agenc.<br />
+<br />
+&nbsp;&nbsp;so_agenc-sign&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_agenc-option&nbsp;=&nbsp;'EQ'.<br />
+&nbsp;&nbsp;so_agenc-low&nbsp;=&nbsp;'5'.<br />
+&nbsp;&nbsp;APPEND&nbsp;so_agenc.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;so_agenc.<br />
+<br />
+&nbsp;&nbsp;so_agenc-sign&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_agenc-option&nbsp;=&nbsp;'EQ'.<br />
+&nbsp;&nbsp;so_agenc-low&nbsp;=&nbsp;'7'.<br />
+&nbsp;&nbsp;APPEND&nbsp;so_agenc.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;START-OF-SELECTION<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+START-OF-SELECTION.<br />
+&nbsp;&nbsp;SELECT&nbsp;agencynum&nbsp;name&nbsp;street&nbsp;postcode&nbsp;contact&nbsp;contphono<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_data<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;stravelag&nbsp;AS&nbsp;a<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;INNER&nbsp;JOIN&nbsp;sbuspart&nbsp;AS&nbsp;b<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;a~agencynum&nbsp;=&nbsp;b~buspartnum<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;agencynum&nbsp;IN&nbsp;so_agenc.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;langu&nbsp;=&nbsp;sy-langu.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CLEAR&nbsp;:&nbsp;gs_data,&nbsp;gv_tabix.<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_data&nbsp;INTO&nbsp;gs_data.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gv_tabix&nbsp;=&nbsp;sy-tabix.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_data-contphono&nbsp;IS&nbsp;NOT&nbsp;INITIAL&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_data-buspatyp&nbsp;=&nbsp;'FC'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSE.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_data-buspatyp&nbsp;=&nbsp;'TA'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MODIFY&nbsp;gt_data&nbsp;FROM&nbsp;gs_data&nbsp;INDEX&nbsp;gv_tabix&nbsp;TRANSPORTING&nbsp;buspatyp.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;cl_demo_output=&gt;display(&nbsp;gt_data&nbsp;).<br />
+<br />
+   </div>
+   <div class="codeComment">
+*Text&nbsp;elements<br />
+*----------------------------------------------------------<br />
+*&nbsp;T01&nbsp;Condition<br />
+<br />
+<br />
+*Selection&nbsp;texts<br />
+*----------------------------------------------------------<br />
+*&nbsp;SO_AGENC&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

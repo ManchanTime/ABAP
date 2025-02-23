@@ -1,0 +1,463 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16012</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16012</h2>
+<h3> Description: [C1] Loops Syntax</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16012<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16012 MESSAGE-ID ZCL1MSG16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;Table&nbsp;And&nbsp;Work&nbsp;Area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gt_mara TYPE TABLE OF mara,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_mara&nbsp;TYPE&nbsp;mara.<br />
+<br />
+DATA : gt_backup TYPE TABLE OF mara.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Backup&nbsp;DAta<br />
+   </div>
+   <div class="code">
+MOVE-CORRESPONDING gt_mara TO gt_backup.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Binary&nbsp;Search<br />
+*--------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+SORT gt_backup BY matnr mtart ASCENDING.<br />
+DELETE ADJACENT DUPLICATES FROM gt_backup COMPARING matnr mtart. " ALL FIELDS.<br />
+<br />
+CLEAR gs_mara.<br />
+READ TABLE gt_backup INTO gs_mara WITH KEY matnr = 'P001'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mtart&nbsp;=&nbsp;'FERT'<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BINARY&nbsp;SEARCH.<br />
+   </div>
+   <div class="codeComment">
+*--------------------------------------------------------------------*<br />
+<br />
+**********************************************************************<br />
+*Internal&nbsp;Table<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA: gt_sflight TYPE TABLE OF sflight, " ## ### ##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_sflight&nbsp;TYPE&nbsp;sflight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_scarr&nbsp;&nbsp;&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr.<br />
+<br />
+DATA : gv_cnt    TYPE i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_num1&nbsp;&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_num2&nbsp;&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;TYPE&nbsp;i.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Main&nbsp;Routine<br />
+**********************************************************************<br />
+<br />
+*--&nbsp;DO&nbsp;ENDDO<br />
+   </div>
+   <div class="code">
+DO.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;sy-index.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;(&nbsp;sy-index&nbsp;&gt;=&nbsp;10&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDDO.<br />
+<br />
+DATA : gv_msg(100),<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_cnt2(3)&nbsp;TYPE&nbsp;n.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Get&nbsp;Base&nbsp;Data<br />
+   </div>
+   <div class="code">
+CLEAR gt_scarr.<br />
+SELECT carrid carrname currcode url<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr<br />
+&nbsp;&nbsp;FROM&nbsp;scarr.<br />
+<br />
+CLEAR gs_scarr.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Case&nbsp;1&nbsp;:&nbsp;&&<br />
+   </div>
+   <div class="code">
+gv_msg = gv_cnt2 && 'Displayed'.<br />
+<br />
+CLEAR gv_msg.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--Case&nbsp;2&nbsp;:&nbsp;Concat<br />
+   </div>
+   <div class="code">
+gv_cnt2 = sy-dbcnt.<br />
+CONCATENATE gv_cnt2 'Displayed' INTO gv_msg SEPARATED BY '/'.<br />
+<br />
+MESSAGE i000 WITH gv_msg DISPLAY LIKE 'W'.<br />
+MESSAGE i037(k5) DISPLAY LIKE 'E'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;DO&nbsp;~&nbsp;ENDDO<br />
+   </div>
+   <div class="code">
+DO.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_scarr&nbsp;INTO&nbsp;gs_scarr&nbsp;INDEX&nbsp;sy-index.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_scarr-carrid,&nbsp;gs_scarr-carrname,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr-currcode,&nbsp;gs_scarr-url.<br />
+*&nbsp;&nbsp;SKIP&nbsp;1.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;lines(&nbsp;gt_scarr&nbsp;)&nbsp;=&nbsp;sy-index.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDDO.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*WRITE&nbsp;sy-uline.<br />
+<br />
+   </div>
+   <div class="code">
+DO.<br />
+&nbsp;&nbsp;gv_num1&nbsp;=&nbsp;1.<br />
+&nbsp;&nbsp;gv_num2&nbsp;=&nbsp;1.<br />
+&nbsp;&nbsp;gv_result&nbsp;+=&nbsp;(&nbsp;gv_num1&nbsp;+&nbsp;gv_num2&nbsp;).<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;gv_result&nbsp;&gt;=&nbsp;10&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDDO.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*WRITE&nbsp;sy-uline.<br />
+<br />
+*--&nbsp;DO&nbsp;n&nbsp;~&nbsp;ENDDO<br />
+   </div>
+   <div class="code">
+DO lines( gt_scarr ) TIMES.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_scarr&nbsp;INTO&nbsp;gs_scarr&nbsp;INDEX&nbsp;sy-index.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_scarr-carrid,&nbsp;gs_scarr-carrname,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr-currcode,&nbsp;gs_scarr-url.<br />
+*&nbsp;&nbsp;SKIP&nbsp;1.<br />
+   </div>
+   <div class="code">
+ENDDO.<br />
+<br />
+DO 7 TIMES.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;sy-index.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;sy-index&nbsp;=&nbsp;3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDDO.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Nested&nbsp;Loops<br />
+   </div>
+   <div class="code">
+DO 3 TIMES.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;'Outter&nbsp;loop&nbsp;:&nbsp;',&nbsp;sy-index.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;DO&nbsp;2&nbsp;TIMES.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;'Inner&nbsp;loop&nbsp;:&nbsp;',&nbsp;sy-index.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDDO.<br />
+ENDDO.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;While<br />
+   </div>
+   <div class="code">
+CLEAR gv_result.<br />
+WHILE gv_result &lt; 10.  " ### ### ###### ##<br />
+&nbsp;&nbsp;gv_result&nbsp;+=&nbsp;1.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;'WHILE&nbsp;Loops&nbsp;:&nbsp;',&nbsp;gv_result.<br />
+<br />
+*--&nbsp;This&nbsp;abort&nbsp;condition&nbsp;is&nbsp;optional<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;(&nbsp;gv_result&nbsp;&gt;&nbsp;5&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDWHILE.<br />
+<br />
+CLEAR gs_scarr.<br />
+gs_scarr-carrid = 'AA'.<br />
+SORT gt_scarr BY carrid ASCENDING.<br />
+WHILE gs_scarr-carrid BETWEEN 'AA' AND 'LH'.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_scarr&nbsp;INTO&nbsp;gs_scarr&nbsp;INDEX&nbsp;sy-index.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_scarr-carrid,&nbsp;gs_scarr-carrname,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr-currcode,&nbsp;gs_scarr-url.<br />
+*&nbsp;&nbsp;SKIP&nbsp;1.<br />
+   </div>
+   <div class="code">
+ENDWHILE.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*###&nbsp;##&nbsp;#####&nbsp;####&nbsp;####&nbsp;####.<br />
+**********************************************************************<br />
+*--&nbsp;1.&nbsp;DO<br />
+*WRITE&nbsp;:&nbsp;/&nbsp;'Do'.<br />
+   </div>
+   <div class="code">
+gv_num1 = 1.<br />
+gv_num2 = 1.<br />
+CLEAR gv_result.<br />
+DO.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;sy-index,&nbsp;'#'.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;gv_num1&nbsp;=&nbsp;sy-index.<br />
+&nbsp;&nbsp;DO.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gv_num1&nbsp;*&nbsp;sy-index.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gv_num1,&nbsp;'x',&nbsp;sy-index,&nbsp;'=',&nbsp;gv_result.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;sy-index&nbsp;+=&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(&nbsp;sy-index&nbsp;&gt;&nbsp;9&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDDO.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;sy-uline.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;(&nbsp;gv_num1&nbsp;&gt;&nbsp;9&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDDO.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.&nbsp;Do&nbsp;n&nbsp;Times<br />
+*WRITE&nbsp;:&nbsp;/&nbsp;'Do&nbsp;n&nbsp;Times'.<br />
+   </div>
+   <div class="code">
+gv_num1 = 1.<br />
+CLEAR gv_result.<br />
+DO 9 TIMES.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gv_num1,&nbsp;'#'.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;DO&nbsp;9&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gv_num1&nbsp;*&nbsp;sy-index.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gv_num1,&nbsp;'x',&nbsp;sy-index,&nbsp;'=',&nbsp;gv_result.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDDO.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;sy-uline.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;gv_num1&nbsp;+=&nbsp;1.<br />
+ENDDO.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;3.&nbsp;While<br />
+*WRITE&nbsp;:&nbsp;/&nbsp;'While'.<br />
+   </div>
+   <div class="code">
+gv_num1 = 1.<br />
+CLEAR gv_result.<br />
+WHILE gv_num1 &lt; 10.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gv_num1,&nbsp;'#'.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;WHILE&nbsp;sy-index&nbsp;&lt;&nbsp;9.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gv_num1&nbsp;*&nbsp;sy-index.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gv_num1,&nbsp;'x',&nbsp;sy-index,&nbsp;'=',&nbsp;gv_result.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDWHILE.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;sy-uline.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;gv_num1&nbsp;=&nbsp;sy-index.<br />
+<br />
+ENDWHILE.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;4.&nbsp;Loop&nbsp;At<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_index,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n1&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;op,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n2&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eq,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_index,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_index&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_index.<br />
+<br />
+CLEAR : gs_index, gt_index.<br />
+gs_index-n1 = 1.<br />
+gs_index-n2 = 1.<br />
+gs_index-op = 'x'.<br />
+gs_index-eq = '='.<br />
+DO 9 TIMES.<br />
+&nbsp;&nbsp;gs_index-n1&nbsp;=&nbsp;sy-index.<br />
+&nbsp;&nbsp;DO&nbsp;9&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_index-n2&nbsp;=&nbsp;sy-index.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_index-re&nbsp;=&nbsp;gs_index-n1&nbsp;*&nbsp;sy-index.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;APPEND&nbsp;gs_index&nbsp;TO&nbsp;gt_index.<br />
+&nbsp;&nbsp;ENDDO.<br />
+ENDDO.<br />
+<br />
+CLEAR gs_index.<br />
+gv_num1 = 0.<br />
+LOOP AT gt_index INTO gs_index.<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;sy-tabix&nbsp;MOD&nbsp;9&nbsp;=&nbsp;1&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gv_num1&nbsp;+=&nbsp;1.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;sy-uline.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gv_num1,&nbsp;'#'.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDIF.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_index-n1,&nbsp;gs_index-op,&nbsp;gs_index-n2,&nbsp;gs_index-eq,&nbsp;gs_index-re.<br />
+   </div>
+   <div class="code">
+ENDLOOP.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*MESSAGE&nbsp;e003(k5)&nbsp;WITH&nbsp;1000.<br />
+<br />
+<br />
+*Messages<br />
+*----------------------------------------------------------<br />
+*<br />
+*&nbsp;Message&nbsp;class:&nbsp;K5<br />
+*037&nbsp;&nbsp;&nbsp;No&nbsp;data&nbsp;found<br />
+*<br />
+*&nbsp;Message&nbsp;class:&nbsp;ZCL1MSG16<br />
+*000&nbsp;&nbsp;&nbsp;&<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

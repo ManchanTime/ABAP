@@ -1,0 +1,375 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16000
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16000.
+
+***********************************************************************
+*## ##
+**********************************************************************
+*-- TYPE
+TYPES : tv_i         TYPE i,
+        tv_c         TYPE c LENGTH 3,
+        tv_cshort(3),
+        tv_date      TYPE d,
+        tv_string    TYPE string.
+
+DATA : gv_i      TYPE tv_i,
+       gv_c      TYPE tv_c,
+       gv_cshort TYPE tv_cshort,
+       gv_date   TYPE tv_date,
+       gv_string TYPE tv_string.
+
+*-- DATA
+DATA : gv_i2 TYPE i,
+       gv_i3 LIKE gv_i2.
+
+DATA : gv_i4 TYPE i     VALUE 10,
+       gv_u5 LIKE gv_i4 VALUE 15,
+       gv_i6 TYPE tv_i  VALUE 20.
+
+*-- CONSTANTS
+CONSTANTS : gv_const TYPE i VALUE 10.
+CONSTANTS : gv_const2 TYPE string VALUE 'test'.
+
+*-- ### ##
+DATA : gv_system TYPE sy-mandt,
+       gv_date2  TYPE sy-datum,
+       gv_time   TYPE sy-uzeit,
+       gv_name   TYPE sy-uname,
+       gv_langu  TYPE sy-langu.
+gv_system = sy-mandt.
+
+**********************************************************************
+* Internal Table & Work Area
+**********************************************************************
+*-- Internal Table
+*-- 1. Type ##
+TYPES : ts_scarr   TYPE scarr,
+        ts_sflight TYPE sflight,
+        ts_spfli   TYPE spfli,
+        ts_sbook   TYPE sbook.
+
+DATA : gt_scarr   TYPE TABLE OF ts_scarr,
+       gt_sflight TYPE TABLE OF ts_sflight,
+       gt_spfli   TYPE TABLE OF ts_spfli,
+       gt_sbook   TYPE TABLE OF ts_sbook.
+
+*-- 2. DATA ##
+DATA : gt_scarr2   TYPE TABLE OF scarr,
+       gt_sflight2 TYPE TABLE OF sflight,
+       gt_spfli2   TYPE TABLE OF spfli,
+       gt_sbook2   TYPE TABLE OF sbook.
+
+*-- 3. LIKE ##
+DATA : gt_scarr3 LIKE gt_scarr2.
+
+*-- Work Area
+*-- 1. Type ##
+DATA : gs_scarr   TYPE ts_scarr,
+       gs_sflight TYPE ts_sflight,
+       gs_spfli   TYPE ts_spfli,
+       gs_sbook   TYPE ts_sbook.
+
+*-- 2. DATA ##
+DATA : gs_scarr2   TYPE scarr,
+       gs_sflight2 TYPE sflight,
+       gs_spfli2   TYPE spfli,
+       gs_sbook2   TYPE s_carr_id.
+*--------------------------------------------------------------------*
+* ##
+*--------------------------------------------------------------------*
+*-- Local Type ##
+*-- TYPE ##
+TYPES : BEGIN OF ts_sflight4,
+          carrid TYPE sflight-carrid,
+          connid TYPE sflight-connid,
+        END OF ts_sflight4.
+DATA : gs_sflight5 TYPE ts_sflight4,
+       gt_sfligth5 TYPE TABLE OF ts_sflight4.
+
+*-- DATA ##
+DATA : BEGIN OF gs_sflight4,
+         carrid TYPE sflight-carrid,
+         connid TYPE sflight-carrid,
+       END OF gs_sflight4,
+       gt_sflight4 LIKE TABLE OF gs_sflight4.
+
+*-- Table Type ## ZLVC_T_CL1_INFO16 ##
+DATA : gt_sbook3 TYPE zlvc_t_cl1_info16,
+       gs_sbook3 TYPE LINE OF zlvc_t_cl1_info16.
+
+**********************************************************************
+* ###
+**********************************************************************
+DATA : gv_int1   TYPE i,
+       gv_int2   TYPE i,
+       gv_result TYPE i.
+gv_int1 = 10.
+gv_int2 = 2.
+
+*-- ####
+gv_result = gv_int1 + gv_int2.
+gv_result = gv_int1 - gv_int2.
+gv_result = gv_int1 * gv_int2.
+gv_result = gv_int1 / gv_int2.
+
+*-- ### ##
+gv_result = gv_int1 MOD gv_int2.
+gv_result = gv_int1 ** gv_int2.
+gv_result = gv_int1 DIV gv_int2.
+
+**********************************************************************
+* Internal Table ### ##
+**********************************************************************
+*-- DATA
+DATA : BEGIN OF gs_use,
+         carrid TYPE sflight-carrid,
+         connid TYPE sflight-connid,
+         size   TYPE i,
+       END OF gs_use,
+       gt_use LIKE TABLE OF gs_use.
+
+DATA : gt_use2 LIKE gt_use.
+
+CLEAR : gs_use, gt_use.
+
+gs_use-carrid = 'AA'.
+gs_use-connid = '0100'.
+gs_use-size = 0.
+
+*-- ## ###
+*-- 1. Append
+APPEND gs_use TO gt_use.
+
+*-- 2. Insert
+*-- Table
+INSERT gs_use INTO TABLE gt_use.
+
+*-- General
+INSERT gs_use INTO gt_use INDEX 1.
+
+*-- 3. Read
+*-- Index
+READ TABLE gt_use INTO gs_use INDEX 1.
+
+*-- Using Key
+READ TABLE gt_use INTO gs_use WITH KEY carrid = 'AA'.
+
+*-- 4. Change
+*-- Table
+MODIFY TABLE gt_use FROM gs_use TRANSPORTING carrid.
+
+*-- General
+MODIFY gt_use FROM gs_use INDEX 1 TRANSPORTING carrid.
+
+*-- 5. Delete
+*DELETE gt_use WHERE carrid = 'AA'.
+
+*-- ## ###
+*-- 1. LOOP
+APPEND gs_use TO gt_use.
+LOOP AT gt_use INTO gs_use FROM 1 TO 100 WHERE carrid = 'AA'.
+  WRITE : / gs_use-carrid, gs_use-connid, gs_use-size.
+  gs_use-size += 1.
+  MODIFY gt_use FROM gs_use.
+*  INDEX sy-tabix.
+  WRITE : / gs_use-carrid, gs_use-connid, gs_use-size.
+ENDLOOP.
+
+cl_demo_output=>display( gt_use ).
+
+*-- 2. DELETE
+DELETE gt_use WHERE carrid = 'AA'.
+
+*-- 3. APPEND
+APPEND LINES OF gt_use FROM 1 TO 10 TO gt_use2.
+
+*-- 4. INSERT
+INSERT LINES OF gt_use FROM 1 TO 10 INTO TABLE gt_use2.
+
+**********************************************************************
+* Open SQL
+**********************************************************************
+*-- DATA
+DATA : BEGIN OF gs_unique,
+         carrid TYPE sflight-carrid,
+         connid TYPE sflight-connid,
+       END OF gs_unique,
+       gt_unique LIKE TABLE OF gs_unique.
+DATA : BEGIN OF gs_info,
+         air_cd   TYPE sflight-carrid,
+         con_no   TYPE sflight-connid,
+         minseats TYPE sflight-seatsocc,
+         maxseats TYPE sflight-seatsocc,
+         sumseats TYPE sflight-seatsocc,
+       END OF gs_info,
+       gt_info LIKE TABLE OF gs_info.
+
+DATA : gs_scarr3   TYPE scarr,
+       gv_cityfrom TYPE spfli-cityfrom,
+       gv_cityto   TYPE spfli-cityto.
+
+DATA : gt_scarr5 TYPE TABLE OF scarr.
+
+DATA : gt_t007s TYPE TABLE OF t007s.
+
+DATA : gt_cskt TYPE TABLE OF cskt.
+
+*-- 1. SELECT
+*-- ## ### ##
+CLEAR : gt_scarr5.
+SELECT carrid carrname currcode
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr5
+  FROM scarr
+  WHERE currcode = 'EUR'.
+
+*-- ### # ##
+CLEAR : gt_unique, gs_unique.
+SELECT DISTINCT carrid connid
+  INTO CORRESPONDING FIELDS OF TABLE gt_unique
+  FROM sflight
+  WHERE seatsocc GT 200.
+
+*-- ## ### ##
+CLEAR : gs_scarr3.
+SELECT SINGLE carrid carrname currcode
+  INTO CORRESPONDING FIELDS OF gs_scarr3
+  FROM scarr
+  WHERE carrid EQ 'AA'.
+
+*-- ### ### ##
+SELECT SINGLE cityfrom cityto
+  INTO (gv_cityfrom, gv_cityto)
+  FROM spfli.
+
+CLEAR gs_scarr3.
+SELECT SINGLE carrid cityfrom cityto
+  INTO (gs_scarr3-carrid, gv_cityfrom, gv_cityto)
+  FROM spfli
+  WHERE carrid = 'AA'.
+
+*-- 1. ####(MWSKZ)# Text table### #### ##(TEXT1)# ### Internal Table# ####.
+*         TOO7S ## ## : SPRAS EQ sy-langu, KALSM EQ 'TAXKR'
+CLEAR gt_t007s.
+SELECT text1
+  INTO CORRESPONDING FIELDS OF TABLE gt_t007s
+  FROM t007s
+  WHERE spras EQ sy-langu AND kalsm EQ 'TAXKR'.
+
+*-- 2. #####(KOSTL)# Text table### ## #### ### Internal Table# ####.
+*        CSKT #### : SPRAS EQ sy-langu KOKRS EQ '0001'
+CLEAR gt_cskt.
+SELECT spras kokrs kostl datbi ktext ltext mctxt
+  INTO CORRESPONDING FIELDS OF TABLE gt_cskt
+  FROM cskt
+  WHERE spras EQ sy-langu AND kokrs EQ '0001'.
+
+*-- 3.SCARR# ### Layout# Internal Table# #### Table# SELECT ## Internal Table# #### ####.
+*      SELECT ## : CARRID 'AA'# 'DL' #### ## ###
+CLEAR gt_scarr3.
+SELECT carrid carrname currcode url
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr3
+  FROM scarr
+  WHERE carrid BETWEEN 'AA' AND 'DL'.
+
+*-- 3-1. CARRID# 'AA', 'AB', 'CA', 'LH' #### ####.
+CLEAR gt_scarr3.
+SELECT carrid carrname currcode url
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr3
+  FROM scarr
+  WHERE carrid IN ('AA', 'AB', 'CA', 'LH').
+
+*-- GROUP BY ~ HAVING
+CLEAR : gs_info, gt_info.
+SELECT carrid AS air_cd connid AS con_no MIN( seatsocc ) AS minseats MAX( seatsocc ) AS maxseats SUM( seatsocc ) AS sumseats
+  INTO CORRESPONDING FIELDS OF TABLE gt_info
+  FROM sflight
+  WHERE carrid IN ('AA', 'AB')
+  GROUP BY carrid connid
+  HAVING SUM( seatsocc ) LE 100.
+
+*-- 4.SFLIGHT Table## ### ### Select ## Internal Table# ####.
+*     CARRID, CONNID, FLDATE, PRICE, CURRENCY, PLANETYPE, SEATSMAX, SEATSOCC, PAYMENTSUM
+*     SELECT ## : CARRID# 'AZ', 'QF' AND PLANETYPE# 'A%'# ###
+DATA : gt_sflight5 TYPE TABLE OF sflight.
+CLEAR : gt_sflight5.
+SELECT carrid connid fldate price currency planetype seatsmax seatsocc paymentsum
+  INTO CORRESPONDING FIELDS OF TABLE gt_sflight5
+  FROM sflight
+  WHERE carrid IN ('AZ', 'QF') AND planetype LIKE 'A%'.
+
+*-- 5. SBOOK Table## ### ### SELECT ## Internal Table# ####.
+*       CARRID, CONNID, FLDATE, BOOKID, CUSTOMID, CUSTTYPE, SMOKER, INVOICE, FORCURAM
+*       SELECT ## : FLDATE# '2020.10.01' ~ '2020.12.31' ### ### AND FORCURAM >= 800
+CLEAR gt_sbook.
+SELECT carrid connid fldate bookid customid custtype smoker invoice forcuram
+  INTO CORRESPONDING FIELDS OF TABLE gt_sbook
+  FROM sbook
+  WHERE fldate BETWEEN '20241001' AND '20241231' AND forcuram LE 100.
+CLEAR gs_sbook.
+LOOP AT gt_sbook INTO gs_sbook.
+  IF gs_sbook-smoker = 'X'.
+    gs_sbook-smoker = ''.
+    MODIFY gt_sbook FROM gs_sbook INDEX sy-tabix TRANSPORTING smoker.
+  ENDIF.
+
+ENDLOOP.
+cl_demo_output=>display( gt_sbook ).
+
+*-- Self Join
+CLEAR gt_scarr3.
+SELECT carrid carrname currcode
+  INTO CORRESPONDING FIELDS OF TABLE gt_scarr3
+  FROM scarr
+  WHERE carrid EQ scarr~carrid.
+
+*-- APPENDING
+SELECT carrid carrname currcode
+  APPENDING CORRESPONDING FIELDS OF TABLE gt_scarr3
+  FROM scarr
+  WHERE carrid EQ scarr~carrid.
+
+
+DATA : gt_sflight_t TYPE TABLE OF sflight,
+       gt_store     LIKE gt_sflight_t.
+
+CLEAR : gt_sflight_t, gt_store.
+
+SELECT carrid connid fldate price currency planetype seatsmax
+       seatsocc paymentsum
+  INTO CORRESPONDING FIELDS OF TABLE gt_sflight_t
+  FROM sflight
+  WHERE carrid IN ('AZ', 'QF') AND planetype LIKE 'A%'.
+
+cl_demo_output=>display( gt_sflight_t ).
+
+APPEND LINES OF gt_sflight_t FROM 1 TO 10 TO gt_store.
+
+cl_demo_output=>display( gt_store ).
+
+DATA : gt_testing TYPE TABLE OF sflight,
+       gs_testing TYPE sflight.
+CLEAR : gt_testing, gs_testing.
+
+SELECT carrid connid fldate price currency planetype seatsmax
+       seatsocc paymentsum
+  INTO CORRESPONDING FIELDS OF TABLE gt_testing
+  FROM sflight
+  WHERE carrid IN ('AZ', 'QF').
+
+LOOP AT gt_testing INTO gs_testing.
+  IF gs_testing-price >= 1000.
+    gs_testing-price = 1000.
+  ELSEIF gs_testing-price >= 500.
+    gs_testing-price = 500.
+  ELSE.
+    gs_testing-price = 0.
+  ENDIF.
+  MODIFY gt_testing FROM gs_testing INDEX sy-tabix.
+ENDLOOP.
+cl_demo_output=>display( gt_testing ).
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

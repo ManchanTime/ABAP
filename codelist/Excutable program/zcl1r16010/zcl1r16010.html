@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16010</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16010</h2>
+<h3> Description: [C1] Open SQL Practice</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16010<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16010.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Table&nbsp;:&nbsp;ZCL1BKPF16&nbsp;Practice<br />
+**********************************************************************<br />
+*--&nbsp;1.&nbsp;001000000<br />
+*&nbsp;Work&nbsp;Area#&nbsp;###&nbsp;INSERT&nbsp;####&nbsp;Single&nbsp;Record&nbsp;##<br />
+*--------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+DATA : gs_zcl1bkpf16 TYPE zcl1bkpf16,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_zcl1bkpf16&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;zcl1bkpf16.<br />
+<br />
+CLEAR : gs_zcl1bkpf16, gt_zcl1bkpf16.<br />
+<br />
+gs_zcl1bkpf16-bukrs      = '1000'.<br />
+gs_zcl1bkpf16-belnr      = '0010000000'.<br />
+gs_zcl1bkpf16-gjahr      = '2025'.<br />
+gs_zcl1bkpf16-blart      = 'SA'.<br />
+gs_zcl1bkpf16-budat      = '20250115'.<br />
+gs_zcl1bkpf16-bktxt      = 'First document header'.<br />
+gs_zcl1bkpf16-waers      = 'KRW'.<br />
+gs_zcl1bkpf16-issue_no   = 'TR202501001'.<br />
+gs_zcl1bkpf16-issue_date = '20250105'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*DELETE&nbsp;FROM&nbsp;zcl1bkpf16&nbsp;WHERE&nbsp;belnr&nbsp;=&nbsp;'0010000000'&nbsp;AND&nbsp;bukrs&nbsp;=&nbsp;'1000'.<br />
+   </div>
+   <div class="code">
+INSERT zcl1bkpf16 FROM gs_zcl1bkpf16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--------------------------------------------------------------------*<br />
+*--&nbsp;2.&nbsp;001000001&nbsp;001000003&nbsp;001000004&nbsp;001000005<br />
+*&nbsp;####&nbsp;Internal&nbsp;Table#&nbsp;###&nbsp;INSERT&nbsp;####&nbsp;Multiple&nbsp;Record&nbsp;##<br />
+*--------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+CLEAR gs_zcl1bkpf16.<br />
+gs_zcl1bkpf16-bukrs      = '1000'.<br />
+gs_zcl1bkpf16-belnr      = '0010000001'.<br />
+gs_zcl1bkpf16-gjahr      = '2025'.<br />
+gs_zcl1bkpf16-blart      = 'SA'.<br />
+gs_zcl1bkpf16-budat      = '20250114'.<br />
+gs_zcl1bkpf16-bktxt      = 'Second document header'.<br />
+gs_zcl1bkpf16-waers      = 'USD'.<br />
+gs_zcl1bkpf16-issue_no   = 'TR202501002'.<br />
+gs_zcl1bkpf16-issue_date = '20250105'.<br />
+<br />
+APPEND gs_zcl1bkpf16 TO gt_zcl1bkpf16.<br />
+<br />
+CLEAR gs_zcl1bkpf16.<br />
+gs_zcl1bkpf16-bukrs      = '1000'.<br />
+gs_zcl1bkpf16-belnr      = '0010000003'.<br />
+gs_zcl1bkpf16-gjahr      = '2025'.<br />
+gs_zcl1bkpf16-blart      = 'AB'.<br />
+gs_zcl1bkpf16-budat      = '20250110'.<br />
+gs_zcl1bkpf16-bktxt      = 'Third documeny header'.<br />
+gs_zcl1bkpf16-waers      = 'EUR'.<br />
+gs_zcl1bkpf16-issue_no   = 'TR202501003'.<br />
+gs_zcl1bkpf16-issue_date = '20250105'.<br />
+<br />
+APPEND gs_zcl1bkpf16 TO gt_zcl1bkpf16.<br />
+<br />
+CLEAR gs_zcl1bkpf16.<br />
+gs_zcl1bkpf16-bukrs      = '1000'.<br />
+gs_zcl1bkpf16-belnr      = '0010000004'.<br />
+gs_zcl1bkpf16-gjahr      = '2025'.<br />
+gs_zcl1bkpf16-blart      = 'AB'.<br />
+gs_zcl1bkpf16-budat      = '20250102'.<br />
+gs_zcl1bkpf16-bktxt      = 'Customer invoice'.<br />
+gs_zcl1bkpf16-waers      = 'KRW'.<br />
+gs_zcl1bkpf16-issue_no   = 'TR202501004'.<br />
+gs_zcl1bkpf16-issue_date = '20250105'.<br />
+<br />
+APPEND gs_zcl1bkpf16 TO gt_zcl1bkpf16.<br />
+<br />
+CLEAR gs_zcl1bkpf16.<br />
+gs_zcl1bkpf16-bukrs      = '1000'.<br />
+gs_zcl1bkpf16-belnr      = '0010000005'.<br />
+gs_zcl1bkpf16-gjahr      = '2025'.<br />
+gs_zcl1bkpf16-blart      = 'KR'.<br />
+gs_zcl1bkpf16-budat      = '20250103'.<br />
+gs_zcl1bkpf16-bktxt      = 'Vendor invoice'.<br />
+gs_zcl1bkpf16-waers      = 'KRW'.<br />
+gs_zcl1bkpf16-issue_no   = 'TR202501005'.<br />
+gs_zcl1bkpf16-issue_date = '20250110'.<br />
+<br />
+APPEND gs_zcl1bkpf16 TO gt_zcl1bkpf16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*DELETE&nbsp;zcl1bkpf16&nbsp;FROM&nbsp;TABLE&nbsp;gt_zcl1bkpf16.<br />
+   </div>
+   <div class="code">
+INSERT zcl1bkpf16 FROM TABLE gt_zcl1bkpf16<br />
+&nbsp;&nbsp;ACCEPTING&nbsp;DUPLICATE&nbsp;KEYS.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--------------------------------------------------------------------*<br />
+*--&nbsp;3.&nbsp;001000003<br />
+*&nbsp;BKTXT#&nbsp;###&nbsp;'Clearing&nbsp;document'#&nbsp;Update##.<br />
+*&nbsp;Work&nbsp;Area#&nbsp;###&nbsp;UPDATE&nbsp;##&nbsp;##<br />
+*--------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+CLEAR : gs_zcl1bkpf16, gt_zcl1bkpf16.<br />
+SELECT SINGLE bukrs belnr gjahr blart budat<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bktxt&nbsp;waers&nbsp;issue_no&nbsp;issue_date<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;gs_zcl1bkpf16<br />
+&nbsp;&nbsp;FROM&nbsp;zcl1bkpf16<br />
+&nbsp;&nbsp;WHERE&nbsp;bukrs&nbsp;=&nbsp;'1000'&nbsp;AND&nbsp;belnr&nbsp;=&nbsp;'0010000003'&nbsp;AND&nbsp;gjahr&nbsp;=&nbsp;'2025'.<br />
+<br />
+gs_zcl1bkpf16-bktxt = 'Clearing document'.<br />
+<br />
+UPDATE zcl1bkpf16 FROM gs_zcl1bkpf16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--------------------------------------------------------------------*<br />
+*--&nbsp;4.&nbsp;001000004&nbsp;001000005<br />
+*&nbsp;2##&nbsp;###&nbsp;WAERS#&nbsp;##.&nbsp;4#&nbsp;###&nbsp;EUR,&nbsp;5#&nbsp;###&nbsp;USD<br />
+*&nbsp;Itab#&nbsp;###&nbsp;UPDATE&nbsp;##<br />
+*--------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+CLEAR : gs_zcl1bkpf16, gt_zcl1bkpf16.<br />
+SELECT SINGLE bukrs belnr gjahr blart budat<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bktxt&nbsp;waers&nbsp;issue_no&nbsp;issue_date<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;gs_zcl1bkpf16<br />
+&nbsp;&nbsp;FROM&nbsp;zcl1bkpf16<br />
+&nbsp;&nbsp;WHERE&nbsp;bukrs&nbsp;=&nbsp;'1000'&nbsp;AND&nbsp;belnr&nbsp;=&nbsp;'0010000004'&nbsp;AND&nbsp;gjahr&nbsp;=&nbsp;'2025'.<br />
+<br />
+gs_zcl1bkpf16-waers = 'EUR'.<br />
+<br />
+APPEND gs_zcl1bkpf16 TO gt_zcl1bkpf16.<br />
+<br />
+CLEAR gs_zcl1bkpf16.<br />
+SELECT SINGLE bukrs belnr gjahr blart budat<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bktxt&nbsp;waers&nbsp;issue_no&nbsp;issue_date<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;gs_zcl1bkpf16<br />
+&nbsp;&nbsp;FROM&nbsp;zcl1bkpf16<br />
+&nbsp;&nbsp;WHERE&nbsp;bukrs&nbsp;=&nbsp;'1000'&nbsp;AND&nbsp;belnr&nbsp;=&nbsp;'0010000005'&nbsp;AND&nbsp;gjahr&nbsp;=&nbsp;'2025'.<br />
+<br />
+gs_zcl1bkpf16-waers = 'USD'.<br />
+<br />
+APPEND gs_zcl1bkpf16 TO gt_zcl1bkpf16.<br />
+<br />
+UPDATE zcl1bkpf16 FROM TABLE gt_zcl1bkpf16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--------------------------------------------------------------------*<br />
+*--&nbsp;5.&nbsp;001000001<br />
+*&nbsp;###&nbsp;####.<br />
+*--------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+CLEAR gs_zcl1bkpf16.<br />
+gs_zcl1bkpf16-bukrs = '1000'.<br />
+gs_zcl1bkpf16-belnr = '0010000001'.<br />
+gs_zcl1bkpf16-gjahr = '2025'.<br />
+<br />
+DELETE zcl1bkpf16 FROM gs_zcl1bkpf16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--------------------------------------------------------------------*<br />
+*--&nbsp;6.&nbsp;0010000000&nbsp;001000006<br />
+*&nbsp;###&nbsp;BUDAT#&nbsp;'20250115'#&nbsp;##&nbsp;ITAB#&nbsp;###&nbsp;MODIFY<br />
+*--------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+CLEAR : gs_zcl1bkpf16, gt_zcl1bkpf16.<br />
+SELECT bukrs belnr gjahr blart budat<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bktxt&nbsp;waers&nbsp;issue_no&nbsp;issue_date<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_zcl1bkpf16<br />
+&nbsp;&nbsp;FROM&nbsp;zcl1bkpf16<br />
+&nbsp;&nbsp;WHERE&nbsp;bukrs&nbsp;=&nbsp;'1000'&nbsp;AND&nbsp;belnr&nbsp;IN&nbsp;('0010000000',&nbsp;'0010000005')<br />
+&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;gjahr&nbsp;=&nbsp;'2025'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;LOOP&nbsp;AT<br />
+   </div>
+   <div class="code">
+LOOP AT gt_zcl1bkpf16 INTO gs_zcl1bkpf16.<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_zcl1bkpf16-bukrs&nbsp;=&nbsp;'1000'&nbsp;AND&nbsp;gs_zcl1bkpf16-gjahr&nbsp;=&nbsp;'2025'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_zcl1bkpf16-belnr&nbsp;=&nbsp;'0010000000'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_zcl1bkpf16-budat&nbsp;=&nbsp;'20250116'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;(&nbsp;gs_zcl1bkpf16-belnr&nbsp;=&nbsp;'0010000005'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_zcl1bkpf16-belnr&nbsp;=&nbsp;'0010000006'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;MODIFY&nbsp;gt_zcl1bkpf16&nbsp;FROM&nbsp;gs_zcl1bkpf16&nbsp;INDEX&nbsp;sy-tabix<br />
+&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORTING&nbsp;belnr&nbsp;budat.<br />
+ENDLOOP.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;DO&nbsp;~&nbsp;ENDDO<br />
+   </div>
+   <div class="code">
+DO.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_zcl1bkpf16&nbsp;INTO&nbsp;gs_zcl1bkpf16&nbsp;INDEX&nbsp;sy-index.<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_zcl1bkpf16-bukrs&nbsp;=&nbsp;'1000'&nbsp;AND&nbsp;gs_zcl1bkpf16-gjahr&nbsp;=&nbsp;'2025'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_zcl1bkpf16-belnr&nbsp;=&nbsp;'0010000000'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_zcl1bkpf16-budat&nbsp;=&nbsp;'20250116'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ELSEIF&nbsp;(&nbsp;gs_zcl1bkpf16-belnr&nbsp;=&nbsp;'0010000005'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_zcl1bkpf16-belnr&nbsp;=&nbsp;'0010000006'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;ENDIF.<br />
+&nbsp;&nbsp;MODIFY&nbsp;gt_zcl1bkpf16&nbsp;FROM&nbsp;gs_zcl1bkpf16&nbsp;INDEX&nbsp;sy-index<br />
+&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORTING&nbsp;belnr&nbsp;budat.<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;sy-subrc&nbsp;&lt;&gt;&nbsp;0&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDDO.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;READ&nbsp;TABLE<br />
+*READ&nbsp;TABLE&nbsp;gt_zcl1bkpf16&nbsp;INTO&nbsp;gs_zcl1bkpf16<br />
+*&nbsp;&nbsp;WITH&nbsp;KEY&nbsp;belnr&nbsp;=&nbsp;'0010000000'&nbsp;bukrs&nbsp;=&nbsp;'1000'&nbsp;gjahr&nbsp;=&nbsp;'2025'.<br />
+*gs_zcl1bkpf16-budat&nbsp;=&nbsp;'20250116'.<br />
+*MODIFY&nbsp;gt_zcl1bkpf16&nbsp;FROM&nbsp;gs_zcl1bkpf16&nbsp;INDEX&nbsp;sy-tabix.<br />
+*<br />
+*READ&nbsp;TABLE&nbsp;gt_zcl1bkpf16&nbsp;INTO&nbsp;gs_zcl1bkpf16<br />
+*&nbsp;&nbsp;WITH&nbsp;KEY&nbsp;belnr&nbsp;=&nbsp;'0010000005'&nbsp;bukrs&nbsp;=&nbsp;'1000'&nbsp;gjahr&nbsp;=&nbsp;'2025'.<br />
+*gs_zcl1bkpf16-belnr&nbsp;=&nbsp;'0010000006'.<br />
+*MODIFY&nbsp;gt_zcl1bkpf16&nbsp;FROM&nbsp;gs_zcl1bkpf16&nbsp;INDEX&nbsp;sy-tabix.<br />
+<br />
+   </div>
+   <div class="code">
+MODIFY zcl1bkpf16 FROM TABLE gt_zcl1bkpf16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--------------------------------------------------------------------*<br />
+<br />
+   </div>
+   <div class="code">
+IF sy-subrc = 0.<br />
+&nbsp;&nbsp;COMMIT&nbsp;WORK.<br />
+ELSE.<br />
+&nbsp;&nbsp;ROLLBACK&nbsp;WORK.<br />
+ENDIF.<br />
+<br />
+CASE sy-subrc.<br />
+&nbsp;&nbsp;WHEN&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;COMMIT&nbsp;WORK.<br />
+&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ROLLBACK&nbsp;WORK.<br />
+ENDCASE.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

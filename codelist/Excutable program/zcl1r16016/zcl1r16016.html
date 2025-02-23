@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16016</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16016</h2>
+<h3> Description: [C1] Header line internal table</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16016<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16016 MESSAGE-ID zcl1msg16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;table&nbsp;and&nbsp;Work&nbsp;area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gt_bkpf TYPE TABLE OF bkpf,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_bkpf&nbsp;TYPE&nbsp;bkpf.<br />
+<br />
+DATA : BEGIN OF gs_data1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;TYPE&nbsp;scarr-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;TYPE&nbsp;spfli-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fldate&nbsp;TYPE&nbsp;sflight-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-url,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_data1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_data1&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_data1.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Headerline&nbsp;internal&nbsp;table<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gt_scarr TYPE TABLE OF scarr WITH HEADER LINE,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_spfli&nbsp;TYPE&nbsp;TABLE&nbsp;OF&nbsp;spfli&nbsp;WITH&nbsp;HEADER&nbsp;LINE.<br />
+<br />
+DATA : gt_sflight TYPE sflight OCCURS 0 WITH HEADER LINE.<br />
+<br />
+DATA : BEGIN OF gt_flight OCCURS 0,   " ## #### ## #### ###<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;TYPE&nbsp;scarr-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;TYPE&nbsp;spfli-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fldate&nbsp;TYPE&nbsp;sflight-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-url,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gt_flight.<br />
+<br />
+TABLES scarr.<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Selection&nbsp;screen<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+SELECT-OPTIONS so_carr FOR scarr-carrid.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;INITIALIZATION<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+INITIALIZATION.<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;1.&nbsp;SO_CARR#&nbsp;Default#&nbsp;'AA'&nbsp;~&nbsp;'LH'&nbsp;###&nbsp;##&nbsp;##.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;so_carr-sign&nbsp;&nbsp;&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_carr-option&nbsp;=&nbsp;'BT'.<br />
+&nbsp;&nbsp;so_carr-low&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'AA'.<br />
+&nbsp;&nbsp;so_carr-high&nbsp;&nbsp;&nbsp;=&nbsp;'LH'.<br />
+&nbsp;&nbsp;APPEND&nbsp;so_carr.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;so_carr.<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;1.1&nbsp;SO_CARR#&nbsp;Default#&nbsp;'BA'&nbsp;##&nbsp;###&nbsp;####.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;so_carr-sign&nbsp;&nbsp;&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_carr-option&nbsp;=&nbsp;'EQ'.<br />
+&nbsp;&nbsp;so_carr-low&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'BA'.<br />
+&nbsp;&nbsp;APPEND&nbsp;so_carr.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;AT&nbsp;SELECTION-SCREEN<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+AT SELECTION-SCREEN.<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;##&nbsp;low#&nbsp;'BA'##&nbsp;##&nbsp;SO_CARR#&nbsp;####&nbsp;####<br />
+*&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;so_carr.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(&nbsp;so_carr-low&nbsp;=&nbsp;'BA'&nbsp;).<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s001&nbsp;WITH&nbsp;'BA#&nbsp;###&nbsp;###!!!!!!!!!!'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STOP.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+*&nbsp;&nbsp;ENDLOOP.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;so_carr&nbsp;WITH&nbsp;KEY&nbsp;low&nbsp;=&nbsp;'BA'.<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;so_carr-low&nbsp;=&nbsp;'BA'&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s001&nbsp;WITH&nbsp;'BA#&nbsp;###&nbsp;###!!!!!!!!!!'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;STOP.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;EXIT##&nbsp;##&nbsp;###&nbsp;##&nbsp;#&nbsp;##&nbsp;##&nbsp;##&nbsp;BUT&nbsp;STOP##&nbsp;##&nbsp;####&nbsp;##<br />
+&nbsp;&nbsp;ENDIF.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;so_carr&nbsp;WHERE&nbsp;low&nbsp;=&nbsp;'BA'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s001&nbsp;WITH&nbsp;'BA#&nbsp;###&nbsp;###!!!!!!!!!!'.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;STOP.<br />
+*&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+**********************************************************************<br />
+*&nbsp;Start&nbsp;of&nbsp;main&nbsp;routine<br />
+**********************************************************************<br />
+*--&nbsp;1.&nbsp;GT_SCARR#&nbsp;CARRID&nbsp;=&nbsp;'AA'&nbsp;CARRNAME&nbsp;=&nbsp;'American&nbsp;airline'<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CURROCDE&nbsp;=&nbsp;'USD'&nbsp;URL&nbsp;=&nbsp;'http://www.aa.com'#&nbsp;APPEND<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;gt_scarr-carrid&nbsp;&nbsp;&nbsp;=&nbsp;'AA'.<br />
+&nbsp;&nbsp;gt_scarr-carrname&nbsp;=&nbsp;'American&nbsp;airline'.<br />
+&nbsp;&nbsp;gt_scarr-currcode&nbsp;=&nbsp;'USD'.<br />
+&nbsp;&nbsp;gt_scarr-url&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'http://www.aa.com'.<br />
+&nbsp;&nbsp;APPEND&nbsp;gt_scarr.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2.&nbsp;GT_SPFLI#&nbsp;CARRID&nbsp;=&nbsp;'LH'&nbsp;CONNID&nbsp;=&nbsp;'0400'&nbsp;CITYFROM&nbsp;=&nbsp;'NEW&nbsp;YORK'<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CITYTO&nbsp;=&nbsp;'SEOUL'#&nbsp;APPEND<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;gt_spfli-carrid&nbsp;&nbsp;&nbsp;=&nbsp;'LH'.<br />
+&nbsp;&nbsp;gt_spfli-connid&nbsp;&nbsp;&nbsp;=&nbsp;'0400'.<br />
+&nbsp;&nbsp;gt_spfli-cityfrom&nbsp;=&nbsp;'NEW&nbsp;YORK'.<br />
+&nbsp;&nbsp;gt_spfli-cityto&nbsp;&nbsp;&nbsp;=&nbsp;'SEOUL'.<br />
+&nbsp;&nbsp;APPEND&nbsp;gt_spfli.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;3.&nbsp;GT_FLIGHT#&nbsp;CARRID&nbsp;=&nbsp;'BA'&nbsp;CONNID&nbsp;=&nbsp;'0050'&nbsp;FLDATE&nbsp;=&nbsp;System&nbsp;date<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL&nbsp;=&nbsp;'http://www.britishairway.com'#&nbsp;APPEND<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;gt_flight-carrid&nbsp;=&nbsp;'BA'.<br />
+&nbsp;&nbsp;gt_flight-connid&nbsp;=&nbsp;'0050'.<br />
+&nbsp;&nbsp;gt_flight-fldate&nbsp;=&nbsp;sy-datum.<br />
+&nbsp;&nbsp;gt_flight-url&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'http://www.britishairway.com'.<br />
+&nbsp;&nbsp;APPEND&nbsp;gt_flight.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;4.&nbsp;GT_SCARR##&nbsp;CARRID&nbsp;=&nbsp;'AA'&nbsp;AND&nbsp;CURRCODE&nbsp;=&nbsp;'USD'#&nbsp;####&nbsp;###.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_scarr&nbsp;WITH&nbsp;KEY&nbsp;carrid&nbsp;=&nbsp;'AA'&nbsp;currcode&nbsp;=&nbsp;'USD'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;5.&nbsp;GT_FLIGHT#&nbsp;1##&nbsp;##&nbsp;###.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_flight&nbsp;INDEX&nbsp;1.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;LOOP&nbsp;#<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_flight.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;:&nbsp;gt_flight-carrid.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDLOOP.<br />
+<br />
+&nbsp;&nbsp;REFRESH&nbsp;gt_scarr.&nbsp;&nbsp;&nbsp;"&nbsp;ITAB&nbsp;##&nbsp;CLEAR<br />
+&nbsp;&nbsp;CLEAR&nbsp;&nbsp;&nbsp;gt_scarr.&nbsp;&nbsp;&nbsp;"&nbsp;Header&nbsp;line&nbsp;CLEAR<br />
+&nbsp;&nbsp;gt_scarr-carrid&nbsp;&nbsp;&nbsp;=&nbsp;'AA'.<br />
+&nbsp;&nbsp;gt_scarr-carrname&nbsp;=&nbsp;'American&nbsp;airline'.<br />
+&nbsp;&nbsp;gt_scarr-currcode&nbsp;=&nbsp;'USD'.<br />
+&nbsp;&nbsp;gt_scarr-url&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'www.aa.com'.<br />
+&nbsp;&nbsp;APPEND&nbsp;gt_scarr.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gt_scarr.<br />
+<br />
+&nbsp;&nbsp;cl_demo_output=&gt;display(&nbsp;gt_scarr[]&nbsp;).<br />
+<br />
+<br />
+   </div>
+   <div class="codeComment">
+*Selection&nbsp;texts<br />
+*----------------------------------------------------------<br />
+*&nbsp;SO_CARR&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<br />
+<br />
+<br />
+*Messages<br />
+*----------------------------------------------------------<br />
+*<br />
+*&nbsp;Message&nbsp;class:&nbsp;ZCL1MSG16<br />
+*001&nbsp;&nbsp;&nbsp;&&nbsp;&<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

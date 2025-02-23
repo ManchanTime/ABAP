@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16011</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16011</h2>
+<h3> Description: [C1] BASIC ABAP Statement</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16011<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16011.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;Table&nbsp;and&nbsp;Work&nbsp;Area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gt_spfli TYPE TABLE OF spfli,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_spfli&nbsp;TYPE&nbsp;spfli.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Common&nbsp;Variable<br />
+**********************************************************************<br />
+<br />
+<br />
+**********************************************************************<br />
+*&nbsp;Main&nbsp;logic<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+CLEAR : gs_spfli, gt_spfli.<br />
+SELECT carrid connid cityfrom cityto countryfr countryto<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;airpfrom&nbsp;airpto<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_spfli<br />
+&nbsp;&nbsp;FROM&nbsp;spfli.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;IF&nbsp;Statement<br />
+   </div>
+   <div class="code">
+IF sy-subrc = 0.<br />
+&nbsp;&nbsp;WRITE&nbsp;/&nbsp;'SUBRC&nbsp;EQ&nbsp;0&nbsp;:&nbsp;Success'.<br />
+ENDIF.<br />
+<br />
+IF gt_spfli IS NOT INITIAL.<br />
+&nbsp;&nbsp;WRITE&nbsp;/&nbsp;'ITAB&nbsp;is&nbsp;not&nbsp;empty'.<br />
+ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;LOOP&nbsp;AT&nbsp;&lt;itab&gt;&nbsp;INTO&nbsp;&lt;wa&gt;.<br />
+   </div>
+   <div class="code">
+LOOP AT gt_spfli INTO gs_spfli WHERE carrid = 'AA'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Version&nbsp;1<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_spfli-countryfr&nbsp;&nbsp;=&nbsp;'US'&nbsp;).<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_spfli-countryfr.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ELSE.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;'Not&nbsp;US'.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Version&nbsp;2<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_spfli-carrid&nbsp;=&nbsp;'AA'&nbsp;)&nbsp;OR&nbsp;(&nbsp;gs_spfli-carrid&nbsp;=&nbsp;'DL'&nbsp;).<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_spfli-carrid,&nbsp;sy-tabix.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;gs_spfli-connid&nbsp;BETWEEN&nbsp;'0017'&nbsp;AND&nbsp;'0400'&nbsp;).<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_spfli-carrid,&nbsp;gs_spfli-connid,&nbsp;sy-tabix.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;strlen(&nbsp;gs_spfli-cityfrom&nbsp;)&nbsp;&gt;=&nbsp;9&nbsp;).<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_spfli-cityfrom,&nbsp;sy-tabix.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDIF.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;IF&nbsp;gs_spfli-carrid&nbsp;IN&nbsp;(&nbsp;'aa'&nbsp;).&nbsp;&nbsp;"&nbsp;IN#&nbsp;##<br />
+*<br />
+*&nbsp;&nbsp;ENDIF.<br />
+   </div>
+   <div class="code">
+ENDLOOP.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;CASE&nbsp;Statement<br />
+   </div>
+   <div class="code">
+LOOP AT gt_spfli INTO gs_spfli.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Version1<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CASE&nbsp;gs_spfli-cityfrom.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'US'.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_spfli-countryfr.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;OTHERS.<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;'Not&nbsp;US'.<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Version2<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CASE&nbsp;gs_spfli-carrid.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'AA'&nbsp;OR&nbsp;'DL'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_spfli-carrid,&nbsp;sy-tabix.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'AZ'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;gs_spfli-connid,&nbsp;sy-tabix.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+ENDLOOP.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;DO&nbsp;~&nbsp;ENDDO<br />
+   </div>
+   <div class="code">
+DATA size TYPE i.<br />
+size = lines( gt_spfli ).<br />
+WRITE : / size, sy-dbcnt.<br />
+DO.<br />
+&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_spfli&nbsp;INTO&nbsp;gs_spfli&nbsp;INDEX&nbsp;sy-index.<br />
+&nbsp;&nbsp;IF&nbsp;sy-subrc&nbsp;&lt;&gt;&nbsp;0.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;'size:',&nbsp;sy-index.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;EXIT.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDDO.<br />
+<br />
+size = 0.<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;DO&nbsp;n&nbsp;TIMES.&nbsp;~&nbsp;ENDDO.<br />
+   </div>
+   <div class="code">
+DO 3 TIMES.<br />
+&nbsp;&nbsp;size&nbsp;+=&nbsp;1.<br />
+&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;size.<br />
+ENDDO.<br />
+<br />
+size = 0.<br />
+WHILE size &lt; 3.<br />
+&nbsp;&nbsp;size&nbsp;+=&nbsp;1.<br />
+&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;size.<br />
+ENDWHILE.<br />
+<br />
+DATA : n     TYPE i VALUE 1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;i&nbsp;VALUE&nbsp;1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;store&nbsp;TYPE&nbsp;i.<br />
+<br />
+DO 9 TIMES.<br />
+&nbsp;&nbsp;DO&nbsp;9&nbsp;TIMES.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;store&nbsp;=&nbsp;n&nbsp;*&nbsp;m.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WRITE&nbsp;:&nbsp;/&nbsp;n,&nbsp;'&nbsp;x&nbsp;',&nbsp;m,&nbsp;'&nbsp;=&nbsp;',&nbsp;store.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;m&nbsp;+=&nbsp;1.<br />
+&nbsp;&nbsp;ENDDO.<br />
+&nbsp;&nbsp;SKIP&nbsp;1.<br />
+&nbsp;&nbsp;n&nbsp;+=&nbsp;1.<br />
+&nbsp;&nbsp;m&nbsp;=&nbsp;1.<br />
+ENDDO.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

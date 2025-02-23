@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16013</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16013</h2>
+<h3> Description: [C1] Selection Screen - Parameters</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16013<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16013 MESSAGE-ID zcl1msg16.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;table&nbsp;and&nbsp;Work&nbsp;area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gt_scarr TYPE TABLE OF scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr&nbsp;TYPE&nbsp;scarr.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Selection&nbsp;screen<br />
+**********************************************************************<br />
+<br />
+*--&nbsp;##&nbsp;Text&nbsp;Symbole&nbsp;-&gt;&nbsp;static&nbsp;String&nbsp;##<br />
+<br />
+   </div>
+   <div class="code">
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.          " title<br />
+&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;pa_carr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-carrid&nbsp;DEFAULT&nbsp;'LH'&nbsp;OBLIGATORY,&nbsp;&nbsp;"&nbsp;##&nbsp;8##&nbsp;###&nbsp;##<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-carrname,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_email(50)&nbsp;LOWER&nbsp;CASE,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_part&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;ztc1part_16_01-part_code&nbsp;AS&nbsp;LISTBOX<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VISIBLE&nbsp;LENGTH&nbsp;10.<br />
+SELECTION-SCREEN END OF BLOCK pa1.<br />
+<br />
+SELECTION-SCREEN BEGIN OF BLOCK pa2 WITH FRAME TITLE TEXT-t02.<br />
+&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;pa_chk1&nbsp;AS&nbsp;CHECKBOX,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_chk2&nbsp;AS&nbsp;CHECKBOX&nbsp;DEFAULT&nbsp;'X'.<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;ULINE.&nbsp;"&nbsp;SKIP&nbsp;-&gt;&nbsp;###,&nbsp;ULINE&nbsp;-&gt;&nbsp;###<br />
+&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;pa_rb1&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb1,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_rb2&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb1&nbsp;DEFAULT&nbsp;'X',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_rb3&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb1.<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;SKIP.<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;BEGIN&nbsp;OF&nbsp;BLOCK&nbsp;pa3&nbsp;WITH&nbsp;FRAME&nbsp;TITLE&nbsp;TEXT-t03.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;pa_btn1&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_btn2&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb2.<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;END&nbsp;OF&nbsp;BLOCK&nbsp;pa3.<br />
+SELECTION-SCREEN END OF BLOCK pa2.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Practice<br />
+   </div>
+   <div class="code">
+SELECTION-SCREEN BEGIN OF BLOCK pa4 WITH FRAME TITLE TEXT-t01.<br />
+&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;pa_fy&nbsp;TYPE&nbsp;bkpf-gjahr&nbsp;DEFAULT&nbsp;'2025'&nbsp;OBLIGATORY,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;Fiscal&nbsp;Year<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_pp&nbsp;TYPE&nbsp;bkpf-monat&nbsp;DEFAULT&nbsp;1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"&nbsp;Posting&nbsp;Period<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;ULINE.<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;BEGIN&nbsp;OF&nbsp;BLOCK&nbsp;pa5&nbsp;WITH&nbsp;FRAME&nbsp;TITLE&nbsp;TEXT-t02.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;pa_cb1&nbsp;AS&nbsp;CHECKBOX&nbsp;DEFAULT&nbsp;'X',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_ch2&nbsp;AS&nbsp;CHECKBOX,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_ch3&nbsp;AS&nbsp;CHECKBOX.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;SKIP.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;BEGIN&nbsp;OF&nbsp;BLOCK&nbsp;pa6&nbsp;WITH&nbsp;FRAME&nbsp;TITLE&nbsp;TEXT-t03.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PARAMETERS&nbsp;:&nbsp;pa_rbt1&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_rbt2&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_rbt3&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb3&nbsp;DEFAULT&nbsp;'X',<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_rbt4&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pa_rbt5&nbsp;RADIOBUTTON&nbsp;GROUP&nbsp;rb3.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;SELECTION-SCREEN&nbsp;END&nbsp;OF&nbsp;BLOCK&nbsp;pa6.<br />
+&nbsp;&nbsp;SELECTION-SCREEN&nbsp;END&nbsp;OF&nbsp;BLOCK&nbsp;pa5.<br />
+SELECTION-SCREEN END OF BLOCK pa4.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Start&nbsp;of&nbsp;main&nbsp;routine<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : gv_cond(30) . " LIKE ## #### ## ## ### '%####%'## ### Concat ##<br />
+CLEAR gv_cond.       " ### ###<br />
+<br />
+CONCATENATE '%' pa_name '%' INTO gv_cond.<br />
+SELECT carrid carrname currcode url<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;=&nbsp;pa_carr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;carrname&nbsp;LIKE&nbsp;gv_cond.<br />
+<br />
+cl_demo_output=&gt;write( gv_cond ).<br />
+cl_demo_output=&gt;display( gt_scarr ).<br />
+<br />
+   </div>
+   <div class="codeComment">
+*Text&nbsp;elements<br />
+*----------------------------------------------------------<br />
+*&nbsp;T01&nbsp;Condition<br />
+*&nbsp;T02&nbsp;Multi&nbsp;choice<br />
+*&nbsp;T03&nbsp;Sub&nbsp;choice<br />
+<br />
+<br />
+*Selection&nbsp;texts<br />
+*----------------------------------------------------------<br />
+*&nbsp;PA_BTN1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Korean&nbsp;cousine<br />
+*&nbsp;PA_BTN2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;American&nbsp;cousine<br />
+*&nbsp;PA_CARR&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<br />
+*&nbsp;PA_CB1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checkbox&nbsp;practice&nbsp;1<br />
+*&nbsp;PA_CH2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checkbox&nbsp;practice&nbsp;2<br />
+*&nbsp;PA_CH3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checkbox&nbsp;practice&nbsp;3<br />
+*&nbsp;PA_CHK1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checkbox&nbsp;1<br />
+*&nbsp;PA_CHK2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Checkbox&nbsp;2<br />
+*&nbsp;PA_EMAIL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email<br />
+*&nbsp;PA_FY&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<br />
+*&nbsp;PA_NAME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Airline&nbsp;name<br />
+*&nbsp;PA_PART&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<br />
+*&nbsp;PA_PP&nbsp;D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.<br />
+*&nbsp;PA_RB1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Food&nbsp;1<br />
+*&nbsp;PA_RB2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Food&nbsp;2<br />
+*&nbsp;PA_RB3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Food&nbsp;3<br />
+*&nbsp;PA_RBT1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radio&nbsp;practice&nbsp;1<br />
+*&nbsp;PA_RBT2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radio&nbsp;practice&nbsp;2<br />
+*&nbsp;PA_RBT3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radio&nbsp;practice&nbsp;3<br />
+*&nbsp;PA_RBT4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radio&nbsp;practice&nbsp;4<br />
+*&nbsp;PA_RBT5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radio&nbsp;practice&nbsp;5<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

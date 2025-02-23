@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16017F01</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16017F01</h2>
+<h3> Description: Include ZCL1R16017F01</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;set_init_value<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_init_value .<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;String&nbsp;seperate!!<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;gv_year&nbsp;&nbsp;=&nbsp;sy-datum(4).<br />
+&nbsp;&nbsp;gv_month&nbsp;=&nbsp;sy-datum+4(2).<br />
+&nbsp;&nbsp;gv_day&nbsp;&nbsp;&nbsp;=&nbsp;sy-datum+6(2).<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Parameters<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;pa_bukrs&nbsp;=&nbsp;'0001'.<br />
+&nbsp;&nbsp;pa_gstrp&nbsp;=&nbsp;sy-datum.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Select&nbsp;options<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;so_matnr-sign&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_matnr-option&nbsp;&nbsp;=&nbsp;'BT'.<br />
+&nbsp;&nbsp;so_matnr-low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'C7HSA'.<br />
+&nbsp;&nbsp;so_matnr-high&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'GTX9A-BS'.<br />
+<br />
+&nbsp;&nbsp;APPEND&nbsp;so_matnr.<br />
+<br />
+&nbsp;&nbsp;so_werks-sign&nbsp;&nbsp;&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_werks-option&nbsp;=&nbsp;'EQ'.<br />
+&nbsp;&nbsp;so_werks-low&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'0001'.<br />
+<br />
+&nbsp;&nbsp;APPEND&nbsp;so_werks.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;so_werks.<br />
+<br />
+&nbsp;&nbsp;so_werks-sign&nbsp;&nbsp;&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_werks-option&nbsp;=&nbsp;'EQ'.<br />
+&nbsp;&nbsp;so_werks-low&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'0003'.<br />
+<br />
+&nbsp;&nbsp;APPEND&nbsp;so_werks.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;so_werks.<br />
+<br />
+&nbsp;&nbsp;so_werks-sign&nbsp;&nbsp;&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_werks-option&nbsp;=&nbsp;'EQ'.<br />
+&nbsp;&nbsp;so_werks-low&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'1010'.<br />
+<br />
+&nbsp;&nbsp;APPEND&nbsp;so_werks.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;so_werks.<br />
+<br />
+&nbsp;&nbsp;so_werks-sign&nbsp;&nbsp;&nbsp;=&nbsp;'I'.<br />
+&nbsp;&nbsp;so_werks-option&nbsp;=&nbsp;'EQ'.<br />
+&nbsp;&nbsp;so_werks-low&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;'1020'.<br />
+<br />
+&nbsp;&nbsp;APPEND&nbsp;so_werks.<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;check_param<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM check_param .<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;Check&nbsp;company&nbsp;code<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CLEAR&nbsp;gv_burks.<br />
+&nbsp;&nbsp;SELECT&nbsp;SINGLE&nbsp;bukrs<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;(&nbsp;gv_burks&nbsp;)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;t001<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;bukrs&nbsp;=&nbsp;pa_bukrs.<br />
+<br />
+&nbsp;&nbsp;IF&nbsp;(&nbsp;sy-subrc&nbsp;&lt;&gt;&nbsp;0&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MESSAGE&nbsp;s001&nbsp;WITH&nbsp;pa_bukrs&nbsp;TEXT-e01&nbsp;DISPLAY&nbsp;LIKE&nbsp;'E'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;STOP.<br />
+&nbsp;&nbsp;ENDIF.<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;get_base_data<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_base_data .<br />
+&nbsp;&nbsp;SELECT&nbsp;bukrs&nbsp;gstrp&nbsp;matnr&nbsp;werks&nbsp;gamng<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gmein&nbsp;plnum&nbsp;aufnr&nbsp;rueck<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_ztcl1pp_16<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;ztcl1pp_16<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;bukrs&nbsp;=&nbsp;pa_bukrs<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;gstrp&nbsp;=&nbsp;pa_gstrp<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;matnr&nbsp;IN&nbsp;so_matnr<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND&nbsp;werks&nbsp;IN&nbsp;so_werks.<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;get_text_data<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_text_data .<br />
+&nbsp;&nbsp;CLEAR:&nbsp;gt_t001w,&nbsp;gs_t001w.<br />
+&nbsp;&nbsp;SELECT&nbsp;werks&nbsp;name1<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_t001w<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;t001w<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;spras&nbsp;=&nbsp;sy-langu.<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;make_display_body<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM make_display_body .<br />
+&nbsp;&nbsp;MOVE-CORRESPONDING&nbsp;gt_t001w&nbsp;TO&nbsp;gt_backup.<br />
+&nbsp;&nbsp;SORT&nbsp;gt_backup[]&nbsp;BY&nbsp;werks&nbsp;ASCENDING.<br />
+&nbsp;&nbsp;DELETE&nbsp;ADJACENT&nbsp;DUPLICATES&nbsp;FROM&nbsp;gt_backup&nbsp;COMPARING&nbsp;werks.<br />
+<br />
+&nbsp;&nbsp;LOOP&nbsp;AT&nbsp;gt_ztcl1pp_16.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gv_tabix&nbsp;=&nbsp;sy-tabix.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_backup&nbsp;INTO&nbsp;gs_t001w<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WITH&nbsp;KEY&nbsp;werks&nbsp;=&nbsp;gt_ztcl1pp_16-werks<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BINARY&nbsp;SEARCH.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(&nbsp;sy-subrc&nbsp;=&nbsp;0&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_ztcl1pp_16-name1&nbsp;=&nbsp;gs_t001w-name1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;(&nbsp;gt_ztcl1pp_16-matnr&nbsp;=&nbsp;'MEGA_125'&nbsp;)&nbsp;OR<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(&nbsp;gt_ztcl1pp_16-matnr&nbsp;=&nbsp;'XQ125'&nbsp;&nbsp;&nbsp;&nbsp;).<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_ztcl1pp_16-remark&nbsp;=&nbsp;'KG'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;MODIFY&nbsp;gt_ztcl1pp_16&nbsp;INDEX&nbsp;gv_tabix&nbsp;TRANSPORTING&nbsp;name1&nbsp;remark.<br />
+&nbsp;&nbsp;ENDLOOP.<br />
+ENDFORM.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>

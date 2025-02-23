@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16005</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16005</h2>
+<h3> Description: [C1] Open SQL</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Report&nbsp;ZCL1R16005<br />
+*&---------------------------------------------------------------------*<br />
+*&<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+REPORT zcl1r16005.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Internal&nbsp;table&nbsp;and&nbsp;work&nbsp;area<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_flight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fldate&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsocc&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_flight,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_flight&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_flight.<br />
+<br />
+DATA : BEGIN OF gs_unique,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;TYPE&nbsp;sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_unique,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_unique&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_unique.<br />
+<br />
+DATA : BEGIN OF gs_airline,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;TYPE&nbsp;scarr-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrname&nbsp;TYPE&nbsp;scarr-carrname,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currcode&nbsp;TYPE&nbsp;scarr-currcode,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_airline,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_airline&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_airline.<br />
+<br />
+DATA : gt_scarr TYPE TABLE OF scarr,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_scarr&nbsp;TYPE&nbsp;scarr.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**********************************************************************<br />
+*&nbsp;Get&nbsp;data<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+CLEAR : gt_flight, gs_flight.<br />
+SELECT connid fldate seatsocc<br />
+&nbsp;&nbsp;INTO&nbsp;TABLE&nbsp;gt_flight<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;seatsocc&nbsp;&gt;&nbsp;200<br />
+&nbsp;&nbsp;ORDER&nbsp;BY&nbsp;connid&nbsp;DESCENDING&nbsp;seatsocc&nbsp;ASCENDING.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_flight&nbsp;).<br />
+<br />
+**********************************************************************<br />
+*&nbsp;SCARR&nbsp;Table###&nbsp;CARRID,&nbsp;CARRNAME,&nbsp;CURRCODE&nbsp;####&nbsp;####.<br />
+*&nbsp;##&nbsp;:&nbsp;currcode#&nbsp;'EUR'#&nbsp;####&nbsp;####&nbsp;####.<br />
+   </div>
+   <div class="code">
+CLEAR : gt_airline, gs_airline.<br />
+SELECT carrid carrname currcode<br />
+&nbsp;&nbsp;INTO&nbsp;TABLE&nbsp;gt_airline<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;currcode&nbsp;=&nbsp;'EUR'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_airline&nbsp;).<br />
+<br />
+**********************************************************************<br />
+*&nbsp;SFLIGHT&nbsp;Table###&nbsp;CARRID,&nbsp;CONNID#&nbsp;Unique##&nbsp;####.<br />
+*&nbsp;##&nbsp;:&nbsp;SEATSOCC#&nbsp;200##&nbsp;#&nbsp;####&nbsp;####&nbsp;##.<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+CLEAR : gt_unique, gs_unique.<br />
+SELECT DISTINCT carrid connid<br />
+&nbsp;&nbsp;INTO&nbsp;TABLE&nbsp;gt_unique<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;seatsocc&nbsp;=&nbsp;200.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_unique&nbsp;).<br />
+<br />
+**********************************************************************<br />
+*&nbsp;ORM&nbsp;###&nbsp;###&nbsp;##&nbsp;##<br />
+**********************************************************************<br />
+   </div>
+   <div class="code">
+SELECT carrid carrname currcode<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr<br />
+&nbsp;&nbsp;FROM&nbsp;scarr.<br />
+<br />
+SELECT SINGLE carrid carrname currcode<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;gs_scarr<br />
+&nbsp;&nbsp;FROM&nbsp;scarr.<br />
+<br />
+SELECT carrid carrname currcode<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;LIKE&nbsp;'%A%'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_scarr&nbsp;).<br />
+<br />
+**********************************************************************<br />
+*&nbsp;Practice<br />
+**********************************************************************<br />
+*--&nbsp;1.&nbsp;####(MWSKZ)#&nbsp;Text&nbsp;table###&nbsp;####&nbsp;##(TEXT1)#&nbsp;###&nbsp;Internal&nbsp;Table#&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TOO7S&nbsp;##&nbsp;##&nbsp;:&nbsp;SPRAS&nbsp;EQ&nbsp;sy-langu,&nbsp;KALSM&nbsp;EQ&nbsp;'TAXKR'<br />
+*DATA&nbsp;:&nbsp;BEGIN&nbsp;OF&nbsp;gs_t007s,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;spras&nbsp;TYPE&nbsp;t007s-spras,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kalsm&nbsp;TYPE&nbsp;t007s-kalsm,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mwskz&nbsp;TYPE&nbsp;t007s-mwskz,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text1&nbsp;TYPE&nbsp;t007s-text1,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_t007s,<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_t007s&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_t007s.<br />
+<br />
+   </div>
+   <div class="code">
+DATA : gt_t007s TYPE TABLE OF t007s.<br />
+<br />
+CLEAR : gt_t007s.<br />
+<br />
+SELECT spras kalsm mwskz text1<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_t007s<br />
+&nbsp;&nbsp;FROM&nbsp;t007s<br />
+&nbsp;&nbsp;WHERE&nbsp;spras&nbsp;EQ&nbsp;sy-langu&nbsp;AND&nbsp;kalsm&nbsp;EQ&nbsp;'TAXKR'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_t007s&nbsp;).<br />
+<br />
+*--&nbsp;2.&nbsp;#####(KOSTL)#&nbsp;Text&nbsp;table###&nbsp;##&nbsp;####&nbsp;###&nbsp;Internal&nbsp;Table#&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CSKT&nbsp;####&nbsp;:&nbsp;SPRAS&nbsp;EQ&nbsp;sy-langu&nbsp;KOKRS&nbsp;EQ&nbsp;'0001'<br />
+   </div>
+   <div class="code">
+DATA : gt_cskt TYPE TABLE OF cskt.<br />
+<br />
+CLEAR gt_cskt.<br />
+<br />
+SELECT spras kokrs kostl datbi ktext ltext mctxt<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_cskt<br />
+&nbsp;&nbsp;FROM&nbsp;cskt<br />
+&nbsp;&nbsp;WHERE&nbsp;spras&nbsp;EQ&nbsp;sy-langu&nbsp;AND&nbsp;kokrs&nbsp;EQ&nbsp;'0001'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_cskt&nbsp;).<br />
+<br />
+*--&nbsp;3.SCARR#&nbsp;###&nbsp;Layout#&nbsp;Internal&nbsp;Table#&nbsp;####&nbsp;Table#&nbsp;SELECT&nbsp;##&nbsp;Internal&nbsp;Table#&nbsp;####&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;##&nbsp;:&nbsp;CARRID&nbsp;'AA'#&nbsp;'DL'&nbsp;####&nbsp;##&nbsp;###<br />
+   </div>
+   <div class="code">
+DATA : gt_scarr2 TYPE TABLE OF scarr.<br />
+<br />
+CLEAR gt_scarr2.<br />
+<br />
+SELECT carrid carrname currcode url<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr2<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;BETWEEN&nbsp;'AA'&nbsp;AND&nbsp;'DL'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_scarr2&nbsp;).<br />
+<br />
+*--&nbsp;3-1.&nbsp;CARRID#&nbsp;'AA',&nbsp;'AB',&nbsp;'CA',&nbsp;'LH'&nbsp;####&nbsp;####.<br />
+   </div>
+   <div class="code">
+CLEAR gt_scarr2.<br />
+<br />
+SELECT carrid carrname currcode url<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_scarr2<br />
+&nbsp;&nbsp;FROM&nbsp;scarr<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;IN&nbsp;('AA',&nbsp;'AB',&nbsp;'CA',&nbsp;'LH').<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_scarr2&nbsp;).<br />
+<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_sflight2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;TYPE&nbsp;sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sum&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;i,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_sflight2,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sflight2&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_sflight2.<br />
+CLEAR gt_sflight2.<br />
+SELECT carrid connid SUM( seatsocc ) AS sum<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_sflight2<br />
+&nbsp;&nbsp;GROUP&nbsp;BY&nbsp;carrid&nbsp;connid<br />
+&nbsp;&nbsp;ORDER&nbsp;BY&nbsp;carrid&nbsp;ASCENDING&nbsp;connid&nbsp;ASCENDING.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_sflight2&nbsp;).<br />
+<br />
+*--&nbsp;4.SFLIGHT&nbsp;Table##&nbsp;###&nbsp;###&nbsp;Select&nbsp;##&nbsp;Internal&nbsp;Table#&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CARRID,&nbsp;CONNID,&nbsp;FLDATE,&nbsp;PRICE,&nbsp;CURRENY,&nbsp;PLANETYPE,&nbsp;SEATSMAX,&nbsp;SEATSOCC,&nbsp;PAYMENTSUM<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;##&nbsp;:&nbsp;CARRID#&nbsp;'AZ',&nbsp;'QF'&nbsp;AND&nbsp;PLANETYPE#&nbsp;'A%'#&nbsp;###<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_sflight3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fldate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-price,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currency&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-currency,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;planetype&nbsp;&nbsp;TYPE&nbsp;sflight-planetype,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsmax&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-seatsmax,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seatsocc&nbsp;&nbsp;&nbsp;TYPE&nbsp;sflight-seatsocc,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paymentsum&nbsp;TYPE&nbsp;sflight-paymentsum,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_sflight3,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sflight3&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_sflight3.<br />
+<br />
+CLEAR : gt_sflight3, gs_sflight3.<br />
+<br />
+SELECT carrid connid fldate price currency planetype seatsmax seatsocc paymentsum<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_sflight3<br />
+&nbsp;&nbsp;FROM&nbsp;sflight<br />
+&nbsp;&nbsp;WHERE&nbsp;carrid&nbsp;IN&nbsp;('AZ',&nbsp;'QF')&nbsp;AND&nbsp;planetype&nbsp;LIKE&nbsp;'A%'.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_sflight3&nbsp;).<br />
+<br />
+*--&nbsp;5.&nbsp;SBOOK&nbsp;Table##&nbsp;###&nbsp;###&nbsp;SELECT&nbsp;##&nbsp;Internal&nbsp;Table#&nbsp;####.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CARRID,&nbsp;CONNID,&nbsp;FLDATE,&nbsp;BOOKID,&nbsp;CUSTOMID,&nbsp;CUSTTYPE,&nbsp;SMOKER,&nbsp;INVOICE,&nbsp;FORCURAM<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;##&nbsp;:&nbsp;FLDATE#&nbsp;'2020.10.01'&nbsp;~&nbsp;'2020.12.31'&nbsp;###&nbsp;###&nbsp;AND&nbsp;FORCURAM&nbsp;&gt;=&nbsp;800<br />
+   </div>
+   <div class="code">
+DATA : BEGIN OF gs_sbook,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;carrid&nbsp;&nbsp;&nbsp;TYPE&nbsp;sbook-carrid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connid&nbsp;&nbsp;&nbsp;TYPE&nbsp;sbook-connid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fldate&nbsp;&nbsp;&nbsp;TYPE&nbsp;sbook-fldate,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;customid&nbsp;TYPE&nbsp;sbook-customid,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;custtype&nbsp;TYPE&nbsp;sbook-custtype,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;smoker&nbsp;&nbsp;&nbsp;TYPE&nbsp;sbook-smoker,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;invoice&nbsp;&nbsp;TYPE&nbsp;sbook-invoice,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;forcuram&nbsp;TYPE&nbsp;sbook-forcuram,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;END&nbsp;OF&nbsp;gs_sbook,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gt_sbook&nbsp;LIKE&nbsp;TABLE&nbsp;OF&nbsp;gs_sbook.<br />
+<br />
+CLEAR : gt_sbook, gs_sbook.<br />
+<br />
+SELECT carrid connid fldate customid custtype smoker invoice forcuram<br />
+&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;TABLE&nbsp;gt_sbook<br />
+&nbsp;&nbsp;FROM&nbsp;sbook<br />
+&nbsp;&nbsp;WHERE&nbsp;fldate&nbsp;BETWEEN&nbsp;'20241001'&nbsp;AND&nbsp;'20241231'&nbsp;AND&nbsp;forcuram&nbsp;GT&nbsp;800.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*cl_demo_output=&gt;display(&nbsp;gt_sbook&nbsp;).<br />
+<br />
+*--&nbsp;6.&nbsp;Self&nbsp;Join<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>
