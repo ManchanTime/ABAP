@@ -1,0 +1,73 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16061F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  pa_city = 'SEOUL'.
+
+  so_carr-sign   = 'I'.
+  so_carr-option = 'EQ'.
+  so_carr-low    = 'DL'.
+  APPEND so_carr.
+
+  CLEAR so_carr.
+  so_carr-sign   = 'I'.
+  so_carr-option = 'BT'.
+  so_carr-low    = 'LH'.
+  so_carr-high   = 'UA'.
+  APPEND so_carr.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form submit_split_program
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM submit_split_program .
+
+  RANGES lr_conn FOR spfli-connid.
+
+  REFRESH lr_conn.
+  CLEAR lr_conn.
+  lr_conn-sign   = 'I'.
+  lr_conn-option = 'EQ'.
+  lr_conn-low    = '0400'.
+  lr_conn-high   = '2000'.
+  APPEND lr_conn.
+
+                       " To      FROM
+  SUBMIT zcl1r26035 WITH pa_city = pa_city
+                    WITH so_carr IN so_carr
+                    WITH so_conn IN lr_conn
+*                    VIA SELECTION-SCREEN
+                    AND RETURN.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form calltran_module_pool
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM calltran_module_pool .
+
+  SET PARAMETER ID 'CID' FIELD 'AA'.
+  CALL TRANSACTION 'ZMZCL126_01' AND SKIP FIRST SCREEN.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

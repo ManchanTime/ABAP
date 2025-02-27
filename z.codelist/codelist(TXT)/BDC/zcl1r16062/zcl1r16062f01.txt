@@ -1,0 +1,107 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16062F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form exec_bdc
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM exec_bdc .
+
+  DATA : lv_line     TYPE i,
+         lv_msg(100).
+
+  CLEAR : gt_bdcdata, gs_bdcdata.
+  PERFORM dynpro USING : 'X' 'SAPBC402_PGCD_CREATE_CUSTOMER' '0100',  " Set BDC Data
+                         ' ' 'BDC_OKCODE'         '=SAVE',
+                         ' ' 'SCUSTOM-NAME'       pa_name,
+                         ' ' 'SCUSTOM-FORM'       pa_form,
+                         ' ' 'SCUSTOM-STREET'     pa_strt,
+                         ' ' 'SCUSTOM-POSTCODE'   pa_post,
+                         ' ' 'SCUSTOM-CITY'       pa_city,
+                         ' ' 'SCUSTOM-COUNTRY'    pa_ctry,
+                         ' ' 'SCUSTOM-TELEPHONE'  pa_phone,
+                         ' ' 'SCUSTOM-EMAIL'      pa_email.
+
+*-- Set BDC Option
+  gs_params-dismode  = pa_mode.
+  gs_params-updmode  = 'S'.
+  gs_params-nobiend  = space.
+  gs_params-racommit = 'X'.
+
+*-- Execute BDC by Call Transaction
+  CALL TRANSACTION 'BC402_CALD_CRE_CUST' USING gt_bdcdata
+                                         OPTIONS FROM gs_params
+                                         MESSAGES INTO gt_messtab.
+
+*-- #### ##
+  CLEAR gt_messtab.
+  READ TABLE gt_messtab WITH KEY msgid = 'BC402_C62'
+                                 msgnr = '015'.
+
+  IF sy-subrc = 0.
+
+    CALL FUNCTION 'MESSAGE_TEXT_BUILD'
+      EXPORTING
+        msgid               = gt_messtab-msgid
+        msgnr               = gt_messtab-msgnr
+        msgv1               = gt_messtab-msgv1
+        msgv2               = gt_messtab-msgv2
+        msgv3               = gt_messtab-msgv3
+        msgv4               = gt_messtab-msgv4
+      IMPORTING
+        message_text_output = lv_msg.
+
+    MESSAGE s001 WITH lv_msg.
+
+  ELSE.
+
+    READ TABLE gt_messtab INDEX lines( gt_messtab ).
+
+    CALL FUNCTION 'MESSAGE_TEXT_BUILD'
+      EXPORTING
+        msgid               = gt_messtab-msgid
+        msgnr               = gt_messtab-msgnr
+        msgv1               = gt_messtab-msgv1
+        msgv2               = gt_messtab-msgv2
+        msgv3               = gt_messtab-msgv3
+        msgv4               = gt_messtab-msgv4
+      IMPORTING
+        message_text_output = lv_msg.
+
+    MESSAGE s001 WITH lv_msg DISPLAY LIKE 'E'.
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form dynpro
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*&      --> P_
+*&      --> P_
+*&      --> P_
+*&---------------------------------------------------------------------*
+FORM dynpro USING pv_dynpro pv_fnam pv_fval.
+
+  CASE pv_dynpro.
+    WHEN abap_true. " Dynpro begin
+      gs_bdcdata-dynbegin = pv_dynpro.  " Start screen
+      gs_bdcdata-program  = pv_fnam.    " Program ID
+      gs_bdcdata-dynpro   = pv_fval.    " Screen number
+    WHEN OTHERS.    " Set Field name & value
+      gs_bdcdata-fnam = pv_fnam.  " BDC Field name
+      gs_bdcdata-fval = pv_fval.  " BDC Field value
+  ENDCASE.
+
+  APPEND gs_bdcdata TO gt_bdcdata.
+  CLEAR gs_bdcdata.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754
