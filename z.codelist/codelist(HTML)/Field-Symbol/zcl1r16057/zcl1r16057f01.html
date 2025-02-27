@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<title>ZCL1R16057F01</title>
+<style type="text/css">
+.code{ font-family:"Courier New", Courier, monospace; color:#000; font-size:14px; background-color:#F2F4F7 }
+  .codeComment {font-family:"Courier New", Courier, monospace; color:#0000F0; font-size:14px; background-color:#F2F4F7 }
+  .normalBold{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; font-weight:800 }
+  .normalBoldLarge{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+</style>
+<style type="text/css">
+  .normal{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px }
+  .footer{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:12px; text-align: center }
+  h2{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:16px; font-weight:800 }
+  h3{ font-family:Arial, Helvetica, sans-serif; color:#000; font-size:14px; font-weight:800 }
+  .outerTable{
+   background-color:#E0E7ED;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-right-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+  .innerTable{
+   background-color:#F2F4F7;
+   width:100%;
+   border-top-width: thin;
+   border-right-width: thin;
+   border-bottom-width: thin;
+   border-left-width: thin;
+   border-top-style: solid;
+   border-right-style: solid;
+   border-bottom-style: solid;
+   border-left-style: solid;
+  }
+</style>
+</head>
+<body>
+<table class="outerTable">
+  <tr class="normalBoldLarge">
+     <td><h2>Code listing for: ZCL1R16057F01</h2>
+<h3> Description: Include ZCL1R16057F01</h3></td>
+   </tr>
+  <tr>
+     <td>
+     <table class="innerTable">
+       <tr>
+          <td>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Include&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZCL1R16057F01<br />
+*&---------------------------------------------------------------------*<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;set_init_value<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM set_init_value .<br />
+&nbsp;&nbsp;pa_gjahr&nbsp;=&nbsp;'2025'.<br />
+&nbsp;&nbsp;pa_monat&nbsp;=&nbsp;8.<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;get_main_data<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM get_main_data .<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gt_body.<br />
+&nbsp;&nbsp;SELECT&nbsp;SINGLE&nbsp;hsl01&nbsp;hsl02&nbsp;hsl03&nbsp;hsl04&nbsp;hsl05&nbsp;hsl06&nbsp;hsl07&nbsp;hsl08&nbsp;hsl09<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hsl10&nbsp;hsl11&nbsp;hsl12&nbsp;hwaer<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INTO&nbsp;CORRESPONDING&nbsp;FIELDS&nbsp;OF&nbsp;gs_body<br />
+&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;zfaglflext<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;ryear&nbsp;=&nbsp;pa_gjahr.<br />
+<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl01.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl02.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl03.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl04.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl05.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl06.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl07.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl08.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl09.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl10.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl11.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+&nbsp;&nbsp;gs_month-value&nbsp;=&nbsp;gs_body-hsl12.<br />
+&nbsp;&nbsp;APPEND&nbsp;gs_month&nbsp;TO&nbsp;gt_month.<br />
+<br />
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;calc_sum<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM calc_sum1 .<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gv_result.<br />
+<br />
+&nbsp;&nbsp;CASE&nbsp;pa_monat.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'01'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'02'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'03'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'04'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03&nbsp;+&nbsp;gs_body-hsl04.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'05'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03&nbsp;+&nbsp;gs_body-hsl04&nbsp;+&nbsp;gs_body-hsl05.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'06'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03&nbsp;+&nbsp;gs_body-hsl04&nbsp;+&nbsp;gs_body-hsl05&nbsp;+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-hsl06.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'07'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03&nbsp;+&nbsp;gs_body-hsl04&nbsp;+&nbsp;gs_body-hsl05&nbsp;+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-hsl06&nbsp;+&nbsp;gs_body-hsl07.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'08'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03&nbsp;+&nbsp;gs_body-hsl04&nbsp;+&nbsp;gs_body-hsl05&nbsp;+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-hsl06&nbsp;+&nbsp;gs_body-hsl07&nbsp;+&nbsp;gs_body-hsl08.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'09'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03&nbsp;+&nbsp;gs_body-hsl04&nbsp;+&nbsp;gs_body-hsl05&nbsp;+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-hsl06&nbsp;+&nbsp;gs_body-hsl07&nbsp;+&nbsp;gs_body-hsl08&nbsp;+&nbsp;gs_body-hsl09.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'10'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03&nbsp;+&nbsp;gs_body-hsl04&nbsp;+&nbsp;gs_body-hsl05&nbsp;+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-hsl06&nbsp;+&nbsp;gs_body-hsl07&nbsp;+&nbsp;gs_body-hsl08&nbsp;+&nbsp;gs_body-hsl09&nbsp;+&nbsp;gs_body-hsl10.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'11'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03&nbsp;+&nbsp;gs_body-hsl04&nbsp;+&nbsp;gs_body-hsl05&nbsp;+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-hsl06&nbsp;+&nbsp;gs_body-hsl07&nbsp;+&nbsp;gs_body-hsl08&nbsp;+&nbsp;gs_body-hsl09&nbsp;+&nbsp;gs_body-hsl10&nbsp;+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-hsl11.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;WHEN&nbsp;'12'.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;=&nbsp;gs_body-hsl01&nbsp;+&nbsp;gs_body-hsl02&nbsp;+&nbsp;gs_body-hsl03&nbsp;+&nbsp;gs_body-hsl04&nbsp;+&nbsp;gs_body-hsl05&nbsp;+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-hsl06&nbsp;+&nbsp;gs_body-hsl07&nbsp;+&nbsp;gs_body-hsl08&nbsp;+&nbsp;gs_body-hsl09&nbsp;+&nbsp;gs_body-hsl10&nbsp;+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gs_body-hsl11&nbsp;+&nbsp;gs_body-hsl12.<br />
+&nbsp;&nbsp;ENDCASE.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;WRITE&nbsp;gv_result.<br />
+<br />
+   </div>
+   <div class="code">
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;calc_sum2<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM calc_sum2 .<br />
+<br />
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;lv_tabix&nbsp;TYPE&nbsp;sy-tabix,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_index&nbsp;TYPE&nbsp;i.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;1#<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;CLEAR&nbsp;:&nbsp;gt_result,&nbsp;gs_result.<br />
+&nbsp;&nbsp;gs_result-month&nbsp;=&nbsp;'1'.<br />
+&nbsp;&nbsp;gs_result-sum&nbsp;&nbsp;&nbsp;=&nbsp;gs_body-hsl01.<br />
+&nbsp;&nbsp;INSERT&nbsp;gs_result&nbsp;INTO&nbsp;TABLE&nbsp;gt_result.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*--&nbsp;2###&nbsp;N###<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;lv_index&nbsp;=&nbsp;2.<br />
+&nbsp;&nbsp;DO&nbsp;pa_monat&nbsp;-&nbsp;1&nbsp;TIMES.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;:&nbsp;gs_result,&nbsp;gs_month.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_result&nbsp;INTO&nbsp;gs_result&nbsp;INDEX&nbsp;lv_index&nbsp;-&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_month&nbsp;INTO&nbsp;gs_month&nbsp;INDEX&nbsp;lv_index.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_result-month&nbsp;=&nbsp;lv_index.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;gs_result-sum&nbsp;&nbsp;&nbsp;=&nbsp;gs_result-sum&nbsp;+&nbsp;gs_month-value.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;INSERT&nbsp;gs_result&nbsp;INTO&nbsp;TABLE&nbsp;gt_result.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_index&nbsp;+=&nbsp;1.<br />
+<br />
+<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+   </div>
+   <div class="codeComment">
+*&nbsp;&nbsp;READ&nbsp;TABLE&nbsp;gt_result&nbsp;INTO&nbsp;gs_result&nbsp;INDEX&nbsp;lv_index&nbsp;-&nbsp;1.<br />
+*&nbsp;&nbsp;WRITE&nbsp;gs_result-sum.<br />
+   </div>
+   <div class="code">
+ENDFORM.<br />
+   </div>
+   <div class="codeComment">
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;Form&nbsp;calc_sum3<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+*&&nbsp;--&gt;&nbsp;&nbsp;p1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&&nbsp;&lt;--&nbsp;&nbsp;p2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text<br />
+*&---------------------------------------------------------------------*<br />
+   </div>
+   <div class="code">
+FORM calc_sum3 .<br />
+<br />
+&nbsp;&nbsp;DATA&nbsp;:&nbsp;lv_month&nbsp;TYPE&nbsp;bkpf-monat,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lv_var&nbsp;&nbsp;&nbsp;TYPE&nbsp;string.<br />
+<br />
+&nbsp;&nbsp;CLEAR&nbsp;gv_result.<br />
+&nbsp;&nbsp;DO&nbsp;pa_monat&nbsp;TIMES.<br />
+   </div>
+   <div class="codeComment">
+*<br />
+*--&nbsp;###&nbsp;##<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;lv_var.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_month&nbsp;+=&nbsp;1.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_var&nbsp;=&nbsp;'GS_BODY-HSL'&nbsp;&&&nbsp;lv_month.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;(lv_var)&nbsp;TO&nbsp;&lt;gs_fs&gt;.<br />
+   </div>
+   <div class="codeComment">
+*<br />
+**--&nbsp;ASSGIN&nbsp;COMPONENT#&nbsp;##<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;lv_var.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;lv_var&nbsp;=&nbsp;'HSL'&nbsp;&&&nbsp;lv_month.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;lv_var<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_body&nbsp;TO&nbsp;&lt;gs_fs&gt;.<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;gs_fs&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;+=&nbsp;&lt;gs_fs&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UNASSIGN&nbsp;&lt;gs_fs&gt;.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+<br />
+&nbsp;&nbsp;ENDDO.<br />
+<br />
+   </div>
+   <div class="codeComment">
+**--&nbsp;Index#&nbsp;##&nbsp;-&gt;&nbsp;#,&nbsp;##&nbsp;##&nbsp;#####&nbsp;####&nbsp;##&nbsp;###&nbsp;#!!<br />
+*--&nbsp;###&nbsp;###&nbsp;##&nbsp;####&nbsp;-&gt;&nbsp;##&nbsp;#&nbsp;###&nbsp;##<br />
+*&nbsp;&nbsp;DO&nbsp;pa_monat&nbsp;+&nbsp;3&nbsp;TIMES.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ASSIGN&nbsp;COMPONENT&nbsp;sy-index<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OF&nbsp;STRUCTURE&nbsp;gs_body&nbsp;TO&nbsp;&lt;gs_fs&gt;.<br />
+*<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;IF&nbsp;&lt;gs_fs&gt;&nbsp;IS&nbsp;ASSIGNED.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gv_result&nbsp;+=&nbsp;&lt;gs_fs&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CLEAR&nbsp;&lt;gs_fs&gt;.<br />
+*&nbsp;&nbsp;&nbsp;&nbsp;ENDIF.<br />
+*<br />
+*&nbsp;&nbsp;ENDDO.<br />
+<br />
+   </div>
+   <div class="code">
+&nbsp;&nbsp;WRITE&nbsp;gv_result&nbsp;CURRENCY&nbsp;gs_body-hwaer.<br />
+&nbsp;&nbsp;WRITE&nbsp;gv_result&nbsp;CURRENCY&nbsp;gs_body-hwaer&nbsp;TO&nbsp;gv_amount.&nbsp;&nbsp;"&nbsp;##&nbsp;###&nbsp;##&nbsp;##&nbsp;#&nbsp;gv_amount#&nbsp;##<br />
+&nbsp;&nbsp;WRITE&nbsp;gv_amount.<br />
+<br />
+ENDFORM.<br />
+            </div>
+          </td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+   <tr>
+<td class="footer">Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754</td>
+   </tr>
+</table>
+</body>
+</html>
