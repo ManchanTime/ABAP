@@ -1,0 +1,51 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCL1TEST_16_01
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrcl1test_16_01top                      .  " Global Data
+
+INCLUDE zrcl1test_16_01s01                      .  " Selection screen
+INCLUDE zrcl1test_16_01c01                      .  " Class
+INCLUDE zrcl1test_16_01o01                      .  " PBO-Modules
+INCLUDE zrcl1test_16_01i01                      .  " PAI-Modules
+INCLUDE zrcl1test_16_01f01                      .  " FORM-Routines
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  PERFORM get_base_data.
+  PERFORM set_screen.
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* TITLE100 --> Tool box Info
+
+*Text elements
+*----------------------------------------------------------
+* M01 DISPLAY MODE### ## ##### ### # ####.
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* SO_BOX D       .
+* SO_TOOL D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*000   &
+*004   Data save successfully!!
+*006   Data save failure!!
+*011   There are no data changes
+*012   ### ## #####
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

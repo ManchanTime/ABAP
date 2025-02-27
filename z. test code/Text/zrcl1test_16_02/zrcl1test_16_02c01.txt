@@ -1,0 +1,39 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRCL1TEST_16_02C01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Class LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS lcl_event_handler DEFINITION FINAL.
+
+  PUBLIC SECTION.
+    CLASS-METHODS : hotspot_click FOR EVENT hotspot_click
+                                  OF cl_gui_alv_grid
+                                  IMPORTING e_column_id e_row_id,
+
+                    double_click  FOR EVENT double_click
+                                  OF cl_gui_alv_grid
+                                  IMPORTING e_column e_row.
+
+ENDCLASS.
+*&---------------------------------------------------------------------*
+*& Class (Implementation) LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS lcl_event_handler IMPLEMENTATION.
+
+  METHOD hotspot_click.
+    PERFORM handle_hotspot_click USING e_column_id e_row_id.
+  ENDMETHOD.
+
+  METHOD double_click.
+    PERFORM handle_double_click USING e_column e_row.
+  ENDMETHOD.
+
+ENDCLASS.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

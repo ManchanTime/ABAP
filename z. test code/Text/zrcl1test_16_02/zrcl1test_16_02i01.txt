@@ -1,0 +1,34 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRCL1TEST_16_02I01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  EXIT  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE exit INPUT.
+
+  CALL METHOD : go_alv_grid->free, go_container->free.  " go_alv_Grid, go_container ###
+
+  FREE: go_alv_grid, go_container.                      " go_alv_grid, go_cotainer ##
+
+  LEAVE TO SCREEN 0.                                    " ## ##### ##
+
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  EXIT_0110  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE exit_0110 INPUT.
+
+  CALL METHOD : go_pop_grid->free, go_pop_cont->free.  " go_pop_grid, go_pop_cont ###
+
+  FREE: go_pop_grid, go_pop_cont.                      " go_pop_grid, go_pop_cont ##
+
+  LEAVE TO SCREEN 0.                                    " ## ##### ##
+
+ENDMODULE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

@@ -1,0 +1,64 @@
+*&---------------------------------------------------------------------*
+*& Report ZRCL1TEST_16_02
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrcl1test_16_02top.               " Global Data
+
+INCLUDE zrcl1test_16_02s01.               " Selection screen
+INCLUDE zrcl1test_16_02c01.               " Class
+INCLUDE zrcl1test_16_02o01.               " PBO-Modules
+INCLUDE zrcl1test_16_02i01.               " PAI-Modules
+INCLUDE zrcl1test_16_02f01.               " FORM-Routines
+
+**********************************************************************
+* INITIALIZATION
+**********************************************************************
+INITIALIZATION.
+  PERFORM set_init_value.
+
+**********************************************************************
+* AT SELECTION-SCREEN OUTPUT
+**********************************************************************
+AT SELECTION-SCREEN OUTPUT.
+  PERFORM set_screen_condition.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+*-- For main cont
+  PERFORM get_base_data.
+  PERFORM get_text_data.
+  PERFORM set_remain_data.
+
+*-- For popup cont
+  PERFORM get_popup_data.
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* TITLE100 --> Body Info
+* TITLE101 --> G/L Document info
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_BUKRS D       .
+* PA_GJAHR D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*009   ### #### ####.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

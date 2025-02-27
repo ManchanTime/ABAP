@@ -1,0 +1,21 @@
+FUNCTION ZFM_LTEXT_16.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     REFERENCE(IV_PRCTR) TYPE  BSEG-PRCTR
+*"  EXPORTING
+*"     REFERENCE(EV_LTEXT) TYPE  CEPCT-LTEXT
+*"----------------------------------------------------------------------
+
+SELECT SINGLE ltext
+  INTO ( ev_ltext )
+  FROM cepct
+  WHERE prctr = iv_prctr
+    AND spras = sy-langu.
+
+
+
+ENDFUNCTION.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

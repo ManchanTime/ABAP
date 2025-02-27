@@ -1,0 +1,39 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRCL1TEST_16_01I01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*&      Module  EXIT  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE exit INPUT.
+
+  CALL METHOD : go_alv_grid->free, go_container->free.  " ## ## FREE
+
+  FREE : go_alv_grid, go_container.                     " ## FREE
+
+  LEAVE TO SCREEN 0.                                    " ## ##### ####
+
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*&      Module  USER_COMMAND_0100  INPUT
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_0100 INPUT.
+
+  CASE gv_okcode.
+    WHEN 'TOGL'.
+      PERFORM set_toggle.
+    WHEN 'IROW'.
+      PERFORM insert_row.
+    WHEN 'DROW'.
+      PERFORM delete_row.
+    WHEN 'SAVE'.
+      PERFORM save_data.
+  ENDCASE.
+
+ENDMODULE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

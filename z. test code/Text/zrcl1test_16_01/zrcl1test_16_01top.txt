@@ -1,0 +1,45 @@
+*&---------------------------------------------------------------------*
+*& Include ZRCL1TEST_16_01TOP                       - Report ZRCL1TEST_16_01
+*&---------------------------------------------------------------------*
+REPORT zrcl1test_16_01 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : ztcl1_test_16.
+
+**********************************************************************
+* Class instance
+**********************************************************************
+DATA : go_container TYPE REF TO cl_gui_docking_container, " Docking container
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid.          " ALV grid
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : BEGIN OF gs_body.                      " Main ITAB
+         INCLUDE STRUCTURE ztcl1_test_16.
+DATA :   cell_tab TYPE lvc_t_styl,            " Style ## ITAB ##
+         modi_yn,                             " ## ## ## ##
+         is_new,                              " ## ### #### ##
+       END OF gs_body,
+       gt_body LIKE TABLE OF gs_body.
+
+DATA : gs_body_d TYPE ztcl1_test_16,          " ## ### ## WA
+       gt_body_d TYPE TABLE OF ztcl1_test_16. " ## ### ## ITAB
+
+DATA : gs_layout       TYPE lvc_s_layo,       " Layout ## WA
+       gs_fcat         TYPE lvc_s_fcat,       " Field catalog ## WA
+       gt_fcat         TYPE lvc_t_fcat,       " Field catalog ## ITAB
+       gs_variant      TYPE disvariant,       " Variant ## WA
+       gt_ui_functions TYPE ui_functions.     " #### Toolbar ## ITAB
+
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_okcode TYPE sy-ucomm,     " ## ##
+       gv_mode   TYPE i VALUE 0.    " Input ## ## ## ##
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

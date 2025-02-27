@@ -1,0 +1,86 @@
+*&---------------------------------------------------------------------*
+*& Include ZRCL1TEST_16_02TOP                       - Report ZRCL1TEST_16_02
+*&---------------------------------------------------------------------*
+REPORT zrcl1test_16_02 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : bkpf.
+
+**********************************************************************
+* Class instance
+**********************************************************************
+DATA : go_container TYPE REF TO cl_gui_docking_container,
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid,
+       go_pop_cont  TYPE REF TO cl_gui_custom_container,
+       go_pop_grid  TYPE REF TO cl_gui_alv_grid.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+*-- For Screen 100
+DATA : BEGIN OF gs_body,
+         bukrs TYPE bkpf-bukrs,
+         belnr TYPE bkpf-belnr,
+         gjahr TYPE bkpf-gjahr,
+         hkont TYPE bseg-hkont,
+         txt50 TYPE skat-txt50,
+         buzei TYPE bseg-buzei,
+         budat TYPE bkpf-budat,
+         blart TYPE bkpf-blart,
+         bktxt TYPE bkpf-bktxt,
+         dmbtr TYPE bseg-dmbtr,
+         sgtxt TYPE bseg-sgtxt,
+         prctr TYPE bseg-prctr,
+         ltext TYPE cepct-ltext,
+         kostl TYPE bseg-kostl,
+         ktext TYPE cskt-ktext,
+         gsber TYPE bseg-gsber,
+         gtext TYPE tgsbt-gtext,
+         id    TYPE icon-id,
+       END OF gs_body,
+       gt_body LIKE TABLE OF gs_body.
+
+DATA : BEGIN OF gs_txt50,
+         saknr TYPE skat-saknr,
+         txt50 TYPE skat-txt50,
+       END OF gs_txt50,
+       gt_txt50 LIKE TABLE OF gs_txt50.
+
+DATA : BEGIN OF gs_ktext,
+         kostl TYPE cskt-kostl,
+         ktext TYPE cskt-ktext,
+       END OF gs_ktext,
+       gt_ktext LIKE TABLE OF gs_ktext.
+
+DATA : gs_layout  TYPE lvc_s_layo,
+       gs_fcat    TYPE lvc_s_fcat,
+       gt_fcat    TYPE lvc_t_fcat,
+       gs_variant TYPE disvariant.
+
+*-- For Pop up screen
+DATA : BEGIN OF gs_popup,
+         bukrs TYPE bseg-bukrs,
+         belnr TYPE bseg-belnr,
+         gjahr TYPE bseg-gjahr,
+         buzei TYPE bseg-buzei,
+         hkont TYPE bseg-hkont,
+         kostl TYPE bseg-kostl,
+         prctr TYPE bseg-prctr,
+         sgtxt TYPE bseg-sgtxt,
+       END OF gs_popup,
+       gt_popup      LIKE TABLE OF gs_popup,
+       gt_popup_save LIKE TABLE OF gs_popup,
+       gs_popup_save LIKE gs_popup.
+
+DATA : gs_pfcat TYPE lvc_s_fcat,
+       gt_pfcat TYPE lvc_t_fcat.
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_okcode TYPE sy-ucomm.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

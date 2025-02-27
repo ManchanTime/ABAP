@@ -1,0 +1,37 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRCL1TEST_16_01O01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Module STATUS_0100 OUTPUT
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+MODULE status_0100 OUTPUT.
+
+  DATA : BEGIN OF ls_mode,
+           mode(4),
+         END OF ls_mode,
+         lt_mode LIKE TABLE OF ls_mode.
+
+*-- ## DISPLAY #### IROW DROW ### ####
+*-- ## CHANGE #### IROW DROW ### ###
+  IF gv_mode = 0.
+    APPEND 'IROW' TO lt_mode.
+    APPEND 'DROW' TO lt_mode.
+  ELSE.
+    CLEAR lt_mode.
+  ENDIF.
+  SET PF-STATUS 'MENU100' EXCLUDING lt_mode.
+
+ENDMODULE.
+*&---------------------------------------------------------------------*
+*& Module INITIAL_PROCESS_CONTROL OUTPUT
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+MODULE initial_process_control OUTPUT.
+  PERFORM display_screen_0100.
+ENDMODULE.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

@@ -1,0 +1,31 @@
+*&---------------------------------------------------------------------*
+*& Include          ZRCL1TEST_16_01C01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Class LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS lcl_event_handler DEFINITION FINAL.
+
+  PUBLIC SECTION.
+    CLASS-METHODS : modify_value FOR EVENT data_changed_finished
+                                 OF cl_gui_alv_grid
+                                 IMPORTING e_modified et_good_cells.
+
+ENDCLASS.
+*&---------------------------------------------------------------------*
+*& Class (Implementation) LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS lcl_event_handler IMPLEMENTATION.
+
+  METHOD modify_value.
+    PERFORM handle_modify_value USING e_modified et_good_cells.
+  ENDMETHOD.
+
+ENDCLASS.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754
