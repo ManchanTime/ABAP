@@ -1,0 +1,29 @@
+``` abap
+*&---------------------------------------------------------------------*
+*& Include ZCL1R16056TOP                            - Report ZCL1R16056
+*&---------------------------------------------------------------------*
+REPORT zcl1r16056 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* Class insatnce
+**********************************************************************
+DATA : go_con    TYPE REF TO cl_sql_connection,  " DB Connection
+       go_stmt   TYPE REF TO cl_sql_statement,   " Execute SQL
+       go_result TYPE REF TO cl_sql_result_set.  " Retrive Result set
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : BEGIN OF gs_flight,
+         carrid   TYPE sflight-carrid,
+         connid   TYPE sflight-connid,
+         fldate   TYPE sflight-fldate,
+         price    TYPE sflight-price,
+         currency TYPE sflight-currency,
+       END OF gs_flight,
+       gt_flight LIKE TABLE OF gs_flight.
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_sql TYPE string.
