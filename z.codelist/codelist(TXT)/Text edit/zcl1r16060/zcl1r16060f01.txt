@@ -1,0 +1,148 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16060F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form get_comment
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_comment .
+
+*-- Get comment
+  CLEAR gs_ment.
+  SELECT SINGLE seq_no zcomment
+    INTO CORRESPONDING FIELDS OF gs_ment
+    FROM ztment16
+    WHERE seq_no = pa_seq.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form display_screen_0100
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM display_screen_0100 .
+
+  IF go_container IS NOT BOUND.
+
+    PERFORM create_object.
+    PERFORM set_text.
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form create_object
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM create_object .
+
+  CREATE OBJECT go_container
+    EXPORTING
+      container_name = 'MAIN_CONT'.
+
+  CREATE OBJECT go_text_edit
+    EXPORTING
+      wordwrap_mode = cl_gui_textedit=>wordwrap_at_windowborder
+      parent        = go_container.
+
+*-- Text edit toolbar made
+  CALL METHOD go_text_edit->set_toolbar_mode
+    EXPORTING
+      toolbar_mode = cl_gui_textedit=>false. " Toolbar mode -> 0 or 1 / false or true
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form set_text
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_text .
+
+  IF gs_ment IS NOT INITIAL.
+
+*-- ### ### #### ## ##
+    SPLIT gs_ment-zcomment AT cl_abap_char_utilities=>newline
+                           INTO TABLE gt_text.
+
+*-- ## ####
+    CALL METHOD go_text_edit->set_autoindent_mode
+      EXPORTING
+        auto_indent            = 1
+      EXCEPTIONS
+        error_cntl_call_method = 1
+        OTHERS                 = 2.
+
+*-- ## ### ## ##
+    CALL METHOD go_text_edit->delete_text
+      EXCEPTIONS
+        error_cntl_call_method = 1
+        OTHERS                 = 2.
+
+*-- #### ## Setting
+    CALL METHOD go_text_edit->set_selected_text_as_r3table
+      EXPORTING
+        table                         = gt_text
+        enable_editing_protected_text = cl_gui_textedit=>false
+      EXCEPTIONS
+        error_dp                      = 1
+        error_dp_create               = 2
+        OTHERS                        = 3.
+
+  ENDIF.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form save_comment
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM save_comment .
+
+*-- Text editor# ### ### ####.
+  CALL METHOD go_text_edit->get_text_as_r3table
+    IMPORTING
+      table                  = gt_text
+    EXCEPTIONS
+      error_dp               = 1
+      error_cntl_call_method = 2
+      error_dp_create        = 3
+      potential_data_loss    = 4
+      OTHERS                 = 5.
+
+  CLEAR gs_ment.
+  gs_ment-seq_no = pa_seq.  " ### ## ##
+
+*-- ### ### ### ## ##
+  LOOP AT gt_text INTO gs_text.
+
+    CONCATENATE gs_ment-zcomment gs_text-tdline
+                cl_abap_char_utilities=>newline INTO gs_ment-zcomment.
+
+  ENDLOOP.
+
+  MODIFY ztment16 FROM gs_ment.
+  COMMIT WORK.
+
+  MESSAGE s004.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

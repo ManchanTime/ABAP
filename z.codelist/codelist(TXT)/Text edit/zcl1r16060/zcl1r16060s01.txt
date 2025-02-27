@@ -1,0 +1,9 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16060S01
+*&---------------------------------------------------------------------*
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.
+  PARAMETERS : pa_seq TYPE ztment16-seq_no OBLIGATORY.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

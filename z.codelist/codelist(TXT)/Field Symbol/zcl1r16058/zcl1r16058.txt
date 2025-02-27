@@ -1,0 +1,59 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16058
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT zcl1r16058 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : gt_scarr TYPE TABLE OF scarr,
+       gt_spfli TYPE TABLE OF spfli.
+
+**********************************************************************
+* Common variable
+**********************************************************************
+FIELD-SYMBOLS : <fs_tab> TYPE STANDARD TABLE.
+
+DATA : gv_tab_name(10).
+
+**********************************************************************
+* Selection screen
+**********************************************************************
+SELECTION-SCREEN BEGIN OF BLOCK pa1 WITH FRAME TITLE TEXT-t01.
+  PARAMETERS : pa_scarr RADIOBUTTON GROUP rb1,
+               pa_spfli RADIOBUTTON GROUP rb1.
+SELECTION-SCREEN END OF BLOCK pa1.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+
+*-- Assign to Field-symbols
+  CASE abap_true.
+    WHEN pa_scarr.
+      gv_tab_name = 'SCARR'.
+      ASSIGN gt_scarr TO <fs_tab>.
+    WHEN pa_spfli.
+      gv_tab_name = 'SPFLI'.
+      ASSIGN gt_spfli TO <fs_tab>.
+  ENDCASE.
+
+*-- Select data
+  SELECT * FROM (gv_tab_name)
+    INTO CORRESPONDING FIELDS OF TABLE <fs_tab>.
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_SCARR         Scarr
+* PA_SPFLI         Spfli
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

@@ -1,0 +1,202 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16057F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+  pa_gjahr = '2025'.
+  pa_monat = 8.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form get_main_data
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM get_main_data .
+
+  CLEAR gt_body.
+  SELECT SINGLE hsl01 hsl02 hsl03 hsl04 hsl05 hsl06 hsl07 hsl08 hsl09
+                hsl10 hsl11 hsl12 hwaer
+    INTO CORRESPONDING FIELDS OF gs_body
+    FROM zfaglflext
+    WHERE ryear = pa_gjahr.
+
+  gs_month-value = gs_body-hsl01.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl02.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl03.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl04.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl05.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl06.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl07.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl08.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl09.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl10.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl11.
+  APPEND gs_month TO gt_month.
+  gs_month-value = gs_body-hsl12.
+  APPEND gs_month TO gt_month.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form calc_sum
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM calc_sum1 .
+
+  CLEAR gv_result.
+
+  CASE pa_monat.
+    WHEN '01'.
+      gv_result = gs_body-hsl01.
+    WHEN '02'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02.
+    WHEN '03'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03.
+    WHEN '04'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03 + gs_body-hsl04.
+    WHEN '05'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03 + gs_body-hsl04 + gs_body-hsl05.
+    WHEN '06'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03 + gs_body-hsl04 + gs_body-hsl05 +
+                  gs_body-hsl06.
+    WHEN '07'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03 + gs_body-hsl04 + gs_body-hsl05 +
+                  gs_body-hsl06 + gs_body-hsl07.
+    WHEN '08'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03 + gs_body-hsl04 + gs_body-hsl05 +
+                  gs_body-hsl06 + gs_body-hsl07 + gs_body-hsl08.
+    WHEN '09'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03 + gs_body-hsl04 + gs_body-hsl05 +
+                  gs_body-hsl06 + gs_body-hsl07 + gs_body-hsl08 + gs_body-hsl09.
+    WHEN '10'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03 + gs_body-hsl04 + gs_body-hsl05 +
+                  gs_body-hsl06 + gs_body-hsl07 + gs_body-hsl08 + gs_body-hsl09 + gs_body-hsl10.
+    WHEN '11'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03 + gs_body-hsl04 + gs_body-hsl05 +
+                  gs_body-hsl06 + gs_body-hsl07 + gs_body-hsl08 + gs_body-hsl09 + gs_body-hsl10 +
+                  gs_body-hsl11.
+    WHEN '12'.
+      gv_result = gs_body-hsl01 + gs_body-hsl02 + gs_body-hsl03 + gs_body-hsl04 + gs_body-hsl05 +
+                  gs_body-hsl06 + gs_body-hsl07 + gs_body-hsl08 + gs_body-hsl09 + gs_body-hsl10 +
+                  gs_body-hsl11 + gs_body-hsl12.
+  ENDCASE.
+
+*  WRITE gv_result.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form calc_sum2
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM calc_sum2 .
+
+  DATA : lv_tabix TYPE sy-tabix,
+         lv_index TYPE i.
+
+*-- 1#
+  CLEAR : gt_result, gs_result.
+  gs_result-month = '1'.
+  gs_result-sum   = gs_body-hsl01.
+  INSERT gs_result INTO TABLE gt_result.
+
+*-- 2### N###
+  lv_index = 2.
+  DO pa_monat - 1 TIMES.
+
+    CLEAR : gs_result, gs_month.
+    READ TABLE gt_result INTO gs_result INDEX lv_index - 1.
+    READ TABLE gt_month INTO gs_month INDEX lv_index.
+    gs_result-month = lv_index.
+    gs_result-sum   = gs_result-sum + gs_month-value.
+    INSERT gs_result INTO TABLE gt_result.
+    lv_index += 1.
+
+
+  ENDDO.
+
+*  READ TABLE gt_result INTO gs_result INDEX lv_index - 1.
+*  WRITE gs_result-sum.
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form calc_sum3
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM calc_sum3 .
+
+  DATA : lv_month TYPE bkpf-monat,
+         lv_var   TYPE string.
+
+  CLEAR gv_result.
+  DO pa_monat TIMES.
+*
+*-- ### ##
+    CLEAR lv_var.
+    lv_month += 1.
+    lv_var = 'GS_BODY-HSL' && lv_month.
+    ASSIGN (lv_var) TO <gs_fs>.
+*
+**-- ASSGIN COMPONENT# ##
+    CLEAR lv_var.
+    lv_var = 'HSL' && lv_month.
+    ASSIGN COMPONENT lv_var
+           OF STRUCTURE gs_body TO <gs_fs>.
+
+    IF <gs_fs> IS ASSIGNED.
+      gv_result += <gs_fs>.
+      UNASSIGN <gs_fs>.
+    ENDIF.
+
+  ENDDO.
+
+**-- Index# ## -> #, ## ## ##### #### ## ### #!!
+*-- ### ### ## #### -> ## # ### ##
+*  DO pa_monat + 3 TIMES.
+*    ASSIGN COMPONENT sy-index
+*           OF STRUCTURE gs_body TO <gs_fs>.
+*
+*    IF <gs_fs> IS ASSIGNED.
+*      gv_result += <gs_fs>.
+*      CLEAR <gs_fs>.
+*    ENDIF.
+*
+*  ENDDO.
+
+  WRITE gv_result CURRENCY gs_body-hwaer.
+  WRITE gv_result CURRENCY gs_body-hwaer TO gv_amount.  " ## ### ## ## # gv_amount# ##
+  WRITE gv_amount.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754

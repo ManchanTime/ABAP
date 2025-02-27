@@ -1,0 +1,89 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16056F01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Form set_init_value
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM set_init_value .
+
+  pa_carr = 'LH'.
+  pa_conn = '0400'.
+
+ENDFORM.
+*&---------------------------------------------------------------------*
+*& Form execute_adbc
+*&---------------------------------------------------------------------*
+*& text
+*&---------------------------------------------------------------------*
+*& -->  p1        text
+*& <--  p2        text
+*&---------------------------------------------------------------------*
+FORM execute_adbc .
+
+  DATA : lx_sql_exc TYPE REF TO cx_root,     " Exception handling
+         lv_text    TYPE string,             " Exception message
+         lv_tmp     TYPE string,
+         lr_data    TYPE REF TO data.
+
+  TRY.
+
+*-- Get Connection : T-code 'DB01'## Connection name ### #
+*-- Secondary DB# #### getConnection
+*      go_con = cl_sql_connection=>get_connection( 'HANADB' ).
+
+*-- Create statement
+      CREATE OBJECT go_stmt
+        EXPORTING
+          con_ref = go_con.
+
+*-- Make SQL by String template
+      gv_sql = | SELECT CARRID, CONNID, FLDATE, PRICE, CURRENCY | &&
+               |   FROM SAPHANADB.SFLIGHT                       | &&
+               |   WHERE MANDT  = '{ sy-mandt }'                | &&
+               |     AND CARRID = '{ pa_carr }'                 | &&
+               |     AND CONNID = '{ pa_conn }'                 |.
+
+      IF pa_fldt IS NOT INITIAL.
+        gv_sql = gv_sql &&
+                 | AND FLDATE = '{ pa_fldt }' |.
+      ENDIF.
+
+      gv_sql = gv_sql &&
+               | ORDER BY CARRID, CONNID, FLDATE ;|.
+
+*-- Execute SQL
+      go_result = go_stmt->execute_query( gv_sql ).
+
+*-- Assign variable for Resultset
+      GET REFERENCE OF gt_flight INTO lr_data.
+      go_result->set_param_table( lr_data ).
+
+*-- Retrieve ResultSet
+      go_result->next_package( ).
+      go_result->close( ).
+
+    CATCH cx_sql_exception INTO lx_sql_exc.
+      lv_text = lx_sql_exc->get_text( ).
+      lv_tmp = lv_text+70(*).
+      CALL FUNCTION 'POPUP_TO_DISPLAY_TEXT'
+        EXPORTING
+          textline1 = lv_text
+          textline2 = lv_tmp.
+  ENDTRY.
+
+*-- ## ### ### ##
+  IF lv_text IS INITIAL.
+    cl_demo_output=>display( gt_flight ).
+  ENDIF.
+
+  FREE : go_con, go_result.
+
+ENDFORM.
+
+----------------------------------------------------------------------------------
+Extracted by Mass Download version 1.4.6 - E.G.Mellodew. 1998-2025. Sap Release 754
