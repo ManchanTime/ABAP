@@ -1,3 +1,4 @@
+``` abap
 @AbapCatalog.sqlViewName: 'ZVSBOOK16_01'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
