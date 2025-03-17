@@ -36,5 +36,5 @@ DATA : gs_button       TYPE stb_button,
 **********************************************************************
 * Common variable
 **********************************************************************
-DATA : gv_okcode TYPE sy-ucomm,
-       gv_mode   TYPE i VALUE 0.
+DATA : gv_okcode TYPE sy-ucomm,   " 유저 선택 정보 받는 변수
+       gv_mode   TYPE i VALUE 0.  " 수정 가능 여부 지정 변수 -> 0이면 안됨, 1이면 됨
