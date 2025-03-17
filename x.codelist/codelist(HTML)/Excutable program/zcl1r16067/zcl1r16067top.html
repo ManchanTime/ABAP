@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>ZCL1R16067TOP</title>
+</head>
+<body bgcolor="#FFFFE0">
+<font size="3" face = "Arial" color="#000000"><b>Code listing for: ZCL1R16067TOP</b></font>
+<br>
+<font size="3" face = "Arial" color="#000000"><b>Description:  Include ZCL1R16067TOP</b></font>
+<hr>
+<pre width="100">
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Include ZCL1R16067TOP                            - Report ZCL1R16067</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+REPORT zcl1r16067 MESSAGE-ID zcl1msg16.
+
+<font color ="#0000FF">**********************************************************************</font>
+<font color ="#0000FF">* TABLES</font>
+<font color ="#0000FF">**********************************************************************</font>
+TABLES : ztbox_16_01.
+
+<font color ="#0000FF">**********************************************************************</font>
+<font color ="#0000FF">* TAB Strip</font>
+<font color ="#0000FF">**********************************************************************</font>
+CONTROLS : gc_tab TYPE TABSTRIP.
+DATA : gv_subscreen TYPE sy-dynnr.
+
+<font color ="#0000FF">**********************************************************************</font>
+<font color ="#0000FF">* Class instance</font>
+<font color ="#0000FF">**********************************************************************</font>
+DATA : go_cont_1 TYPE REF TO cl_gui_custom_container,
+       go_grid_1 TYPE REF TO cl_gui_alv_grid,
+       go_cont_2 TYPE REF TO cl_gui_custom_container,
+       go_grid_2 TYPE REF TO cl_gui_alv_grid.
+
+<font color ="#0000FF">**********************************************************************</font>
+<font color ="#0000FF">* Internal table and Work area</font>
+<font color ="#0000FF">**********************************************************************</font>
+DATA : BEGIN OF gs_cskt,
+         kokrs TYPE cskt-kokrs,
+         kostl TYPE cskt-kostl,
+         datbi TYPE cskt-datbi,
+         ktext TYPE cskt-ktext,
+       END OF gs_cskt,
+       gt_cskt LIKE TABLE OF gs_cskt.
+
+DATA : BEGIN OF gs_cepct,
+         prctr TYPE cepct-prctr,
+         datbi TYPE cepct-datbi,
+         kokrs TYPE cepct-kokrs,
+         ktext TYPE cepct-ktext,
+       END OF gs_cepct,
+       gt_cepct LIKE TABLE OF gs_cepct.
+
+DATA : gs_layout  TYPE lvc_s_layo,
+       gs_variant TYPE disvariant,
+       gs_fcat1   TYPE lvc_s_fcat,
+       gt_fcat1   TYPE lvc_t_fcat,
+       gs_fcat2   TYPE lvc_s_fcat,
+       gt_fcat2   TYPE lvc_t_fcat.
+
+<font color ="#0000FF">**********************************************************************</font>
+<font color ="#0000FF">* Common variable</font>
+<font color ="#0000FF">**********************************************************************</font>
+DATA : gv_okcode TYPE sy-ucomm.
+</pre>
+<hr>
+<font size="2" face = "Sans Serif">Extracted by Direct Download Enterprise version 1.3.1 - E.G.Mellodew. 1998-2005 UK. Sap Release 758
+</font>
+</body>
+</html>

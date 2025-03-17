@@ -1,0 +1,36 @@
+*&---------------------------------------------------------------------*
+*& Report ZRC1_16_01
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zrc1_16_01top                           .    " Global Data
+
+INCLUDE zrc1_16_01c01                           .  " AVL Event
+INCLUDE zrc1_16_01o01                           .  " PBO-Modules
+INCLUDE zrc1_16_01i01                           .  " PAI-Modules
+INCLUDE zrc1_16_01f01                           .  " FORM-Routines
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  PERFORM get_base_data.  " Get Main Data and Text Dat
+  PERFORM set_screen.     " Input enable(style) ## ##
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* TITLE100 --> Home shopping cart info
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*000   & & & &
+*002   No data changed!!
+
+----------------------------------------------------------------------------------
+Extracted by Direct Download Enterprise version 1.3.1 - E.G.Mellodew. 1998-2005 UK. Sap Release 758

@@ -1,0 +1,54 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16066
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zcl1r16066top                           .    " Global Data
+
+INCLUDE zcl1r16066s01                           .  " Selection screen
+INCLUDE zcl1r16066c01                           .  " ALV Event
+INCLUDE zcl1r16066o01                           .  " PBO-Modules
+INCLUDE zcl1r16066i01                           .  " PAI-Modules
+INCLUDE zcl1r16066f01                           .  " FORM-Routines
+
+**********************************************************************
+* INITIALIZATION
+**********************************************************************
+INITIALIZATION.
+  PERFORM set_init_value.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  PERFORM get_base_data.
+  PERFORM set_screen.
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* TITLE100 --> Member ID Info
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_BUKRS D       .
+* PA_GJAHR D       .
+* SO_MID D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*000   & & & &
+*002   No data changed!!
+
+----------------------------------------------------------------------------------
+Extracted by Direct Download Enterprise version 1.3.1 - E.G.Mellodew. 1998-2005 UK. Sap Release 758

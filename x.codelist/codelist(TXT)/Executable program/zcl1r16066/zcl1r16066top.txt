@@ -1,0 +1,45 @@
+*&---------------------------------------------------------------------*
+*& Include ZCL1R16066TOP                            - Report ZCL1R16066
+*&---------------------------------------------------------------------*
+REPORT zcl1r16066 MESSAGE-ID zcl1msg16.
+
+**********************************************************************
+* TABLES
+**********************************************************************
+TABLES : ztc1_16_01.
+
+**********************************************************************
+* Class instance
+**********************************************************************
+DATA : go_container TYPE REF TO cl_gui_docking_container,
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid.
+
+**********************************************************************
+* Internal table and Work area
+**********************************************************************
+DATA : BEGIN OF gs_body.
+         INCLUDE STRUCTURE ztc1_16_01.
+DATA :   cell_tab TYPE lvc_t_styl,
+         modi_yn,
+       END OF gs_body,
+       gt_body   LIKE TABLE OF gs_body,
+       gt_body_s TYPE TABLE OF ztc1_16_01,
+       gt_body_d TYPE TABLE OF ztc1_16_01,
+       gs_body_d TYPE ztc1_16_01.
+
+DATA : gs_layout  TYPE lvc_s_layo,
+       gt_fcat    TYPE lvc_t_fcat,
+       gs_fcat    TYPE lvc_s_fcat,
+       gs_variant TYPE disvariant.
+
+DATA : gs_button       TYPE stb_button,
+       gt_ui_functions TYPE ui_functions.
+
+**********************************************************************
+* Common variable
+**********************************************************************
+DATA : gv_okcode TYPE sy-ucomm,
+       gv_mode   TYPE i VALUE 0.
+
+----------------------------------------------------------------------------------
+Extracted by Direct Download Enterprise version 1.3.1 - E.G.Mellodew. 1998-2005 UK. Sap Release 758

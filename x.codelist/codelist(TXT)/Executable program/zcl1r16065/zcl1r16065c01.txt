@@ -1,0 +1,47 @@
+*&---------------------------------------------------------------------*
+*& Include          ZCL1R16065C01
+*&---------------------------------------------------------------------*
+*&---------------------------------------------------------------------*
+*& Class LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+CLASS lcl_event_handler DEFINITION FINAL.
+
+  PUBLIC SECTION.
+    CLASS-METHODS : modify_value FOR EVENT data_changed_finished
+                                 OF cl_gui_alv_grid
+                                 IMPORTING e_modified et_good_cells,
+
+                    edit_toolbar FOR EVENT toolbar
+                                 OF cl_gui_alv_grid
+                                 IMPORTING e_object e_interactive,
+
+                    user_command FOR EVENT user_command
+                                 OF cl_gui_alv_grid
+                                 IMPORTING e_ucomm.
+
+          ENDCLASS.
+*&---------------------------------------------------------------------*
+*& Class (Implementation) LCL_EVENT_HANDLER
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+    CLASS lcl_event_handler IMPLEMENTATION.
+
+    METHOD modify_value.
+      PERFORM handle_modify_value USING e_modified et_good_cells.
+    ENDMETHOD.
+
+    METHOD edit_toolbar.
+      PERFORM handle_edit_toolbar USING e_object e_interactive.
+    ENDMETHOD.
+
+    METHOD user_command.
+      PERFORM handle_user_command USING e_ucomm.
+    ENDMETHOD.
+
+ENDCLASS.
+
+----------------------------------------------------------------------------------
+Extracted by Direct Download Enterprise version 1.3.1 - E.G.Mellodew. 1998-2005 UK. Sap Release 758

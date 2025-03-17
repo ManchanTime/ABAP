@@ -1,0 +1,47 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16064
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zcl1r16064top                           .  " Global Data
+
+INCLUDE zcl1r16064s01                           .  " Selection screen
+INCLUDE zcl1r16064c01                           .  " ALV Event
+INCLUDE zcl1r16064o01                           .  " PBO-Modules
+INCLUDE zcl1r16064i01                           .  " PAI-Modules
+INCLUDE zcl1r16064f01                           .  " FORM-Routines
+
+**********************************************************************
+* INITIALIZATION
+**********************************************************************
+INITIALIZATION.
+  PERFORM set_init_value.
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  PERFORM get_base_data.
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* TITLE100 --> Flight Info Tab
+* TITLE110 --> Schedule data
+* TITLE120 --> Customer Data
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* PA_CARR D       .
+* PA_CONN D       .
+* PA_DATE D       .
+
+----------------------------------------------------------------------------------
+Extracted by Direct Download Enterprise version 1.3.1 - E.G.Mellodew. 1998-2005 UK. Sap Release 758

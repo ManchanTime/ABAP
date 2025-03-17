@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>ZRC1_16_01TOP</title>
+</head>
+<body bgcolor="#FFFFE0">
+<font size="3" face = "Arial" color="#000000"><b>Code listing for: ZRC1_16_01TOP</b></font>
+<br>
+<font size="3" face = "Arial" color="#000000"><b>Description:  Include ZRC1_16_01TOP</b></font>
+<hr>
+<pre width="100">
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Include ZRC1_16_01TOP                            - Report ZRC1_16_01</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+REPORT zrc1_16_01 MESSAGE-ID zcl1msg16.
+
+<font color ="#0000FF">**********************************************************************</font>
+<font color ="#0000FF">* Class instance</font>
+<font color ="#0000FF">**********************************************************************</font>
+DATA : go_container TYPE REF TO cl_gui_docking_container,
+       go_alv_grid  TYPE REF TO cl_gui_alv_grid.
+
+<font color ="#0000FF">**********************************************************************</font>
+<font color ="#0000FF">* Internal table and work area</font>
+<font color ="#0000FF">**********************************************************************</font>
+DATA : BEGIN OF gs_body.                      " Main data WA
+         include structure <a href ="ztc1_docu_16/dictionary-ztc1_docu_16.html">ztc1_docu_16</a>.      " ## ztc1_docu_16 info get
+DATA :   txt50    TYPE skat-txt50,            " TXT50 ##
+         cell_tab TYPE lvc_t_styl,            " Style ## ### ##
+         modi_yn,                             " Timestamp# ## ## ## ##
+       END OF gs_body,
+       gt_body   LIKE TABLE OF gs_body,       " Main data ITAB
+       gt_body_d TYPE TABLE OF ztc1_docu_16,  " ## ### ## # ITAB
+       gs_body_d TYPE ztc1_docu_16,           " ## ### ## # WA
+       gt_body_s TYPE TABLE of ztc1_docu_16.  " ## ### Transparent Table ## # ITAB
+
+<font color ="#0000FF">*-- ALV</font>
+DATA : gs_layout  TYPE lvc_s_layo,
+       gs_variant TYPE disvariant,
+       gs_fcat    TYPE lvc_s_fcat,
+       gt_fcat    TYPE lvc_t_fcat.
+
+DATA : gs_button       TYPE stb_button,
+       gt_ui_functions TYPE ui_functions.
+
+<font color ="#0000FF">**********************************************************************</font>
+<font color ="#0000FF">* Common variable</font>
+<font color ="#0000FF">**********************************************************************</font>
+DATA : gv_okcode TYPE sy-ucomm,
+       gv_mode   TYPE i VALUE 0.
+</pre>
+<hr>
+<font size="2" face = "Sans Serif">Extracted by Direct Download Enterprise version 1.3.1 - E.G.Mellodew. 1998-2005 UK. Sap Release 758
+</font>
+</body>
+</html>

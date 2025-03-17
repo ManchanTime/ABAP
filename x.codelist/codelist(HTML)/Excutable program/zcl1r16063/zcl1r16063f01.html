@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<title>ZCL1R16063F01</title>
+</head>
+<body bgcolor="#FFFFE0">
+<font size="3" face = "Arial" color="#000000"><b>Code listing for: ZCL1R16063F01</b></font>
+<br>
+<font size="3" face = "Arial" color="#000000"><b>Description:  Include ZCL1R16063F01</b></font>
+<hr>
+<pre width="100">
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Include          ZCL1R16063F01</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Form set_data</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& --&gt;  p1        text</font>
+<font color ="#0000FF">*& &lt;--  p2        text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+FORM set_data .
+
+<font color ="#0000FF">*-- Set Flight Info</font>
+  CLEAR gt_sflight.
+  SELECT *
+    INTO CORRESPONDING FIELDS OF TABLE @gt_sflight
+    FROM zvsflight16_01( pa_carrid = @pa_carr,
+                         pa_connid = @pa_conn,
+                         pa_fldate = @pa_fdat ).
+
+<font color ="#0000FF">*-- Set Booking Info</font>
+  CLEAR gt_sbook.
+  SELECT carrid, connid, fldate, bookid, customid, custtype,
+         custtype_desc, luggweight, wunit, class, forcuram, forcurkey
+    INTO CORRESPONDING FIELDS OF TABLE @gt_sbook
+    FROM zvsbook16_01( pa_carrid = @pa_carr,
+                       pa_connid = @pa_conn,
+                       pa_fldate = @pa_fdat ).
+
+ENDFORM.
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Form set_subscreen</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& --&gt;  p1        text</font>
+<font color ="#0000FF">*& &lt;--  p2        text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+FORM set_subscreen .
+  CASE gc_tab-activetab.
+    WHEN 'TAB1'.
+      gv_subscreen = '0101'.
+    WHEN 'TAB2'.
+      gv_subscreen = '0102'.
+    WHEN OTHERS.
+      gc_tab-activetab = 'TAB1'.
+      gv_subscreen     = '0101'.
+  ENDCASE.
+ENDFORM.
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Form display_screen_0100</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& --&gt;  p1        text</font>
+<font color ="#0000FF">*& &lt;--  p2        text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+FORM display_screen_0100 .
+
+  IF ( go_container_t1 IS NOT BOUND ) AND
+     ( go_container_t2 IS NOT BOUND ).
+
+    PERFORM set_layout.
+
+<font color ="#0000FF">*-- set ALV SFLIGHT</font>
+    CLEAR : gt_fcat_t1, gs_fcat_t2.
+    PERFORM set_fcat_t1 USING : 'X' 'CARRID'     'SFLIGHT' 'C' ' ',
+                                'X' 'CONNID'     'SFLIGHT' ' ' ' ',
+                                'X' 'FLDATE'     'SFLIGHT' 'C' ' ',
+                                ' ' 'PRICE'      'SFLIGHT' ' ' ' ',
+                                ' ' 'CURRENCY'   'SFLIGHT' ' ' ' ',
+                                ' ' 'PLANETYPE'  'SFLIGHT' ' ' 'X',
+                                ' ' 'SEATSMAX'   'SFLIGHT' ' ' ' ',
+                                ' ' 'SEATSOCC'   'SFLIGHT' ' ' ' ',
+                                ' ' 'PAYMENTSUM' 'SFLIGHT' ' ' ' ',
+                                ' ' 'SEATSMAX_B' 'SFLIGHT' ' ' ' ',
+                                ' ' 'SEATSOCC_B' 'SFLIGHT' ' ' ' ',
+                                ' ' 'SEATSMAX_F' 'SFLIGHT' ' ' ' ',
+                                ' ' 'SEATSOCC_F' 'SFLIGHT' ' ' ' '.
+
+
+
+    PERFORM create_object_t1.
+
+    CALL METHOD go_grid_t1-&gt;set_table_for_first_display
+      EXPORTING
+        is_variant      = gs_variant
+        i_save          = 'A'
+        i_default       = 'X'
+        is_layout       = gs_layout
+      CHANGING
+        it_outtab       = gt_sflight
+        it_fieldcatalog = gt_fcat_t1.
+
+<font color ="#0000FF">*-- SET ALV SBOOK</font>
+    CLEAR : gt_fcat_t2, gs_fcat_t1.
+    PERFORM set_fcat_t2 USING : 'X' 'CARRID'        'SBOOK' 'C' ' ',
+                                'X' 'CONNID'        'SBOOK' ' ' ' ',
+                                'X' 'FLDATE'        'SBOOK' 'C' ' ',
+                                'X' 'BOOKID'        'SBOOK' ' ' ' ',
+                                ' ' 'CUSTOMID'      'SBOOK' ' ' ' ',
+                                ' ' 'CUSTTYPE'      'SBOOK' 'C' ' ',
+                                ' ' 'CUSTTYPE_DESC' ' '     'C' 'X',
+                                ' ' 'LUGGWEIGHT'    'SBOOK' ' ' ' ',
+                                ' ' 'WUNIT'         'SBOOK' 'C' ' ',
+                                ' ' 'CLASS'         'SBOOK' 'C' ' ',
+                                ' ' 'FORCURAM'      'SBOOK' ' ' ' ',
+                                ' ' 'FORCURKEY'     'SBOOK' 'C' ' '.
+
+    PERFORM create_container_t2.
+
+    CALL METHOD go_grid_t2-&gt;set_table_for_first_display
+      EXPORTING
+        is_variant      = gs_variant
+        i_save          = 'A'
+        i_default       = 'X'
+        is_layout       = gs_layout
+      CHANGING
+        it_outtab       = gt_sbook
+        it_fieldcatalog = gt_fcat_t2.
+
+  ENDIF.
+
+ENDFORM.
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Form set_fcat_t1</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+FORM set_fcat_t1 USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_fcat_t1-key       = pv_key.
+  gs_fcat_t1-fieldname = pv_field.
+  gs_fcat_t1-ref_table = pv_table.
+  gs_fcat_t1-just      = pv_just.
+  gs_fcat_t1-emphasize = pv_emph.
+
+  CASE pv_field.
+    WHEN 'PRICE'.
+      gs_fcat_t1-cfieldname = 'CURRENCY'.
+  ENDCASE.
+
+  APPEND gs_fcat_t1 TO gt_fcat_t1.
+  CLEAR gs_fcat_t1.
+
+ENDFORM.
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Form set_layout</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& --&gt;  p1        text</font>
+<font color ="#0000FF">*& &lt;--  p2        text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+FORM set_layout .
+
+  gs_layout-zebra      = abap_true.
+  gs_layout-cwidth_opt = 'A'.
+  gs_layout-sel_mode   = 'D'.
+
+  gs_variant-report = sy-repid.
+  gs_variant-handle = 'ALV1'.
+
+ENDFORM.
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Form create_container_t1</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& --&gt;  p1        text</font>
+<font color ="#0000FF">*& &lt;--  p2        text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+FORM create_object_t1.
+
+  CREATE OBJECT go_container_t1
+    EXPORTING
+      container_name = 'MAIN_CONT1'.
+
+  CREATE OBJECT go_grid_t1
+    EXPORTING
+      i_parent = go_container_t1.
+
+ENDFORM.
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Form set_fcat_t2</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&      --&gt; P_</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+FORM set_fcat_t2 USING pv_key pv_field pv_table pv_just pv_emph.
+
+  gs_fcat_t2-key       = pv_key.
+  gs_fcat_t2-fieldname = pv_field.
+  gs_fcat_t2-ref_table = pv_table.
+  gs_fcat_t2-just      = pv_just.
+  gs_fcat_t2-emphasize = pv_emph.
+
+  CASE pv_field.
+    WHEN 'CUSTTYPE_DESC'.
+      gs_fcat_t2-coltext = 'custtype_desc'.
+    WHEN 'LUGGWEIGHT'.
+      gs_fcat_t2-qfieldname = 'WUNIT'.
+    WHEN 'FORCURAM'.
+      gs_fcat_t2-cfieldname = 'FORCURKEY'.
+  ENDCASE.
+
+  APPEND gs_fcat_t2 TO gt_fcat_t2.
+  CLEAR gs_fcat_t2.
+
+ENDFORM.
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& Form create_container_t2</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+<font color ="#0000FF">*& --&gt;  p1        text</font>
+<font color ="#0000FF">*& &lt;--  p2        text</font>
+<font color ="#0000FF">*&---------------------------------------------------------------------*</font>
+FORM create_container_t2 .
+
+  CREATE OBJECT go_container_t2
+    EXPORTING
+      container_name = 'MAIN_CONT2'.
+
+  CREATE OBJECT go_grid_t2
+    EXPORTING
+      i_parent = go_container_t2.
+
+ENDFORM.
+</pre>
+<hr>
+<font size="2" face = "Sans Serif">Extracted by Direct Download Enterprise version 1.3.1 - E.G.Mellodew. 1998-2005 UK. Sap Release 758
+</font>
+</body>
+</html>

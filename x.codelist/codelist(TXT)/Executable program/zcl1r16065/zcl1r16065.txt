@@ -1,0 +1,47 @@
+*&---------------------------------------------------------------------*
+*& Report ZCL1R16065
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+
+INCLUDE zcl1r16065top                           .    " Global Data
+
+INCLUDE zcl1r16065s01                           .  " Selection screen
+INCLUDE zcl1r16065c01                           .  " ALV Event
+INCLUDE zcl1r16065o01                           .  " PBO-Modules
+INCLUDE zcl1r16065i01                           .  " PAI-Modules
+INCLUDE zcl1r16065f01                           .  " FORM-Routines
+
+**********************************************************************
+* START-OF-SELECTION
+**********************************************************************
+START-OF-SELECTION.
+  PERFORM get_base_data.
+  PERFORM set_screen.
+
+  CALL SCREEN 100.
+
+*GUI Texts
+*----------------------------------------------------------
+* TITLE100 --> Box Info
+
+*Text elements
+*----------------------------------------------------------
+* T01 Condition
+
+
+*Selection texts
+*----------------------------------------------------------
+* SO_BOX D       .
+* SO_TOOL D       .
+
+
+*Messages
+*----------------------------------------------------------
+*
+* Message class: ZCL1MSG16
+*000   & & & &
+*002   No data changed!!
+
+----------------------------------------------------------------------------------
+Extracted by Direct Download Enterprise version 1.3.1 - E.G.Mellodew. 1998-2005 UK. Sap Release 758
