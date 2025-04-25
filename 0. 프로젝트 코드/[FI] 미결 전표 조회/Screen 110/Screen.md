@@ -1,0 +1,7 @@
+``` abap
+PROCESS BEFORE OUTPUT.
+  MODULE status_0110.
+  MODULE init_process_control_0110.
+*
+PROCESS AFTER INPUT.
+  MODULE exit_0110 AT EXIT-COMMAND.
